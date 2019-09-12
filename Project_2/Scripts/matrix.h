@@ -11,8 +11,9 @@ using namespace arma;
 class Matrix
 {
 public:
-    void Tridiag(int h, int N,  double* lambda_);
+    void Tridiag(double h, int N,  double* lambda_);
     void Similar(int N);
+    void Jacobi();
 
     int N;
     mat matr_A;

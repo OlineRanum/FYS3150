@@ -34,14 +34,57 @@ aps,
 
 \section*{Theory}
 
-\section*{Method}
+\subsection*{Eigensystem solvers}
+For a discretized systems it is possible to directly solve eigenvalue problems using similarity transformations. For instance using the Jacobi rotation method. The jacobi method transforms the matrix into a tridiagonal form using Housholder's algorithm. Given a symmetric matrix $A\in \mathbb{R}^{n\times n}$, we know that there exsists a orthogonal matrix S so that 
+\begin{equation*}
+	\mathbf{S}^T\mathbf{A}\mathbf{S} = \mathbf{D}
+\end{equation*}
+where 
+\begin{equation*}
+	\mathbf{D} = \begin{bmatrix}
+	\lambda_1 & 0 & 0 & \dots & 0 \\
+	0 & \lambda_2 & 0 & \dots & 0 \\
+	\vdots & \vdots & \vdots &\vdots&\vdots\\
+	0 & 0 & 0 &\dots & \lambda_n
+	\end{bmatrix}
+\end{equation*}
+and $\lambda_i$ are the eigenvalues of $A$. Thus one can preform a series of similarity transformations on $\mathbf{A}$ in order to reduce it to a diagonal form. Matrix $\mathbf{B}$ is said to be a similarity transform of $\mathbf{A}$ if 
+\begin{equation} \label{eq2}
+	\mathbf{B} = \mathbf{S}^T\mathbf{A}\mathbf{S}, \hspace{3mm} \textnormal{where} \hspace{3mm} \mathbf{S}^T\mathbf{S} = \mathbf{S}^{-1}\mathbf{S} = \mathbf{I}
+\end{equation}
+A similarity transform yields a matrix with the same eigenvalues, but in general different eigenvectors. \\
+Initially, one has the eigenvalue problem 
+\begin{equation}
+	\mathbf{A}\mathbf{x} = \lambda\mathbf{x}
+\end{equation}
+and a similarity matrix as defined in \ref{eq2}. One then subsequently apply a similarity transform so that 
+\begin{equation}
+	\mathbf{S}_N^T...\mathbf{S}_1^T\mathbf{A}\mathbf{S}_1...\mathbf{S}_N = \mathbf{D}
+\end{equation}
+Where the diagonal elements of $\mathbf{D}$ are the eigenvalues of $\mathbf{A}$, this method is better known as Jacobi's method [M. Jensen].
+
+\subsubsection*{Jacobi's method} 
+Jacobi's method conciders an $n\times n$ orthogonal transformation matrix on the form 
+\begin{equation*}
+\mathbf{S} = \begin{bmatrix}
+1 & 0  & \dots & 0 &\vdots &0 \\
+0 & 1  & \dots & 0 & \vdots & 0 \\
+\vdots & \vdots &\vdots&\vdots&\vdots&\vdots\\
+0 & 0 & \cos{\theta} & 0 &\vdots & \sin{\theta} \\
+0  & 0 & 0 & 1 &\vdots & 0 \\
+ \vdots & \vdots &\vdots&\vdots&\vdots&\vdots\\
+ 0 & 0 &\dots & -\sin{\theta} & \vdots & \cos{\theta}
+\end{bmatrix}
+\end{equation*}
+where $\mathbf{S} = \mathbf{S}^-1$. This matrix makes a plane rotation of an angle $\theta$ in the Euclidean n-dimensional space. 
+
 \subsection{The Harmonic Oscillator} \noindent 
 The classical harmonic oscillator is described by the following equation of motion
 \begin{equation*}
 	\gamma \frac{d^2 u(x)}{dx^2} = -F u(x)
 \end{equation*}
 
-where $u(x)$ is the vertical displacement of the system in the $y$ direction.
+where $u(x)$ is the vertical displacement of the system in the $y$ direction. 
 
 \subsection{Unitary transformations} \noindent 
 A unitary transformation is a transformation that preserves the orthogonality and inner product. Given a basis of vectors $\vec{v_i}$ ,
@@ -68,6 +111,20 @@ To show that it preserves the inner product we define
 	 \mathbf{a}^T\mathbf{w} &= \mathbf{b}^TU^TU\mathbf{v} = \mathbf{b}^T\mathbf{v}
 \end{align*}
 Where we have showed that the unitary transformation does not affect the inner product. 
+
+
+\section*{Method}
+\subsection{Jacobi's method for Eigensolvers}
+When implementing Jacobi's method we apply the following algorithm to a matrix A:
+\begin{align*}
+	&b_{ii} = a_{ii} \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l\\
+	&b_{ik} = a_{ik}\cos\theta -a_{il}\sin\theta \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l \\
+	&b_{il}  = a_{il}\cos\theta -a_{ik}\sin\theta \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l\\
+	&b_{kk} = a_{kk}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{ll}\sin^2\theta&&\\
+	&b_{ll} = a_{ll}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{kk}\sin^2\theta&& \\
+	&b_{kl} = (a_{kk}-a_{ll})\cos\theta\sin\theta+a_{kl}(\cos^2\theta -\sin^2\theta)\\
+\end{align*}
+
 \section*{Results}
 
 \section*{Discussion} 

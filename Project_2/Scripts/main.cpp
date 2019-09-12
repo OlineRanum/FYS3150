@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "Read_N_from_file.h"
+#include "matrix.h"
 
 
 using namespace std;
@@ -14,6 +15,8 @@ int main()
     double F = 2;
     double L = 1;
     ReadFiles *rf = new ReadFiles();
+    Matrix *mtrx = new Matrix();
+
     vector<int> v;
     v = rf->Read_N_from_file();
 
@@ -29,8 +32,11 @@ int main()
        lambda_ = new double [N];
 
        double h = 1/(double)(N);
+       cout << "H: " << h<<endl;
 
-       test(N, h, lambda_);
+       mtrx->Tridiag(h,N,lambda_);
+       mtrx->Similar(N);
+       mtrx->Jacobi();
 
        for (int k = 0; k < N; k++) x[k] = k*h;
       // for (int k = 0; k < N; k++) cout << x[k]<< endl;
