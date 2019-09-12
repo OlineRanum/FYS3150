@@ -5,4 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         Read_N_from_file.cpp \
-        main.cpp
+        main.cpp \
+        matrix.cpp
+
+HEADERS += \
+    Read_N_from_file.h \
+    matrix.h
