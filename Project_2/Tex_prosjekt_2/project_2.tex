@@ -15,7 +15,7 @@ aps,
 \makeatother
 
 \begin{document}
-\title{Project 2}
+\title{Eigenvalue problems}
 \author{Torstein S. Ølberg, Ada M. Veddegjerde and Oline A. Ranum}
 \affiliation{%
  \textnormal{Universitetet i Oslo, Institutt for fysikk}\\
@@ -35,7 +35,39 @@ aps,
 \section*{Theory}
 
 \section*{Method}
+\subsection{The Harmonic Oscillator} \noindent 
+The classical harmonic oscillator is described by the following equation of motion
+\begin{equation*}
+	\gamma \frac{d^2 u(x)}{dx^2} = -F u(x)
+\end{equation*}
 
+where $u(x)$ is the vertical displacement of the system in the $y$ direction.
+
+\subsection{Unitary transformations} \noindent 
+A unitary transformation is a transformation that preserves the orthogonality and inner product. Given a basis of vectors $\vec{v_i}$ ,
+\begin{equation*}
+	\mathbf{v}_i = \begin{bmatrix} v_{i1} \\ \dots \\ \dots \\v_{in} \end{bmatrix}
+\end{equation*}
+where the basis is orthogonal 
+\begin{equation*}
+	\mathbf{v}_j^T\mathbf{v}_i = \delta_{ij}
+\end{equation*}
+Given the unitary transformation 
+\begin{equation*}
+	\mathbf{w}_i=\mathbf{U}\mathbf{v}_i
+\end{equation*}
+It can be shown that the transformation preserves orthogonality
+\begin{align*}
+	\mathbf{w}=\mathbf{U}\mathbf{v} &\implies \mathbf{w}^T=\mathbf{v}^T\mathbf{U}^T \\ &\implies \mathbf{w}^T\mathbf{w} = \mathbf{v}^T\mathbf{U}^T\mathbf{U}\mathbf{v} = \mathbf{v}^T\mathbf{v} = \delta
+\end{align*}
+To show that it preserves the inner product we define 
+\begin{align*}
+	\mathbf{a} &= U\mathbf{b} \\
+	\rightarrow \mathbf{a} &= \mathbf{b}^TU^T \\
+	&\textnormal{We then take the inner product:} \\
+	 \mathbf{a}^T\mathbf{w} &= \mathbf{b}^TU^TU\mathbf{v} = \mathbf{b}^T\mathbf{v}
+\end{align*}
+Where we have showed that the unitary transformation does not affect the inner product. 
 \section*{Results}
 
 \section*{Discussion} 
