@@ -4,4 +4,5 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Read_N_from_file.cpp \
         main.cpp
