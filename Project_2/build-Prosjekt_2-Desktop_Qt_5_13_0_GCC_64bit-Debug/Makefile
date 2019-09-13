@@ -232,6 +232,7 @@ DIST          = /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf \
+		../Prosjekt_2/.qmake.stash \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -434,6 +435,7 @@ Makefile: ../Prosjekt_2/Prosjekt_2.pro /home/torstein/Qt/5.13.0/gcc_64/mkspecs/l
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -625,6 +627,7 @@ Makefile: ../Prosjekt_2/Prosjekt_2.pro /home/torstein/Qt/5.13.0/gcc_64/mkspecs/l
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf:

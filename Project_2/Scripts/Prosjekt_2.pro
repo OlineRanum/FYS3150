@@ -6,7 +6,8 @@ CONFIG -= qt
 SOURCES += \
         Read_N_from_file.cpp \
         main.cpp \
-        matrix.cpp
+        matrix.cpp \
+        tester.cpp
 
 HEADERS += \
     Read_N_from_file.h \
