@@ -1,10 +1,11 @@
+#include "tester.h"
 #include <iostream>
 #include <armadillo>
 
 using namespace std;
 using namespace arma;
 
-double test_funk(mat matrise)
+double tester::test_funk(mat matrise)
 {
     int len_mat = matrise.n_cols;
 
@@ -15,7 +16,7 @@ double test_funk(mat matrise)
     return matrise.max();
 }
 
-void Test_max_non_diag_value(double (*funk)(mat))
+void tester::Test_max_non_diag_value(double (*funk)(mat))
 {
     mat A = randu<mat> (5, 5);
     vec a(5); a.fill(A(1, 2) - 1);
