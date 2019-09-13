@@ -32,11 +32,9 @@ int main()
        lambda_ = new double [N];
 
        double h = 1/(double)(N);
-       cout << "H: " << h<<endl;
 
        mtrx->Tridiag(h,N,lambda_);
-       mtrx->Similar(N);
-       mtrx->Jacobi();
+       mtrx->Jacobi(N);
 
        for (int k = 0; k < N; k++) x[k] = k*h;
       // for (int k = 0; k < N; k++) cout << x[k]<< endl;
