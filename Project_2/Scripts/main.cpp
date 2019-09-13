@@ -11,9 +11,6 @@ void test (int N, double h, double* lambda_);
 
 int main()
 {
-    double gamma = 3.0;
-    double F = 2;
-    double L = 1;
     ReadFiles *rf = new ReadFiles();
     Matrix *mtrx = new Matrix();
 
@@ -31,7 +28,7 @@ int main()
        double * lambda_;
        lambda_ = new double [N];
 
-       double h = 1/(double)(N);
+       double h = 1;// 1/(double)(N);
 
        mtrx->Tridiag(h,N,lambda_);
        mtrx->Jacobi(N);
