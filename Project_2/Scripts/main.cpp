@@ -28,7 +28,7 @@ int main()
        double * lambda_;
        lambda_ = new double [N];
 
-       double h = 1;// 1/(double)(N);
+       double h = 1.0/(double)(N);
 
        mtrx->Tridiag(h,N,lambda_);
        mtrx->Jacobi(N);

@@ -8,6 +8,8 @@ SOURCES += \
         main.cpp \
         matrix.cpp
 
+LIBS += -llapack -lblas -larmadillo
+
 HEADERS += \
     Read_N_from_file.h \
     matrix.h
