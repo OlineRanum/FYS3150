@@ -4,12 +4,14 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        Read_N_from_file.cpp \
+        ReadFiles.cpp \
         main.cpp \
-        matrix.cpp
+        matrix.cpp \
+        prepare_results.cpp
 
 LIBS += -llapack -lblas -larmadillo
 
 HEADERS += \
-    Read_N_from_file.h \
-    matrix.h
+    ReadFiles.h \
+    matrix.h \
+    prepare_results.h

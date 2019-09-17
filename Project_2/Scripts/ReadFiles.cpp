@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "Read_N_from_file.h"
+#include "ReadFiles.h"
 
 
 using namespace std;
