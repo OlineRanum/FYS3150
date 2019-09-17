@@ -4,14 +4,18 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        External_Solvers.cpp \
+        Jacobi_Method.cpp \
+        MatrixMaker.cpp \
+        PrepareResults.cpp \
         ReadFiles.cpp \
-        main.cpp \
-        matrix.cpp \
-        prepare_results.cpp
+        main.cpp
 
 LIBS += -llapack -lblas -larmadillo
 
 HEADERS += \
-    ReadFiles.h \
-    matrix.h \
-    prepare_results.h
+    External_Solvers.h \
+    Jacobi_Method.h \
+    MatrixMaker.h \
+    PrepareResults.h \
+    ReadFiles.h
