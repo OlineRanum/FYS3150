@@ -13,20 +13,13 @@ class MatrixMaker
 {
 public:
     void Tridiag(double h, int N,  double* lambda_analytical);
-    void Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi);
-    void find_max_index();
-    void eigen_solvers(double* lambda_arma, int N_eigenvals);
-
+    void Tridiag_QD1e(double h, int N, double* rho);
     int N;
+    mat A; mat A_copy;
+    mat A_q;
+private:
     double a;
     double d;
-    double tottime_arma;
-    double tottime_jacobi;
-    int max_k;
-    int max_l;
-    double off_A;
-    double max_element;
-private:
 };
 
 #endif // MATRIX_H

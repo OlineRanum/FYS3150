@@ -11,10 +11,11 @@ using namespace arma;
 class Jacobi_Method
 {
 public:
-    void Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi);
-    void find_max_index();
+    void Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A);
+    void find_max_index(mat A);
 
     int N;
+    mat A;
     double a;
     double d;
     double tottime_arma;

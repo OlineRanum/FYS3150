@@ -1,18 +1,14 @@
 #include "Jacobi_Method.h"
 
-
 #include <iostream>
 #include <cmath>
 #include <armadillo>
-#include "MatrixMaker.h"
 #include <iomanip>
+
 using namespace std;
 using namespace arma;
 
-extern mat A;
-extern mat A_copy;
-
-void Jacobi_Method::find_max_index() {
+void Jacobi_Method::find_max_index(mat A) {
     max_element = 0;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -25,7 +21,7 @@ void Jacobi_Method::find_max_index() {
             off_A += A(i, j)*A(i, j);
             }}}}
 
-void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi) {
+void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A) {
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
@@ -39,12 +35,15 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
     clock_t st, fi;
     st = clock();
     while (off_A > 1e-10) {
+
         sinmilarity_transform_counter += 1;
         off_A = 0;
 
-        find_max_index();
+        find_max_index(A);
+
 
         tau = (A(max_l,max_l) - A(max_k,max_k))/(2*A(max_k,max_l));
+
         t1 = -tau + sqrt(1+tau*tau);
         t2 = -tau - sqrt(1+tau*tau);
         if (abs(t1) > abs(t2)) {t = t2;} else {t = t1;}
@@ -76,11 +75,12 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
 
-    cout << A << endl;
+ //   cout << A << endl;
     cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
    // cout << "Time of Armadillo solver= " << tottime_arma << endl;
-
+    cout << A << endl;
     Jacobi_t[number_of_tests-1] = tottime_jacobi;
  //   arma_t[number_of_tests-1] = tottime_arma;
     num_transform[number_of_tests-1] = sinmilarity_transform_counter;
+
 }

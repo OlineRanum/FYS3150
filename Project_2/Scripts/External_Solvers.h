@@ -11,7 +11,7 @@ using namespace arma;
 class External_Solvers
 {
 public:
-    void eigen_solvers_arma(double* lambda_arma, int N_eigenvals);
+    void eigen_solvers_arma(double* lambda_arma, int N_eigenvals, mat A_copy);
 
     int N;
     double a;
