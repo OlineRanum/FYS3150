@@ -25,10 +25,6 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
-    double tau;
-    double t1; double t2; double t;
-    double s; double c;
-    double BKK; double BLL; double BKL;
 
     int sinmilarity_transform_counter = 0;
 
@@ -42,17 +38,18 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
         find_max_index(A);
 
 
-        tau = (A(max_l,max_l) - A(max_k,max_k))/(2*A(max_k,max_l));
+        double tau = (A(max_l,max_l) - A(max_k,max_k))/(2*A(max_k,max_l));
 
-        t1 = -tau + sqrt(1+tau*tau);
-        t2 = -tau - sqrt(1+tau*tau);
+        double t1 = -tau + sqrt(1+tau*tau);
+        double t2 = -tau - sqrt(1+tau*tau);
+        double t;
         if (abs(t1) > abs(t2)) {t = t2;} else {t = t1;}
-        c = 1/sqrt(1+t*t);
-        s = t*c;
+        double c = 1/sqrt(1+t*t);
+        double s = t*c;
 
-        BKK = A(max_k,max_k)*c*c-2*A(max_k,max_l)*c*s+A(max_l,max_l)*s*s;
-        BLL = A(max_l,max_l)*c*c+2*A(max_k,max_l)*c*s+A(max_k, max_k)*s*s;
-        BKL = 0; //(A(max_k, max_k) -A(max_l, max_l) )*c*s+A(max_k, max_l)*(c*c-s*s);
+        double BKK = A(max_k,max_k)*c*c-2*A(max_k,max_l)*c*s+A(max_l,max_l)*s*s;
+        double BLL = A(max_l,max_l)*c*c+2*A(max_k,max_l)*c*s+A(max_k, max_k)*s*s;
+        double BKL = 0; //(A(max_k, max_k) -A(max_l, max_l) )*c*s+A(max_k, max_l)*(c*c-s*s);
 
 
         for (int i = 0; i < N; i++) {
@@ -78,7 +75,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
  //   cout << A << endl;
     cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
    // cout << "Time of Armadillo solver= " << tottime_arma << endl;
-    cout << A << endl;
+    cout <<"Final: "<< A << endl;
     Jacobi_t[number_of_tests-1] = tottime_jacobi;
  //   arma_t[number_of_tests-1] = tottime_arma;
     num_transform[number_of_tests-1] = sinmilarity_transform_counter;

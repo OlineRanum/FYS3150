@@ -9,6 +9,7 @@ aps,
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{physics}
 \usepackage{caption}
 
 \makeatletter
@@ -142,6 +143,12 @@ To show that it preserves the inner product we define
 	 \mathbf{a}^T\mathbf{w} &= \mathbf{b}^TU^TU\mathbf{v} = \mathbf{b}^T\mathbf{v}
 \end{align*}
 Where we have showed that the unitary transformation does not affect the inner product. 
+
+\subsection{The Frobenius norm}
+\begin{equation}
+	\parallel A \parallel_F^2 = \parallel B \parallel_F^2 = \sum_{ij} \abs{a_{ij}}^2 = \sum_{ij} \abs{b_{ij}}^2
+\end{equation}
+The Frobenius norm is conserved under orthogonal/unitary transformations 
 
 \subsection{The Quantum Harmonic Oscillator} \noindent 
 Another famous harmonic oscillator is the famous description of electron-electron interaction. Electrons in a three-dimensional harmonic oscillator potential will repel each other via the static Coulomb interaction. We assume spherical symmetry. For such a system, the radial part of the Schroedinger equation for one electron reads

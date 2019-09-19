@@ -18,6 +18,7 @@ void MatrixMaker::Tridiag(double h, int N,  double* lambda_analytical )
     for (int k = 1; k < N; k++) A(k, k-1) = a;
 
     for (int k = 0; k < N; k++) lambda_analytical[k] = d+2*a*cos((k+1)*M_PI/(N+1));
+    for (int k = 0; k < N; k++) cout << lambda_analytical[k] << endl;
 
     A_copy = A;
 }
