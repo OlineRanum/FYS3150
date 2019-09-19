@@ -3,8 +3,9 @@
 #include <iostream>
 #include <cmath>
 #include <armadillo>
-#include "MatrixMaker.h"
 #include <iomanip>
+#include "MatrixMaker.h"
+
 using namespace std;
 using namespace arma;
 

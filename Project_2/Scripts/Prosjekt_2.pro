@@ -10,6 +10,7 @@ SOURCES += \
         MatrixMaker.cpp \
         PrepareResults.cpp \
         ReadFiles.cpp \
+        tester.cpp \
         main.cpp
 
 LIBS += -llapack -lblas -larmadillo
@@ -19,4 +20,5 @@ HEADERS += \
     Jacobi_Method.h \
     MatrixMaker.h \
     PrepareResults.h \
-    ReadFiles.h
+    ReadFiles.h \
+    tester.h

@@ -8,6 +8,7 @@
 #include "PrepareResults.h"
 #include "Jacobi_Method.h"
 #include "External_Solvers.h"
+#include "tester.h"
 
 using namespace std;
 
