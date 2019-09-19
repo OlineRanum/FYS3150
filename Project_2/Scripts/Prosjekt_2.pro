@@ -4,7 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        tester.cpp
         External_Solvers.cpp \
         Jacobi_Method.cpp \
         MatrixMaker.cpp \
@@ -22,3 +21,6 @@ HEADERS += \
     PrepareResults.h \
     ReadFiles.h \
     tests.h
+
+DISTFILES += \
+    Prosjekt_2.pro.user

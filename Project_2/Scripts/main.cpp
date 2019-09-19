@@ -9,9 +9,6 @@
 #include "External_Solvers.h"
 #include "tests.h"
 
-
-
-
 using namespace std;
 
 

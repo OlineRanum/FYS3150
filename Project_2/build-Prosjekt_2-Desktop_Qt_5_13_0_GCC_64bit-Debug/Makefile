@@ -66,7 +66,8 @@ OBJECTS       = External_Solvers.o \
 		ReadFiles.o \
 		main.o \
 		tests.o
-DIST          = /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../Scripts/Prosjekt_2.pro.user \
+		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/unix.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/linux.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/sanitize.conf \
