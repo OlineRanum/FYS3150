@@ -8,19 +8,18 @@
 using namespace std;
 using namespace arma;
 
-class Matrix
+
+class MatrixMaker
 {
 public:
-    void Tridiag(double h, int N,  double* lambda_);
-    void Similar(int N, double k, double l, double s, double c);
-    void Jacobi(int N);
-
+    void Tridiag(double h, int N,  double* lambda_analytical);
+    void Tridiag_QD1e(double h, int N, double* rho);
     int N;
-    mat matr_A;
-    mat sim;
+    mat A; mat A_copy;
+    mat A_q;
+private:
     double a;
     double d;
-private:
 };
 
 #endif // MATRIX_H

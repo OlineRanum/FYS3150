@@ -1,43 +1,76 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "Read_N_from_file.h"
-#include "matrix.h"
+#include <iomanip>
 
+#include "ReadFiles.h"
+#include "MatrixMaker.h"
+#include "PrepareResults.h"
+#include "Jacobi_Method.h"
+#include "External_Solvers.h"
 
 using namespace std;
 
-void test (int N, double h, double* lambda_);
 
 int main()
 {
     ReadFiles *rf = new ReadFiles();
-    Matrix *mtrx = new Matrix();
-
+    PrepareResults *pf = new PrepareResults();
+    MatrixMaker *mtrx = new MatrixMaker();
+    Jacobi_Method *jack_meth = new Jacobi_Method();
+    External_Solvers *ext_solv = new External_Solvers();
     vector<int> v;
     v = rf->Read_N_from_file();
 
 
+    int number_of_tests = 0;
+    for (int z: v) number_of_tests +=1;
+
+    double * Jacobi_t =  new double [number_of_tests];
+    double * arma_t = new double [number_of_tests];
+    int * num_transform = new int [number_of_tests];
+
+    double p_N = 2;
+    double p_0 = 0;
+
+    number_of_tests = 0;
     for (int z: v){
        int N = z;
-       //cout << N <<'\n';
+       number_of_tests +=1;
 
-       double * x;
-       x = new double [N];
+       double * lambda_analytical = new double [N];
+       double * lambda_jacobi = new double [N];
+       double * lambda_arma = new double [N];
+       double * rho = new double [N];
 
-       double * lambda_;
-       lambda_ = new double [N];
+       // Defining H
+       double h = (p_N-p_0)/(double)(N);
 
-       double h = 1;// 1/(double)(N);
+       // Defining RHO
+       for (int k = 0; k < N; k++) rho[k] = k*h;
 
-       mtrx->Tridiag(h,N,lambda_);
-       mtrx->Jacobi(N);
+       // Calculating stuff
+       mtrx->Tridiag(h,N,lambda_analytical);
+       mtrx->Tridiag_QD1e(h, N, rho);
+       ext_solv->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
 
-       for (int k = 0; k < N; k++) x[k] = k*h;
-      // for (int k = 0; k < N; k++) cout << x[k]<< endl;
+       jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A);
+       jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A_q);
 
-       cout << "Sucess\n" << endl;
+
+
     }
+
+
+
+    cout << "Number of tests: " << number_of_tests << endl;
+
+   // pf ->Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
+
+
+
+    delete[] Jacobi_t;
+    delete[] arma_t;
 
     return 0;
 }
