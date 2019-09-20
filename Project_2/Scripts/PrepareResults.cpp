@@ -24,7 +24,7 @@ void PrepareResults::Prepare_results_2B(int number_of_tests, int* num_transform,
 }
 
 
-void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lambda_jacobi)
+void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi, double* lambda_analytical)
 {
     vec lambda_(N);
     for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
@@ -32,7 +32,26 @@ void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lam
 
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("Results_2E.txt", fstream::out);
+    myfile.open ("Results_2b_lambda.txt", fstream::out);
+    myfile << "# " << setw(10)<< "       Lambda Analytical    "<< setw(20) << "Lambda Jacobi" << endl;
+    for(int k = 0; k < N; k++){
+        myfile  << k+1 <<setw(10) << " & " << setprecision(15)<< lambda_sorted(k) << "      & " << lambda_analytical[k] << endl ;
+    }
+    myfile.close();
+
+}
+
+
+
+void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lambda_jacobi)
+{
+    vec lambda_(N);
+    for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
+    vec lambda_sorted = sort(lambda_);
+
+    // Writing values to text file with latex friendly format
+    fstream myfile;
+    myfile.open ("Results_2D.txt", fstream::out);
     myfile << "Testnumber" << setw(15) << "Lambda" << endl;
     for(int k = 0; k < N; k++){
         myfile  << k+1 <<" & " << lambda_sorted(k) <<  endl ;
