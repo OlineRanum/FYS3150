@@ -27,13 +27,15 @@ int main()
     v = rf->Read_N_from_file();
 
     // Prepare variables
-    int number_of_tests = 0; for (int z: v) number_of_tests +=1;
-    double * Jacobi_t =  new double [number_of_tests];
-    double * arma_t = new double [number_of_tests];
-    int * num_transform = new int [number_of_tests];
-    int * N_of_test = new int [number_of_tests];
-    double p_N = 1e6; double p_0 = 0;
+    int number_of_tests     = 0; for (int z: v) number_of_tests +=1;
+    double  * Jacobi_t      =  new double [number_of_tests];
+    double  * arma_t        = new double [number_of_tests];
+    int     * num_transform = new int [number_of_tests];
+    int     * N_of_test     = new int [number_of_tests];
+    double p_N              = 1e6; double p_0 = 0;
 
+    test->Test_max_non_diag_value();
+    test->Test_eigenvalues();
 
     // Evaluate z files in N.txt
     number_of_tests = 0;
@@ -41,9 +43,6 @@ int main()
        int N = z;
        N_of_test[number_of_tests] = N;
        number_of_tests +=1;
-
-        test->Test_max_non_diag_value();
-        //test->Test_eigenvalues();
 
        double * lambda_analytical = new double [N];
        double * lambda_jacobi = new double [N];
@@ -73,13 +72,10 @@ int main()
        //Solving with Jacobi Matrix on potential
        jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q);
 
-        jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A);
-        jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A_q);
-
        // Prepareing results for 2D
-       pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);
+       pr -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);
 
-       pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
+       pr -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
 
 
     delete[] lambda_analytical; delete[] lambda_jacobi; delete[] lambda_jacobi_2E; delete[] rho; delete[] lambda_arma;
@@ -89,7 +85,7 @@ int main()
 
     cout << "Number of tests: " << number_of_tests << endl;
 
-   pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
+   pr -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
 
 
 

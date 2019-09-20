@@ -25,5 +25,4 @@ HEADERS += \
     lanczos_method.h
 
 DISTFILES += \
-    ../build-Prosjekt_2-Desktop_Qt_5_13_0_GCC_64bit-Debug/N.txt \
     Prosjekt_2.pro.user
