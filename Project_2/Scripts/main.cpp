@@ -40,14 +40,15 @@ int main()
 
        double * lambda_analytical = new double [N];
        double * lambda_jacobi = new double [N];
+       double * lambda_jacobi_2E = new double [N];
        double * lambda_arma = new double [N];
        double * rho = new double [N];
 
        // Defining H
-       double h = (p_N-p_0)/(double)(N);
+       double h = (p_N-p_0)/(double)(N+1);
 
        // Defining RHO
-       for (int k = 0; k < N; k++) rho[k] = k*h;
+       for (int k = 0; k < N; k++) rho[k] = (k+1)*h;
 
        // Calculating stuff
        mtrx->Tridiag(h,N,lambda_analytical);
@@ -55,10 +56,9 @@ int main()
        ext_solv->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
 
        jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A);
-       jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A_q);
+       jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q);
 
-
-
+       pf -> Prepare_results_2E(number_of_tests, N, lambda_jacobi_2E);
     }
 
 

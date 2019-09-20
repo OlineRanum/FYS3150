@@ -71,6 +71,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
         }
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
+    for (int k = 0; k < N; k++) {lambda_jacobi[k] = A(k,k);}
 
  //   cout << A << endl;
     cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
