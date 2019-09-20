@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <armadillo>
+
 #include "ReadFiles.h"
 #include "MatrixMaker.h"
 #include "PrepareResults.h"
@@ -10,16 +12,17 @@
 #include "tests.h"
 
 using namespace std;
-
+using namespace arma;
 
 int main()
 {
     // Prepare clases
     ReadFiles *rf = new ReadFiles();
-    PrepareResults *pf = new PrepareResults();
+    PrepareResults *pr = new PrepareResults();
     MatrixMaker *mtrx = new MatrixMaker();
     Jacobi_Method *jacobi_method = new Jacobi_Method();
     External_Solvers *external_solvers = new External_Solvers();
+    Tests * test = new Tests();
     vector<int> v;
     v = rf->Read_N_from_file();
 
@@ -39,6 +42,8 @@ int main()
        N_of_test[number_of_tests] = N;
        number_of_tests +=1;
 
+        test->Test_max_non_diag_value();
+        //test->Test_eigenvalues();
 
        double * lambda_analytical = new double [N];
        double * lambda_jacobi = new double [N];
@@ -68,6 +73,8 @@ int main()
        //Solving with Jacobi Matrix on potential
        jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q);
 
+        jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A);
+        jack_meth->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A_q);
 
        // Prepareing results for 2D
        pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);

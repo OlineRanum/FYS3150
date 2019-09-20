@@ -10,16 +10,20 @@ using namespace arma;
 
 void Jacobi_Method::find_max_index(mat A) {
     max_element = 0;
+
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            if  (i!=j){
+            if  (i!=j) {
                 if (abs(A(i, j)) > max_element) {
                 max_k = i;
                 max_l = j;
                 max_element = abs(A(i, j));
                 }
             off_A += A(i, j)*A(i, j);
-            }}}}
+            }
+        }
+    }
+}
 
 void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A) {
     this->N = N;
@@ -59,7 +63,8 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
                 A(i,i) = A(i,i);
                 A(i,max_k) = A(max_k,i) = AIK;
                 A(i,max_l) = A(max_l,i) = AIL;
-                }}
+                }
+        }
 
 
         A(max_k,max_k) = BKK;
@@ -67,7 +72,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
         A(max_k, max_l) = A(max_l, max_k) = BKL;
 
         off_A = sqrt(off_A);
-
+        cout << off_A << endl;
         }
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
