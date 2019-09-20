@@ -9,8 +9,9 @@ SOURCES += \
         MatrixMaker.cpp \
         PrepareResults.cpp \
         ReadFiles.cpp \
+        main.cpp \
+        tests.cpp
         lanczos_method.cpp \
-        main.cpp
 
 LIBS += -llapack -lblas -larmadillo
 
@@ -20,4 +21,8 @@ HEADERS += \
     MatrixMaker.h \
     PrepareResults.h \
     ReadFiles.h \
+    tests.h
     lanczos_method.h
+
+DISTFILES += \
+    Prosjekt_2.pro.user
