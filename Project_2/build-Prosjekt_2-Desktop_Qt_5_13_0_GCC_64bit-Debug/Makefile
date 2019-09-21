@@ -730,7 +730,8 @@ main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/tests.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Scripts/main.cpp
 
-tests.o: ../Scripts/tests.cpp ../Scripts/tests.h
+tests.o: ../Scripts/tests.cpp ../Scripts/tests.h \
+		../Scripts/Jacobi_Method.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tests.o ../Scripts/tests.cpp
 
 ####### Install

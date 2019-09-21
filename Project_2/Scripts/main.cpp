@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <armadillo>
+
 #include "ReadFiles.h"
 #include "MatrixMaker.h"
 #include "PrepareResults.h"
@@ -10,27 +12,30 @@
 #include "tests.h"
 
 using namespace std;
-
+using namespace arma;
 
 int main()
 {
     // Prepare clases
     ReadFiles *rf = new ReadFiles();
-    PrepareResults *pf = new PrepareResults();
+    PrepareResults *pr = new PrepareResults();
     MatrixMaker *mtrx = new MatrixMaker();
     Jacobi_Method *jacobi_method = new Jacobi_Method();
     External_Solvers *external_solvers = new External_Solvers();
+    Tests * test = new Tests();
     vector<int> v;
     v = rf->Read_N_from_file();
 
     // Prepare variables
-    int number_of_tests = 0; for (int z: v) number_of_tests +=1;
-    double * Jacobi_t =  new double [number_of_tests];
-    double * arma_t = new double [number_of_tests];
-    int * num_transform = new int [number_of_tests];
-    int * N_of_test = new int [number_of_tests];
+    int number_of_tests     = 0; for (int z: v) number_of_tests +=1;
+    double  * Jacobi_t      =  new double [number_of_tests];
+    double  * arma_t        = new double [number_of_tests];
+    int     * num_transform = new int [number_of_tests];
+    int     * N_of_test     = new int [number_of_tests];
     double p_N = 8; double p_0 = 0;                         //double p_N = 1;
 
+    test->Test_max_non_diag_value();
+    test->Test_eigenvalues();
 
     // Evaluate z files in N.txt
     number_of_tests = 0;
@@ -38,7 +43,6 @@ int main()
        int N = z;
        N_of_test[number_of_tests] = N;
        number_of_tests +=1;
-
 
        double * lambda_analytical = new double [N];
        double * lambda_jacobi = new double [N];
@@ -69,11 +73,10 @@ int main()
        //Solving with Jacobi Matrix on potential
        jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q, mtrx->I);
 
-
        // Prepareing results for 2D
        pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);
+
        pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
-       */
 
        mtrx->Tridiag_QD_2e(h, N, rho);
        jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_E, mtrx->A_q_2e, mtrx->I);
@@ -91,7 +94,7 @@ int main()
 
     cout << "Number of tests: " << number_of_tests << endl;
 
-   // pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
+   pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
 
 
 

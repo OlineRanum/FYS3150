@@ -10,16 +10,20 @@ using namespace arma;
 
 void Jacobi_Method::find_max_index(mat A) {
     max_element = 0;
+
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            if  (i!=j){
+            if  (i!=j) {
                 if (abs(A(i, j)) > max_element) {
                 max_k = i;
                 max_l = j;
                 max_element = abs(A(i, j));
                 }
             off_A += A(i, j)*A(i, j);
-            }}}}
+            }
+        }
+    }
+}
 
 void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A, mat& I) {
     this->N = N;
@@ -37,7 +41,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
 
         find_max_index(A);
 
-
+        if (A(max_k, max_l) < pow(10, -10)) {A(max_k,max_l) = pow(10, -10);}
         double tau = (A(max_l,max_l) - A(max_k,max_k))/(2*A(max_k,max_l));
 
         double t1 = -tau + sqrt(1+tau*tau);
@@ -51,14 +55,13 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
         double BLL = A(max_l,max_l)*c*c+2*A(max_k,max_l)*c*s+A(max_k, max_k)*s*s;
         double BKL = 0; //(A(max_k, max_k) -A(max_l, max_l) )*c*s+A(max_k, max_l)*(c*c-s*s);
 
-
         for (int i = 0; i < N; i++) {
             if ((i != max_k) && (i != max_l)){  //  cout <<"h: " << h <<endl;
                 double AIK = A(i,max_k)*c-A(i,max_l)*s;
                 double AIL = A(i,max_l)*c+A(i,max_k)*s;
-                A(i,i) = A(i,i);
                 A(i,max_k) = A(max_k,i) = AIK;
                 A(i,max_l) = A(max_l,i) = AIL;
+                }}
 
                 }
             double IK = c*I(i, max_k) - s*I(i,max_l);
@@ -79,12 +82,19 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
 
 
         off_A = sqrt(off_A);
-
+        cout << off_A << endl;
         }
+
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
-    for (int k = 0; k < N; k++) {lambda_jacobi[k] = A(k,k); }
+    for (int k = 0; k < N; k++) {lambda_jacobi[k] = A(k,k);}
 
+    this->lambda_jacobi = vec(N, fill::zeros);
+
+    for (int k = 0; k < N; k++) {
+        lambda_jacobi[k] = A(k,k);
+        this->lambda_jacobi[k] = A(k, k);
+    }
  //   cout << A << endl;
     cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
    // cout << "Time of Armadillo solver= " << tottime_arma << endl;

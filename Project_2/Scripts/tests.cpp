@@ -3,11 +3,14 @@
 #include <iostream>
 #include <armadillo>
 
+#include <Jacobi_Method.h>
+
 using namespace std;
 using namespace arma;
 
 double Tests::test_funk(mat matrise)
 {
+    /* Just a testfunction for testing the tests underneath */
     vec c(matrise.n_cols); c.fill(matrise(1, 2) - 1);
 
     matrise.diag() = c;
@@ -15,14 +18,18 @@ double Tests::test_funk(mat matrise)
     return matrise.max();
 }
 
-void Tests::Test_max_non_diag_value(double funk(mat))
+void Tests::Test_max_non_diag_value(void)
 {
+    /* Test of the function Jacobi_Method::find_max_index() */
     mat A = randu<mat> (5, 5);
-    vec a(5); a.fill(A(1, 2) - 1);
-    A.diag() = a;
 
-    double value = funk(A);
+    Jacobi_Method * jack_meth = new Jacobi_Method;
+    jack_meth->N = 5 - 1;
+    jack_meth->find_max_index(A);
+    double value = jack_meth->max_element;
+
     int test_value = 0;
+    double max_value = A.max();
 
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 5; j++)
@@ -30,6 +37,7 @@ void Tests::Test_max_non_diag_value(double funk(mat))
             if (value <= A(i, j) and i != j)
            {
                test_value++;
+               max_value = A(i, j);
            }
         }
     if (test_value == 1)
@@ -39,15 +47,42 @@ void Tests::Test_max_non_diag_value(double funk(mat))
     else
     {
         cout << "Test unsuccessfull =(! Function to find max nondiagonal value did not work." << endl;
+        cout << "Found value: " << jack_meth->max_element << endl;
+        cout << "Expected value: " << max_value << endl;
     }
 }
 
-void Tests::Test_eigenvalues(vec funk(mat))
+void Tests::Test_eigenvalues(void)
 {
-    mat A = randu<mat> (5, 5);
+    int test_N = 3;
+    double  * a  = new double [1];
+    int     * b  = new int [1];
+    double  * c  = new double [test_N];
+
+    Jacobi_Method * jack_meth = new Jacobi_Method;
+
+    mat A = mat(test_N, test_N);
+    A(0, 0) = -1;
+    A(0, 1) = 2;
+    A(0, 2) = 2;
+    A(1, 0) = 2;
+    A(1, 1) = 2;
+    A(1, 2) = -1;
+    A(2, 0) = 2;
+    A(2, 1) = -1;
+    A(2, 2) = 2;
 
     vec eigenval = eig_sym(A);
-    vec testres = funk(A);
+    for (int i = 0; i < eigenval.n_elem; i++)
+        for (int j = 0; j < eigenval.n_elem; j++)
+        {
+            if (abs(eigenval(i) - eigenval(j)) < pow(10, -10) and i != j)
+                eigenval(j) = 0;
+        }
+
+    jack_meth->Jacobi(test_N, a, a, 1, b, c, A);
+    vec testres = jack_meth->lambda_jacobi;
+
     int teller = 0;
     if (eigenval.n_elem == testres.n_elem)
     {
@@ -55,18 +90,24 @@ void Tests::Test_eigenvalues(vec funk(mat))
             for (int j = 0; j < testres.n_elem; j++)
             {
                 if (abs(eigenval(i) - testres(j)) < pow(10.0, -10.0))
-                {
                     teller = teller + 1;
-                }
             }
         if (teller == testres.n_elem)
-        {
             cout << "Solveren for egenverdiene er flink!" << endl;
-        }
         else
         {
-            cout << "En av egenverdiene produsert av solveren er ikke riktige. Den har " << teller << " riktige egenverdier" << endl;
+            cout << "Minst en av egenverdiene produsert av solveren er ikke riktige. Den har " << teller << " riktige egenverdier" << endl;
+            cout << "eigenvalues: " << endl;
+            cout << eigenval << endl;
+            cout << "funkresultater" << endl;
+            cout << testres << endl;
         }
     }
- //   cout << eigenval << endl;
+    else
+    {
+        cout << "eigenvalues: " << endl;
+        cout << eigenval << endl;
+        cout << "funkresultater" << endl;
+        cout << testres << endl;
+    }
 }

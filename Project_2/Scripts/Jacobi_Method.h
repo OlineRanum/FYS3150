@@ -25,6 +25,7 @@ public:
     int max_l;
     double off_A;
     double max_element;
+    vec lambda_jacobi;
 private:
 };
 
