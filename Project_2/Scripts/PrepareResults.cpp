@@ -42,7 +42,6 @@ void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi
 }
 
 
-
 void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lambda_jacobi)
 {
     vec lambda_(N);
@@ -57,4 +56,51 @@ void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lam
         myfile  << k+1 <<" & " << lambda_sorted(k) <<  endl ;
     }
     myfile.close();
+}
+
+
+void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lambda_jacobi)
+{
+    vec lambda_(N);
+    for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
+    vec lambda_sorted = sort(lambda_);
+
+    // Writing values to text file with latex friendly format
+    fstream myfile;
+    myfile.open ("Results_2E.txt", fstream::out);
+    myfile << "Testnumber" << setw(15) << "Lambda" << endl;
+    for(int k = 0; k < N; k++){
+        myfile  << k+1 <<" &        " << lambda_sorted(k) <<  endl ;
+    }
+    myfile.close();
+}
+
+void PrepareResults::Prepare_results_2F_egienvectors(int N,  mat I, double* lambda_jacobi_2e)
+{
+    // Find index of minimum value
+    int k;
+    double min_val = lambda_jacobi_2e[0];
+    for(int j = 0; j < N; j++){
+        if (abs(lambda_jacobi_2e[j]) < min_val) {k = j; min_val = lambda_jacobi_2e[j];}
+        cout << lambda_jacobi_2e[j] << endl;
+    }
+
+    cout << "Min value:" << k << endl;
+    // Writing values to text file with latex friendly format
+    fstream myfile;
+    myfile.open ("Results_2F_eigenvectors.txt", fstream::out);
+    for(int k = 0; k < N; k++){
+        for (int j = 0; j < N; j++){
+        myfile  << " " << I(k,j) <<"";
+}    myfile << endl;}
+    myfile.close();
+
+    myfile.open ("Results_2F_eigenvectors_info.txt", fstream::out);
+    myfile << "ground_state index: " << k << endl;
+    myfile << "N: " << N << endl;
+    myfile << "Testnumber" << setw(15) << "Lambda" << endl;
+    myfile << endl;
+    myfile.close();
+
+
 }

@@ -29,7 +29,7 @@ int main()
     double * arma_t = new double [number_of_tests];
     int * num_transform = new int [number_of_tests];
     int * N_of_test = new int [number_of_tests];
-    double p_N = 1e6; double p_0 = 0;
+    double p_N = 8; double p_0 = 0;                         //double p_N = 1;
 
 
     // Evaluate z files in N.txt
@@ -43,6 +43,7 @@ int main()
        double * lambda_analytical = new double [N];
        double * lambda_jacobi = new double [N];
        double * lambda_jacobi_2E = new double [N];
+       double * lambda_jacobi_E = new double [N];
        double * lambda_arma = new double [N];
        double * rho = new double [N];
 
@@ -52,28 +53,36 @@ int main()
        // Defining Rho
        for (int k = 0; k < N; k++) rho[k] = (k+1)*h;
 
+       mtrx-> Make_Identity(N);
+
+       /*
        // Setting up tridiagonal matrix
        mtrx->Tridiag(h,N,lambda_analytical);
-
        // Solve with armadillo
        external_solvers->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
-
        // Solve with Jacobi Matrix
-       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A);
+       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->Am, mtrx->I);
 
 
        // Setting up tridiagonalmatrix with potential V
-       mtrx->Tridiag_QD1e(h, N, rho);
-
+       mtrx->Tridiag_QD_1e(h, N, rho);
        //Solving with Jacobi Matrix on potential
-       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q);
+       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q, mtrx->I);
 
 
        // Prepareing results for 2D
        pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);
-
        pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
+       */
 
+       mtrx->Tridiag_QD_2e(h, N, rho);
+       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_E, mtrx->A_q_2e, mtrx->I);
+
+
+
+
+       pf -> Prepare_results_2E(number_of_tests, N, lambda_jacobi_E);
+       pf -> Prepare_results_2F_egienvectors(N, mtrx-> I, lambda_jacobi_E);
 
     delete[] lambda_analytical; delete[] lambda_jacobi; delete[] lambda_jacobi_2E; delete[] rho; delete[] lambda_arma;
     }
@@ -82,7 +91,7 @@ int main()
 
     cout << "Number of tests: " << number_of_tests << endl;
 
-   pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
+   // pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);
 
 
 

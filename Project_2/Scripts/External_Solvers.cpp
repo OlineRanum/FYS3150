@@ -9,8 +9,6 @@
 using namespace std;
 using namespace arma;
 
-extern mat A;
-extern mat A_copy;
 
 
 void External_Solvers::eigen_solvers_arma(double* lambda_arma, int N_eigenvals, mat A_copy) {

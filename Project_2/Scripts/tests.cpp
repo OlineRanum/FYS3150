@@ -68,5 +68,5 @@ void Tests::Test_eigenvalues(vec funk(mat))
             cout << "En av egenverdiene produsert av solveren er ikke riktige. Den har " << teller << " riktige egenverdier" << endl;
         }
     }
-    cout << eigenval << endl;
+ //   cout << eigenval << endl;
 }

@@ -21,17 +21,17 @@ void Jacobi_Method::find_max_index(mat A) {
             off_A += A(i, j)*A(i, j);
             }}}}
 
-void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A) {
+void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A, mat& I) {
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
+
 
     int sinmilarity_transform_counter = 0;
 
     clock_t st, fi;
     st = clock();
     while (off_A > 1e-10) {
-
         sinmilarity_transform_counter += 1;
         off_A = 0;
 
@@ -59,24 +59,36 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
                 A(i,i) = A(i,i);
                 A(i,max_k) = A(max_k,i) = AIK;
                 A(i,max_l) = A(max_l,i) = AIL;
-                }}
+
+                }
+            double IK = c*I(i, max_k) - s*I(i,max_l);
+            double IL = c*I(i,max_l)+s*I(i,max_k);
+
+            I(i,max_k) = IK;
+            I(i, max_l) = IL;
+
+        }
 
 
         A(max_k,max_k) = BKK;
         A(max_l,max_l) = BLL;
         A(max_k, max_l) = A(max_l, max_k) = BKL;
 
+
+
+
+
         off_A = sqrt(off_A);
 
         }
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
-    for (int k = 0; k < N; k++) {lambda_jacobi[k] = A(k,k);}
+    for (int k = 0; k < N; k++) {lambda_jacobi[k] = A(k,k); }
 
  //   cout << A << endl;
     cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
    // cout << "Time of Armadillo solver= " << tottime_arma << endl;
-    cout <<"Final: "<< A << endl;
+   // cout <<"Final: "<< A << endl;
     Jacobi_t[number_of_tests-1] = tottime_jacobi;
  //   arma_t[number_of_tests-1] = tottime_arma;
     num_transform[number_of_tests-1] = sinmilarity_transform_counter;
