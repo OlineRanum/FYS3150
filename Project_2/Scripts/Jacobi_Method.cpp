@@ -61,9 +61,8 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
                 double AIL = A(i,max_l)*c+A(i,max_k)*s;
                 A(i,max_k) = A(max_k,i) = AIK;
                 A(i,max_l) = A(max_l,i) = AIL;
-                }}
-
                 }
+
             double IK = c*I(i, max_k) - s*I(i,max_l);
             double IL = c*I(i,max_l)+s*I(i,max_k);
 

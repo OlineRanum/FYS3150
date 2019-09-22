@@ -60,6 +60,8 @@ void Tests::Test_eigenvalues(void)
     double  * c  = new double [test_N];
 
     Jacobi_Method * jack_meth = new Jacobi_Method;
+    int N = 20;
+    mat I = mat(N,N,fill::eye);
 
     mat A = mat(test_N, test_N);
     A(0, 0) = -1;
@@ -80,7 +82,7 @@ void Tests::Test_eigenvalues(void)
                 eigenval(j) = 0;
         }
 
-    jack_meth->Jacobi(test_N, a, a, 1, b, c, A);
+    jack_meth->Jacobi(test_N, a, a, 1, b, c, A, I);
     vec testres = jack_meth->lambda_jacobi;
 
     int teller = 0;
