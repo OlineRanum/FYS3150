@@ -3,7 +3,7 @@
 #include <iostream>
 #include <armadillo>
 
-#include <Jacobi_Method.h>
+#include "Jacobi_Method.h"
 
 using namespace std;
 using namespace arma;
