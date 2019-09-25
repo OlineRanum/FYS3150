@@ -34,8 +34,8 @@ int main()
     int     * N_of_test     = new int [number_of_tests];
     double p_N = 8; double p_0 = 0;                         //double p_N = 1;
 
-  //  test->Test_max_non_diag_value();
-  //  test->Test_eigenvalues();
+    test->Test_max_non_diag_value();
+    test->Test_eigenvalues();
 
     // Evaluate z files in N.txt
     number_of_tests = 0;
