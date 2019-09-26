@@ -55,16 +55,22 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
+		../Scripts/tester.cpp \
 		../Scripts/tests.cpp 
 OBJECTS       = External_Solvers.o \
 		Jacobi_Method.o \
 		MatrixMaker.o \
+		N_times_10.o \
 		PrepareResults.o \
 		ReadFiles.o \
+		N_times_10.o \
 		main.o \
+		tester.o \
 		tests.o
 DIST          = ../Scripts/Prosjekt_2.pro.user \
 		/usr/lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -155,14 +161,20 @@ DIST          = ../Scripts/Prosjekt_2.pro.user \
 		../Scripts/Prosjekt_2.pro External_Solvers.h \
 		Jacobi_Method.h \
 		MatrixMaker.h \
+		N_times_10.h \
 		PrepareResults.h \
 		ReadFiles.h \
+		N_times.h \
+		tester.h \
 		tests.h ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
+		../Scripts/tester.cpp \
 		../Scripts/tests.cpp
 QMAKE_TARGET  = Prosjekt_2
 DESTDIR       = 
@@ -401,19 +413,29 @@ Jacobi_Method.o: ../Scripts/Jacobi_Method.cpp ../Scripts/Jacobi_Method.h
 MatrixMaker.o: ../Scripts/MatrixMaker.cpp ../Scripts/MatrixMaker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MatrixMaker.o ../Scripts/MatrixMaker.cpp
 
+N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
+
 PrepareResults.o: ../Scripts/PrepareResults.cpp ../Scripts/PrepareResults.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PrepareResults.o ../Scripts/PrepareResults.cpp
 
 ReadFiles.o: ../Scripts/ReadFiles.cpp ../Scripts/ReadFiles.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReadFiles.o ../Scripts/ReadFiles.cpp
 
+N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
+
 main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/MatrixMaker.h \
 		../Scripts/PrepareResults.h \
 		../Scripts/Jacobi_Method.h \
 		../Scripts/External_Solvers.h \
-		../Scripts/tests.h
+		../Scripts/tests.h \
+		../Scripts/N_times_10.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Scripts/main.cpp
+
+tester.o: ../Scripts/tester.cpp ../Scripts/tester.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tester.o ../Scripts/tester.cpp
 
 tests.o: ../Scripts/tests.cpp ../Scripts/tests.h \
 		../Scripts/Jacobi_Method.h

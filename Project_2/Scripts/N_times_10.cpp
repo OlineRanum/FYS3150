@@ -10,9 +10,9 @@ using std::fstream;
 
 
 
-#include "adas_redigerntextfil.h"
+#include "N_times_10.h"
 
-Adas_RedigerNtextfil::Adas_RedigerNtextfil()
+N_times_10::N_times_10()
 {
     string line;
     vector<int> v;
