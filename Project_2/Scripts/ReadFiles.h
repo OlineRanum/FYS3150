@@ -11,8 +11,8 @@ using namespace std;
 
 class ReadFiles {
 public:
-    arma::vec  Read_N_from_file();
-    arma::vec Read_rho_from_file();
+    vector<int>  Read_N_from_file();
+    vector<int> Read_rho_from_file();
 
 private:
     vector<int> v;

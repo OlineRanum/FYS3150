@@ -252,6 +252,10 @@ To look closer at the efficiency of the method, we compare the results agains th
 
 \subsection{Extending the algorithm to the Quantum oscillator} \noindent 
 By looking at equation \ref{qho} we see that it is almost on the same form as the equation of the buckling beam problem. In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
+
+\subsection{2D:Quantum dots in three dimensions, one electron} \noindent 
+We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues of the diagonal matrix. We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. We vary N with $N\in[10, 70, 100, 200]$, for each N we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and choose N = 100. We then take a closer look at this selection, and find the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. 
+
 \newpage.
 \newpage 
 
@@ -281,7 +285,23 @@ By looking at equation \ref{qho} we see that it is almost on the same form as th
 	\captionof{table}[foo]{Time estimations of the Jacobi and the armadillo eig\_sym solvers to find eigenvalues of a 100$\times$100 matrix. Included the number of similarity transformations nesecarry during this run of the Jacobi method.}
 \end{figure}
 
+
+
+\subsection*{2D:Quantum dots in three dimensions, one electron}
+Study the result as a function of integration points N and the approximation to 
+When estimating the given values of N and $\rho_{max}$ we find the following relations in the relative error given as in figure \ref{fig:2D10}, \ref{fig:2D70}, \ref{fig:2D100} and \ref{fig:2D200} in the appendix.\\
+When evaluating figure \ref{fig:2D10}, \ref{fig:2D70}, \ref{fig:2D100} and \ref{fig:2D200} we see a couple of general trends. The relative error between the estimated eigenvalues and the analytical eigenvalues has a tendency to decrease as N increases. As well, we see that there is a region around $\rho = 5$ where the relative error is the smallest. \\  
+With $\rho_{max} = 5$ and N = 100 we find that it takes approximately 200 gridpoints to reproduce the analytical results with four leading digits. There is some variations in regards to what eigenvalue we are looking at. The resoults are presented in figure \ref{fig:LD}\\  
+
 \section*{Discussion} 
+
+\subsection*{2D: Quantum dots in three dimensions, one electron} \noindent 
+It is interesting to see how the relative error varies with each choice of N and $\rho_{max}$. It is evident that the error decreases as N increases, but furthermore, they all show the same tendencies in regards to $\rho_{max}$. $\rho_{max} = 5$ for all tested values of N appears to be the value that most consistently yields the lowest error. At certain times one can see $\rho_{max} = 3$ or $\rho_{max} = 4$ yielding lower values for the lowest eigenvalues for N > 10, but in these cases they will have a rapid growth in the error. Thus we do not find them to be equally reliable with the current information. Of course, access to a broader selection of analytical eigenvalues would help us determine the quality of this information. \\
+\textit{Mention something about N=10 results versus N$>$10}\\
+Even though it is hard to say something certain about the eigenvalues beyond $\lambda = 11$, the error curves seems to form a distribution with around $\rho_{max} = 5$. \\
+\textit{discussion of leading digets}
+
+
 
 \section*{Conclusion}
 
@@ -294,6 +314,28 @@ By looking at equation \ref{qho} we see that it is almost on the same form as th
 $[2]$
 \section*{Appendix A}
 For the code used for calculation our results, visit
-\url{https://github.com/OlineRanum/FYS3150_Project_1}
+\url{https://github.com/OlineRanum/FYS3150/Project_2}
+\newpage 
+\subsection{Plots}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{N_10_relative_error.png}
+	\caption{\label{fig:2D10}}
+\end{figure*}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{N_70_relative_error.png}
+	\caption{\label{fig:2D70}}
+\end{figure*}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{N_100_relative_error.png}
+	\caption{\label{fig:2D100}}
+\end{figure*}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{N_200_relative_error.png}
+	\caption{\label{fig:2D200}}
+\end{figure*}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{Leading_digits.png}
+	\caption{\label{fig:LD} The figure show the relation between the number for leading digits, in regards to the black bar representing four leading digits.}
+\end{figure*}
 
 \end{document}

@@ -3,17 +3,15 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <armadillo>
 
 #include "ReadFiles.h"
 
 
 using namespace std;
 using std::fstream;
-using namespace arma;
 
 
-vec ReadFiles::Read_N_from_file()
+vector<int> ReadFiles::Read_N_from_file()
 {
     string line;
     vector<int> v;
@@ -30,13 +28,10 @@ vec ReadFiles::Read_N_from_file()
       }
 
       else cout << "Unable to open file\n";
-      int vSize = v.size();
-      vec z = zeros<vec>(10);
-      for (int k = 0; k < vSize; k++) {cout << v.at(k) <<endl; z(k) = v.at(k);}
-      return z;
+      return v;
 }
 
-vec ReadFiles::Read_rho_from_file()
+vector<int> ReadFiles::Read_rho_from_file()
 {
     string line;
     vector<int> y;
@@ -54,13 +49,7 @@ vec ReadFiles::Read_rho_from_file()
       }
 
       else cout << "Unable to open file\n";
-      cout << "AWSM";
-
-      int ySize = y.size();
-      vec w = zeros<vec>(10);
-      for (int k = 0; k < ySize; k++) {cout << y.at(k) <<endl; w(k) = y.at(k);}
-      return w;
-
+      return y;
 }
 
 

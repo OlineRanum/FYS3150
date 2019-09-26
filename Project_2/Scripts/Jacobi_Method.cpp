@@ -10,7 +10,6 @@ using namespace arma;
 
 void Jacobi_Method::find_max_index(mat A) {
     max_element = 0;
-    cout << A << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             if  (i!=j) {
@@ -29,8 +28,6 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
-
-    cout << A << endl;
     int sinmilarity_transform_counter = 0;
 
     clock_t st, fi;

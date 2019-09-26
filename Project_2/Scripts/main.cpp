@@ -27,12 +27,10 @@ int main()
     Jacobi_Method *jacobi_method = new Jacobi_Method();
     External_Solvers *external_solvers = new External_Solvers();
     Tests * test = new Tests();
-    vec v;
-    vec rhoValues;
+    vector<int> v;
+    vector<int> rhoValues;
     v = rf->Read_N_from_file();
-
     rhoValues = rf->Read_rho_from_file();
-    int vSize = v.size();
 
     // Prepare variables
     int number_of_tests     = 0; for (int z: v) number_of_tests +=1;
@@ -47,10 +45,10 @@ int main()
 
     // Evaluate z files in N.txt
     number_of_tests = 0;
-    for (int z = 0; z < vSize; z++){
+    for (int z: v){
     for (int y: rhoValues){
-       int N = v(z);
-       cout << N<< " " <<y << endl;
+        cout << z<< " " <<y << endl;
+       int N = z;
        double p_N = y; double p_0 = 0;
 
        N_of_test[number_of_tests] = N;
@@ -69,7 +67,7 @@ int main()
        // Defining Rho
        for (int k = 0; k < N; k++) rho[k] = (k+1)*h;
 
-       string filecode = "_N_" + to_string(N) + "_rho_"+ to_string(y);
+       string filecode = "_N_" + to_string(z) + "_rho_"+ to_string(y);
        mtrx-> Make_Identity(N);
 
 //    mtrx->Tridiag(h,N,lambda_analytical);
