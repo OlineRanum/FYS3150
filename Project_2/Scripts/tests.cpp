@@ -8,16 +8,6 @@
 using namespace std;
 using namespace arma;
 
-double Tests::test_funk(mat matrise)
-{
-    /* Just a testfunction for testing the tests underneath */
-    vec c(matrise.n_cols); c.fill(matrise(1, 2) - 1);
-
-    matrise.diag() = c;
-
-    return matrise.max();
-}
-
 void Tests::Test_max_non_diag_value(void)
 {
     /* Test of the function Jacobi_Method::find_max_index() */
