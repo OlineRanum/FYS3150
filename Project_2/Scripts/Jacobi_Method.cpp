@@ -10,7 +10,6 @@ using namespace arma;
 
 void Jacobi_Method::find_max_index(mat A) {
     max_element = 0;
-    cout << A << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             if  (i!=j) {
@@ -97,7 +96,6 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
         lambda_jacobi[k] = A(k,k);
         this->lambda_jacobi[k] = A(k, k);
     }
-   // cout << A << endl;
    // cout << "Time of Jacobi solver= " << tottime_jacobi << endl;
    // cout << "Time of Armadillo solver= " << tottime_arma << endl;
    // cout <<"Final: "<< A << endl;

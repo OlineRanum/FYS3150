@@ -1,2 +1,0 @@
-TestnumberTransformation Number         Jacobi      Armadillo
-    1             & 7                & 0.00024     & 6.917945e-310              
