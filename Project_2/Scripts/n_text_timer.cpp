@@ -31,14 +31,18 @@ void N_Text_Timer::Timer()
     fstream minfile;
 
     minfile.open ("N.txt", fstream::out);
-
-
-    for (int i = 0; i < v.size(); i++)
-    {
-        for(int k = 0; k < 10; k++)
-        {
-            minfile  << v[i] <<  endl ;
+  
+      for (int i = 0; i < v.size(); i++)
+      {
+        if (v[i] == v[i+1]){
+          break;
         }
-    }
+
+        else;
+          for(int k = 0; k < 10; k++)
+          {
+              minfile  << v[i] <<  endl ;
+          }
+      }
     myfile.close();
 }
