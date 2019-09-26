@@ -1,0 +1,4 @@
+ground_state index: 4
+N: 20
+Testnumber         Lambda
+
