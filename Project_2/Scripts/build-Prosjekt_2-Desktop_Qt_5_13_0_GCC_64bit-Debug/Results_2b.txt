@@ -1,2 +1,2 @@
-Testnumber Transformation Number         Jacobi      Armadillo
-1       &  121                           & 0.030819             & 6.9431563e-310            \\ 
+TestnumberTransformation Number         Jacobi      Armadillo
+    1             & 7                & 0.00024     & 6.917945e-310              
