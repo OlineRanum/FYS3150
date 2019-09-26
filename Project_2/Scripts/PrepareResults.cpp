@@ -4,7 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <armadillo>
-#include <string.h>
+#include <string.h> 
 
 using namespace arma;
 
@@ -20,16 +20,17 @@ void PrepareResults::Prepare_results_2B(int number_of_tests, int* num_transform,
     char string_2[50] = "Transformation Number";
     char string_3[50] = "Jacobi";
     char string_4[50] = "Armadillo";
-    myfile << "Testnumber" << setw(15) << " Transformation Number"<< setw(15) << "Jacobi" << setw(15) <<" Armadillo" << endl;
-    for(int k = 0; k < number_of_tests; k++){
+    //double sum_of_jac = 0;
+    myfile << string_1 << setw(15) << string_2 << setw(15) << string_3 << setw(15) << string_4 << endl;
+    for (int k = 0; k < number_of_tests; k++){
         myfile  << setw((strlen(string_1)/2)) << k+1 << setw((strlen(string_1)/2)+(strlen(string_2)/2)) <<"& " << num_transform[k] << 
         setw((strlen(string_2)/2)+(strlen(string_3)/2)+5) <<"& " << setprecision(8) << Jacobi_t[k] << setw((strlen(string_3)/2)+
-        (strlen(string_4)/2))<< "& " << arma_t[k]<<setw(15)<< "\\\\ " <<  endl ;
-    }
+        (strlen(string_4)/2))<< "& " << arma_t[k]<<setw(15)<< "\n";
+        //sum_of_jac += Jacobi_t[k];
+        }
+    //myfile << "Average Jacobi: " << sum_of_jac/10 << endl;
     myfile.close();
-
 }
-
 
 void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi, double* lambda_analytical)
 {
