@@ -5,12 +5,14 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <armadillo>
 
 using namespace std;
 
 class ReadFiles {
 public:
-    vector<int> Read_N_from_file();
+    arma::vec  Read_N_from_file();
+    arma::vec Read_rho_from_file();
 
 private:
     vector<int> v;
