@@ -9,6 +9,7 @@ SOURCES += \
         MatrixMaker.cpp \
         PrepareResults.cpp \
         ReadFiles.cpp \
+        adas_redigerntextfil.cpp \
         main.cpp \
         tests.cpp
         lanczos_method.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     MatrixMaker.h \
     PrepareResults.h \
     ReadFiles.h \
+    adas_redigerntextfil.h \
     tests.h
     lanczos_method.h
 

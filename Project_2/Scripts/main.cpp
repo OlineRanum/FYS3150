@@ -10,12 +10,15 @@
 #include "Jacobi_Method.h"
 #include "External_Solvers.h"
 #include "tests.h"
+#include "adas_redigerntextfil.h"
 
 using namespace std;
 using namespace arma;
 
 int main()
 {
+    Adas_RedigerNtextfil * ada = new Adas_RedigerNtextfil();
+    ada->~Adas_RedigerNtextfil();
     // Prepare clases
     ReadFiles *rf = new ReadFiles();
     PrepareResults *pf = new PrepareResults();
