@@ -10,8 +10,8 @@ using namespace arma;
 class Tests
 {
 public:
-    void Test_max_non_diag_value(void);
-    void Test_eigenvalues(void);
+    void Test_max_non_diag_value();
+    void Test_eigenvalues();
 };
 
 #endif // TESTS_H

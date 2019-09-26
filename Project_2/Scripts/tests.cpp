@@ -8,7 +8,7 @@
 using namespace std;
 using namespace arma;
 
-void Tests::Test_max_non_diag_value(void)
+void Tests::Test_max_non_diag_value()
 {
     /* Test of the function Jacobi_Method::find_max_index() */
     mat A = randu<mat> (5, 5);
@@ -42,7 +42,7 @@ void Tests::Test_max_non_diag_value(void)
     }
 }
 
-void Tests::Test_eigenvalues(void)
+void Tests::Test_eigenvalues()
 {
     int test_N = 3;
     double  * a  = new double [1];

@@ -57,17 +57,19 @@ SOURCES       = ../Scripts/External_Solvers.cpp \
 		../Scripts/MatrixMaker.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
-		../Scripts/adas_redigerntextfil.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tests.cpp 
+		../Scripts/n_text_timer.cpp \
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp 
 OBJECTS       = External_Solvers.o \
 		Jacobi_Method.o \
 		MatrixMaker.o \
 		PrepareResults.o \
 		ReadFiles.o \
-		adas_redigerntextfil.o \
 		main.o \
-		tests.o
+		n_text_timer.o \
+		tests.o \
+		lanczos_method.o
 DIST          = ../Scripts/Prosjekt_2.pro.user \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/unix.conf \
@@ -264,15 +266,17 @@ DIST          = ../Scripts/Prosjekt_2.pro.user \
 		MatrixMaker.h \
 		PrepareResults.h \
 		ReadFiles.h \
-		adas_redigerntextfil.h \
-		tests.h ../Scripts/External_Solvers.cpp \
+		n_text_timer.h \
+		tests.h \
+		lanczos_method.h ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
-		../Scripts/adas_redigerntextfil.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tests.cpp
+		../Scripts/n_text_timer.cpp \
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp
 QMAKE_TARGET  = Prosjekt_2
 DESTDIR       = 
 TARGET        = Prosjekt_2
@@ -726,21 +730,24 @@ PrepareResults.o: ../Scripts/PrepareResults.cpp ../Scripts/PrepareResults.h
 ReadFiles.o: ../Scripts/ReadFiles.cpp ../Scripts/ReadFiles.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReadFiles.o ../Scripts/ReadFiles.cpp
 
-adas_redigerntextfil.o: ../Scripts/adas_redigerntextfil.cpp ../Scripts/adas_redigerntextfil.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adas_redigerntextfil.o ../Scripts/adas_redigerntextfil.cpp
-
 main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/MatrixMaker.h \
 		../Scripts/PrepareResults.h \
 		../Scripts/Jacobi_Method.h \
 		../Scripts/External_Solvers.h \
 		../Scripts/tests.h \
-		../Scripts/adas_redigerntextfil.h
+		../Scripts/n_text_timer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Scripts/main.cpp
+
+n_text_timer.o: ../Scripts/n_text_timer.cpp ../Scripts/n_text_timer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o n_text_timer.o ../Scripts/n_text_timer.cpp
 
 tests.o: ../Scripts/tests.cpp ../Scripts/tests.h \
 		../Scripts/Jacobi_Method.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tests.o ../Scripts/tests.cpp
+
+lanczos_method.o: ../Scripts/lanczos_method.cpp ../Scripts/lanczos_method.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lanczos_method.o ../Scripts/lanczos_method.cpp
 
 ####### Install
 

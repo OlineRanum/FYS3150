@@ -1,5 +1,6 @@
 #ifndef PREPARE_RESULTS_H
 #define PREPARE_RESULTS_H
+
 #include <iostream>
 #include <fstream>
 #include <vector>

@@ -55,18 +55,25 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tests.cpp 
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp 
 OBJECTS       = External_Solvers.o \
 		Jacobi_Method.o \
 		MatrixMaker.o \
+		N_times_10.o \
 		PrepareResults.o \
 		ReadFiles.o \
+		N_times_10.o \
 		main.o \
-		tests.o
-DIST          = /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
+		tests.o \
+		lanczos_method.o
+DIST          = ../Scripts/Prosjekt_2.pro.user \
+		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/unix.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/linux.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/common/sanitize.conf \
@@ -242,6 +249,7 @@ DIST          = /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf \
+		../Scripts/.qmake.stash \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -259,15 +267,21 @@ DIST          = /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../Scripts/Prosjekt_2.pro External_Solvers.h \
 		Jacobi_Method.h \
 		MatrixMaker.h \
+		N_times_10.h \
 		PrepareResults.h \
 		ReadFiles.h \
-		tests.h ../Scripts/External_Solvers.cpp \
+		N_times_10.h \
+		tests.h \
+		lanczos_method.h ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
+		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tests.cpp
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp
 QMAKE_TARGET  = Prosjekt_2
 DESTDIR       = 
 TARGET        = Prosjekt_2
@@ -455,6 +469,7 @@ Makefile: ../Scripts/Prosjekt_2.pro /home/torstein/Qt/5.13.0/gcc_64/mkspecs/linu
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -647,6 +662,7 @@ Makefile: ../Scripts/Prosjekt_2.pro /home/torstein/Qt/5.13.0/gcc_64/mkspecs/linu
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/qt_config.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/toolchain.prf:
 /home/torstein/Qt/5.13.0/gcc_64/mkspecs/features/default_pre.prf:
@@ -722,22 +738,33 @@ Jacobi_Method.o: ../Scripts/Jacobi_Method.cpp ../Scripts/Jacobi_Method.h
 MatrixMaker.o: ../Scripts/MatrixMaker.cpp ../Scripts/MatrixMaker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MatrixMaker.o ../Scripts/MatrixMaker.cpp
 
+N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
+
 PrepareResults.o: ../Scripts/PrepareResults.cpp ../Scripts/PrepareResults.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PrepareResults.o ../Scripts/PrepareResults.cpp
 
 ReadFiles.o: ../Scripts/ReadFiles.cpp ../Scripts/ReadFiles.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReadFiles.o ../Scripts/ReadFiles.cpp
 
+N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
+
 main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/MatrixMaker.h \
 		../Scripts/PrepareResults.h \
 		../Scripts/Jacobi_Method.h \
 		../Scripts/External_Solvers.h \
-		../Scripts/tests.h
+		../Scripts/tests.h \
+		../Scripts/N_times_10.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Scripts/main.cpp
 
-tests.o: ../Scripts/tests.cpp ../Scripts/tests.h
+tests.o: ../Scripts/tests.cpp ../Scripts/tests.h \
+		../Scripts/Jacobi_Method.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tests.o ../Scripts/tests.cpp
+
+lanczos_method.o: ../Scripts/lanczos_method.cpp ../Scripts/lanczos_method.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lanczos_method.o ../Scripts/lanczos_method.cpp
 
 ####### Install
 

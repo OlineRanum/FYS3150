@@ -1,18 +1,14 @@
+#include "n_text_timer.h"
+
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <iomanip>
-#include <string.h>
 
 using namespace std;
 using std::fstream;
 
-
-
-
-#include "N_times_10.h"
-
-N_times_10::N_times_10()
+void N_Text_Timer::Timer()
 {
     string line;
     vector<int> v;

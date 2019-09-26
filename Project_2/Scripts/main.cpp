@@ -10,15 +10,15 @@
 #include "Jacobi_Method.h"
 #include "External_Solvers.h"
 #include "tests.h"
-#include "N_times_10.h"
+#include "n_text_timer.h"
 
 using namespace std;
 using namespace arma;
 
 int main()
 {
-    N_times_10 * ntimes = new N_times_10();
-    ntimes->~N_times_10();
+    //N_Text_Timer * ntimes = new N_Text_Timer();
+    //ntimes->Timer();
     // Prepare clases
     ReadFiles *rf = new ReadFiles();
     PrepareResults *pf = new PrepareResults();
@@ -62,13 +62,13 @@ int main()
 
        mtrx-> Make_Identity(N);
 
-       /*
+
        // Setting up tridiagonal matrix
        mtrx->Tridiag(h,N,lambda_analytical);
        // Solve with armadillo
        external_solvers->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
        // Solve with Jacobi Matrix
-       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->Am, mtrx->I);
+       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A, mtrx->I);
 
 
        // Setting up tridiagonalmatrix with potential V
@@ -80,7 +80,7 @@ int main()
        pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E);
 
        pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
-*/
+
        mtrx->Tridiag_QD_2e(h, N, rho);
        jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_E, mtrx->A_q_2e, mtrx->I);
 
