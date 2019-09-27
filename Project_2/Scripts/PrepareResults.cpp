@@ -50,15 +50,17 @@ void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi
 }
 
 
-void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lambda_jacobi)
+void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lambda_jacobi, string filecode)
 {
     vec lambda_(N);
     for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
+    //for (int k = 0; k < N; k++) cout << lambda_(k)<< endl;
     vec lambda_sorted = sort(lambda_);
+
 
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("Results_2D.txt", fstream::out);
+    myfile.open ("Results_2D" + filecode + ".txt", fstream::out);
     myfile << "Testnumber" << setw(15) << "Lambda" << endl;
     for(int k = 0; k < N; k++){
         myfile  << k+1 <<" & " << lambda_sorted(k) <<  endl ;
