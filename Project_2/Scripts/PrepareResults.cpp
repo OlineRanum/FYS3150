@@ -69,7 +69,7 @@ void PrepareResults::Prepare_results_2D(int number_of_tests, int N,  double* lam
 }
 
 
-void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lambda_jacobi)
+void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lambda_jacobi, string omega_value, string index)
 {
     vec lambda_(N);
     for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
@@ -77,10 +77,10 @@ void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lam
 
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("Results_2E.txt", fstream::out);
+    myfile.open ("Results_2E_" + omega_value + +"_"+index+"_"+"_.txt", fstream::out);
     myfile << "Testnumber" << setw(15) << "Lambda" << endl;
     for(int k = 0; k < N; k++){
-        myfile  << k+1 <<" &        " << lambda_sorted(k) <<  endl ;
+        myfile  << k+1 <<" &        " << setprecision(15)<< lambda_sorted(k) <<  endl ;
     }
     myfile.close();
 }

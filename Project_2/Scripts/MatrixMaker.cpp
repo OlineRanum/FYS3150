@@ -35,13 +35,12 @@ void MatrixMaker::Tridiag_QD_1e(double h, int N, double* rho)
 }
 
 
-void MatrixMaker::Tridiag_QD_2e(double h, int N, double* rho)
+void MatrixMaker::Tridiag_QD_2e(double h, int N, double* rho, double omega_r)
 {
     double d = 2/(double)(h*h);
     double a = -1/(double)(h*h);
 
 
-    double omega_r = 0.25;
     double V = omega_r*omega_r;
 
     A_q_2e = mat(N,N, fill::zeros);

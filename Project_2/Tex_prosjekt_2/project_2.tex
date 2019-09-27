@@ -254,7 +254,10 @@ To look closer at the efficiency of the method, we compare the results agains th
 By looking at equation \ref{qho} we see that it is almost on the same form as the equation of the buckling beam problem. In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
 
 \subsection{2D:Quantum dots in three dimensions, one electron} \noindent 
-We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. 
+We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. We set N = 200 for the rest of this section. 
+
+\subsection{2E. Quantum dots in three dimensions, two electrons}
+Next, we expand our algorithm to consider two electrons in a harmonic oscillator well, which also interact via a Coulomb interaction. We implement the potential as given in equation \ref{theory...}. We discretized the problem, and apply the Jacobi method to the given matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only concider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. 
 
 \newpage.
 \newpage 
@@ -289,15 +292,32 @@ We then extend our algorithm to solve for one electron in three dimensions, we d
 
 \subsection*{2D:Quantum dots in three dimensions, one electron}
 When estimating the given values of N and $\rho_{max}$ we find the relations in the relative error given in figure \ref{fig:2D10}, \ref{fig:2D100} and \ref{fig:2D200} in the appendix. The general tendency indicates that the relative error between the estimated eigenvalues and the analytical eigenvalues decreases as N increases, as illustrated in figure \ref{fig:RE}. On average we find that setting $\rho_{max} = 5$ minimizes the relative error for the ground state. \\
-Looking at figure \ref{fig:LD} with $\rho_{max} = 5$, we see that the Jacobi method reproduce the analytical results up to four leading digits just below $N=100$ grid points. Looking at the excited states, it is evident that $N=200$  or higher reproduce with the analytical eigenvalue $\lambda = 7$ with four leading digits.   
+Looking at figure \ref{fig:LD} with $\rho_{max} = 5$, we see that the Jacobi method reproduce the analytical results up to four leading digits just below $N=100$ grid points. Looking at the excited states, it is evident that $N=200$  or higher reproduce with the analytical eigenvalue $\lambda = 7$ with four leading digits. For even higher energies the there is no longer any similar consistent result.
+
+\subsection*{2E. Quantum dots in three dimensions, two electrons} \noindent 
+The ground state energy of a two-electron system as a function $\omega$ is presented in table \ref{tab2}. It is evident that the energy eigenvalue increases as $\omega_r$ increases. 
+
+\begin{figure}[!h]
+	\begin{tabular} {|c|c|}
+		\hline
+		$\mathbf{\omega}_r$ & $\mathbf{\lambda}_0$\\ 
+		\hline
+		& \\ 
+0.01 &  0.840704568261768 \\
+0.50 &  2.2308250178128604 \\
+1.00 &  4.05707424038981 \\
+5.00 &  17.4286222663169 \\ &\\
+\hline 
+	\end{tabular}
+	\captionof{table}[foo]{The energy eigenvalue for the ground state of a two-electron system in three dimensions. The value is an average off 10 independent calculations of the eigenvalue.\label{tab2}}
+\end{figure}
+
 
 \section*{Discussion} 
 
 \subsection*{2D: Quantum dots in three dimensions, one electron} \noindent 
-It is interesting to see how the relative error varies with each choice of N and $\rho_{max}$. It is evident that the error decreases as N increases, but furthermore, they all show the same tendencies in regards to $\rho_{max}$. $\rho_{max} = 5$ for all tested values of N appears to be the value that most consistently yields the lowest error. At certain times one can see $\rho_{max} = 3$ or $\rho_{max} = 4$ yielding lower values for the lowest eigenvalues for N > 10, but in these cases they will have a rapid growth in the error. Thus we do not find them to be equally reliable with the current information. Of course, access to a broader selection of analytical eigenvalues would help us determine the quality of this information. \\
-\textit{Mention something about N=10 results versus N$>$10}\\
-Even though it is hard to say something certain about the eigenvalues beyond $\lambda = 11$, the error curves seems to form a distribution with around $\rho_{max} = 5$. \\
-\textit{discussion of leading digets}
+It is interesting to see how the relative error varies with each choice of N and $\rho_{max}$. It is evident that the error decreases as N increases, but furthermore, they all show the same tendencies in regards to $\rho_{max}$. $\rho_{max} = 5$ for all tested values of N appears to be the value that yields the lowest error for the ground state. At certain times one can see $\rho_{max} = 3$ or $\rho_{max} = 4$ yielding lower values for N $>$ 10. Of course, access to a broader selection of analytical eigenvalues would help us determine the quality of this information. \\
+Looking at figure \ref{fig:RE} we see a decay in the relative error for $\rho_{max} = 5$ with increasing N. This is to be expected accuracy and the sort of Toplitz matrix we are handling. We know that the error should go like $\order{h^2}$ as it appears to be doing here as well. 
 
 
 
