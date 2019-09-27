@@ -15,7 +15,6 @@ vector<int> ReadFiles::Read_N_from_file()
 {
     string line;
     vector<int> v;
-    int N;
 
       ifstream myfile ("N.txt");
       if (myfile.is_open())
@@ -30,6 +29,27 @@ vector<int> ReadFiles::Read_N_from_file()
 
       else cout << "Unable to open file\n";
       return v;
+}
+
+vector<int> ReadFiles::Read_rho_from_file()
+{
+    string line;
+    vector<int> y;
+
+      ifstream myfile ("rho.txt");
+      if (myfile.is_open())
+      {
+        while ( getline (myfile,line) )
+        {
+
+            y.push_back(atoi(line.c_str()));
+            cout<<"HELLOO"<<line.c_str()<<endl;
+        }
+        myfile.close();
+      }
+
+      else cout << "Unable to open file\n";
+      return y;
 }
 
 

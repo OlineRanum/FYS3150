@@ -28,8 +28,6 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
-
-    cout << A << endl;
     int sinmilarity_transform_counter = 0;
 
     clock_t st, fi;
