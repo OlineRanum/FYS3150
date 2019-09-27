@@ -35,14 +35,16 @@ void N_Text_Timer::Timer()
       for (int i = 0; i < v.size(); i++)
       {
         if (v[i] == v[i+1]){
-          break;
+          ;
+          myfile.close();
         }
 
-        else;
+        else{
           for(int k = 0; k < 10; k++)
           {
-              minfile  << v[i] <<  endl ;
+            minfile  << v[i] <<  endl ;
+            myfile.close();
           }
+        }
       }
-    myfile.close();
 }
