@@ -55,23 +55,21 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
-		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
-		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tester.cpp \
-		../Scripts/tests.cpp 
+		../Scripts/n_text_timer.cpp \
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp 
 OBJECTS       = External_Solvers.o \
 		Jacobi_Method.o \
 		MatrixMaker.o \
-		N_times_10.o \
 		PrepareResults.o \
 		ReadFiles.o \
-		N_times_10.o \
 		main.o \
-		tester.o \
-		tests.o
+		n_text_timer.o \
+		tests.o \
+		lanczos_method.o
 DIST          = ../Scripts/Prosjekt_2.pro.user \
 		/usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -161,21 +159,19 @@ DIST          = ../Scripts/Prosjekt_2.pro.user \
 		../Scripts/Prosjekt_2.pro External_Solvers.h \
 		Jacobi_Method.h \
 		MatrixMaker.h \
-		N_times_10.h \
 		PrepareResults.h \
 		ReadFiles.h \
-		N_times.h \
-		tester.h \
-		tests.h ../Scripts/External_Solvers.cpp \
+		n_text_timer.h \
+		tests.h \
+		lanczos_method.h ../Scripts/External_Solvers.cpp \
 		../Scripts/Jacobi_Method.cpp \
 		../Scripts/MatrixMaker.cpp \
-		../Scripts/N_times_10.cpp \
 		../Scripts/PrepareResults.cpp \
 		../Scripts/ReadFiles.cpp \
-		../Scripts/N_times_10.cpp \
 		../Scripts/main.cpp \
-		../Scripts/tester.cpp \
-		../Scripts/tests.cpp
+		../Scripts/n_text_timer.cpp \
+		../Scripts/tests.cpp \
+		../Scripts/lanczos_method.cpp
 QMAKE_TARGET  = Prosjekt_2
 DESTDIR       = 
 TARGET        = Prosjekt_2
@@ -413,17 +409,11 @@ Jacobi_Method.o: ../Scripts/Jacobi_Method.cpp ../Scripts/Jacobi_Method.h
 MatrixMaker.o: ../Scripts/MatrixMaker.cpp ../Scripts/MatrixMaker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MatrixMaker.o ../Scripts/MatrixMaker.cpp
 
-N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
-
 PrepareResults.o: ../Scripts/PrepareResults.cpp ../Scripts/PrepareResults.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PrepareResults.o ../Scripts/PrepareResults.cpp
 
 ReadFiles.o: ../Scripts/ReadFiles.cpp ../Scripts/ReadFiles.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReadFiles.o ../Scripts/ReadFiles.cpp
-
-N_times_10.o: ../Scripts/N_times_10.cpp ../Scripts/N_times_10.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o N_times_10.o ../Scripts/N_times_10.cpp
 
 main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/MatrixMaker.h \
@@ -431,15 +421,18 @@ main.o: ../Scripts/main.cpp ../Scripts/ReadFiles.h \
 		../Scripts/Jacobi_Method.h \
 		../Scripts/External_Solvers.h \
 		../Scripts/tests.h \
-		../Scripts/N_times_10.h
+		../Scripts/n_text_timer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Scripts/main.cpp
 
-tester.o: ../Scripts/tester.cpp ../Scripts/tester.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tester.o ../Scripts/tester.cpp
+n_text_timer.o: ../Scripts/n_text_timer.cpp ../Scripts/n_text_timer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o n_text_timer.o ../Scripts/n_text_timer.cpp
 
 tests.o: ../Scripts/tests.cpp ../Scripts/tests.h \
 		../Scripts/Jacobi_Method.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tests.o ../Scripts/tests.cpp
+
+lanczos_method.o: ../Scripts/lanczos_method.cpp ../Scripts/lanczos_method.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lanczos_method.o ../Scripts/lanczos_method.cpp
 
 ####### Install
 
