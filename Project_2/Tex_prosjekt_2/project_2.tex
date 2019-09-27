@@ -254,7 +254,7 @@ To look closer at the efficiency of the method, we compare the results agains th
 By looking at equation \ref{qho} we see that it is almost on the same form as the equation of the buckling beam problem. In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
 
 \subsection{2D:Quantum dots in three dimensions, one electron} \noindent 
-We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues of the diagonal matrix. We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. We vary N with $N\in[10, 70, 100, 200]$, for each N we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and choose N = 100. We then take a closer look at this selection, and find the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. 
+We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. 
 
 \newpage.
 \newpage 
@@ -288,10 +288,8 @@ We then extend our algorithm to solve for one electron in three dimensions, we d
 
 
 \subsection*{2D:Quantum dots in three dimensions, one electron}
-Study the result as a function of integration points N and the approximation to 
-When estimating the given values of N and $\rho_{max}$ we find the following relations in the relative error given as in figure \ref{fig:2D10}, \ref{fig:2D70}, \ref{fig:2D100} and \ref{fig:2D200} in the appendix.\\
-When evaluating figure \ref{fig:2D10}, \ref{fig:2D70}, \ref{fig:2D100} and \ref{fig:2D200} we see a couple of general trends. The relative error between the estimated eigenvalues and the analytical eigenvalues has a tendency to decrease as N increases. As well, we see that there is a region around $\rho = 5$ where the relative error is the smallest. \\  
-With $\rho_{max} = 5$ and N = 100 we find that it takes approximately 200 gridpoints to reproduce the analytical results with four leading digits. There is some variations in regards to what eigenvalue we are looking at. The resoults are presented in figure \ref{fig:LD}\\  
+When estimating the given values of N and $\rho_{max}$ we find the relations in the relative error given in figure \ref{fig:2D10}, \ref{fig:2D100} and \ref{fig:2D200} in the appendix. The general tendency indicates that the relative error between the estimated eigenvalues and the analytical eigenvalues decreases as N increases, as illustrated in figure \ref{fig:RE}. On average we find that setting $\rho_{max} = 5$ minimizes the relative error for the ground state. \\
+Looking at figure \ref{fig:LD} with $\rho_{max} = 5$, we see that the Jacobi method reproduce the analytical results up to four leading digits just below $N=100$ grid points. Looking at the excited states, it is evident that $N=200$  or higher reproduce with the analytical eigenvalue $\lambda = 7$ with four leading digits.   
 
 \section*{Discussion} 
 
@@ -322,16 +320,16 @@ For the code used for calculation our results, visit
 	\caption{\label{fig:2D10}}
 \end{figure*}
 \begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{N_70_relative_error.png}
-	\caption{\label{fig:2D70}}
-\end{figure*}
-\begin{figure*}[!h]
 	\includegraphics[scale = 0.3]{N_100_relative_error.png}
 	\caption{\label{fig:2D100}}
 \end{figure*}
 \begin{figure*}[!h]
 	\includegraphics[scale = 0.3]{N_200_relative_error.png}
 	\caption{\label{fig:2D200}}
+\end{figure*}
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.3]{Relative_error_rho_5.png}
+	\caption{\label{fig:RE} The figure show the relation between the number for leading digits, in regards to the black bar representing four leading digits.}
 \end{figure*}
 \begin{figure*}[!h]
 	\includegraphics[scale = 0.3]{Leading_digits.png}
