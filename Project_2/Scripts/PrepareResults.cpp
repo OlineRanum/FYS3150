@@ -32,7 +32,7 @@ void PrepareResults::Prepare_results_2B(int number_of_tests, int* num_transform,
     myfile.close();
 }
 
-void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi, double* lambda_analytical)
+void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi, double* lambda_analytical, double* lambda_arma)
 {
     vec lambda_(N);
     for (int k = 0; k < N; k++) {lambda_(k) = lambda_jacobi[k];}
@@ -41,9 +41,9 @@ void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi
     // Writing values to text file with latex friendly format
     fstream myfile;
     myfile.open ("Results_2b_lambda.txt", fstream::out);
-    myfile << "# " << setw(10)<< "       Lambda Analytical    "<< setw(20) << "Lambda Jacobi" << endl;
+    myfile << "# " << setw(10)<< "       Lambda Analytical    "<< setw(20) << "Lambda Jacobi"<< setw(20) << "Lambda arma" << endl;
     for(int k = 0; k < N; k++){
-        myfile  << k+1 <<setw(10) << " & " << setprecision(15) << lambda_sorted(k) << "      & " << lambda_analytical[k] << endl ;
+        myfile  << k+1 <<setw(10) << " & " << setprecision(15)<< lambda_sorted(k) << "      & " << lambda_analytical[k] <<"      & " << lambda_arma[k] << endl ;
     }
     myfile.close();
 
@@ -85,27 +85,26 @@ void PrepareResults::Prepare_results_2E(int number_of_tests, int N,  double* lam
     myfile.close();
 }
 
-void PrepareResults::Prepare_results_2F_egienvectors(int N,  mat I, double* lambda_jacobi_2e)
+void PrepareResults::Prepare_results_2F_egienvectors(int N,  mat I, double* lambda_jacobi_2e,string omega_value)
 {
     // Find index of minimum value
-    int k;
-    double min_val = lambda_jacobi_2e[0];
+    int k = 0;
+    double min_val = lambda_jacobi_2e[k];
     for(int j = 0; j < N; j++){
         if (abs(lambda_jacobi_2e[j]) < min_val) {k = j; min_val = lambda_jacobi_2e[j];}
-        cout << lambda_jacobi_2e[j] << endl;
     }
 
     cout << "Min value:" << k << endl;
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("Results_2F_eigenvectors.txt", fstream::out);
+    myfile.open ("../Results/2F/Results_2F_eigenvectors_"+omega_value+"_NC_.txt", fstream::out);
     for(int k = 0; k < N; k++){
         for (int j = 0; j < N; j++){
         myfile  << " " << I(k,j) <<"";
 }    myfile << endl;}
     myfile.close();
 
-    myfile.open ("Results_2F_eigenvectors_info.txt", fstream::out);
+    myfile.open ("../Results/2F_info/Results_2F_eigenvectors_info_"+omega_value+"_NC_.txt", fstream::out);
     myfile << "ground_state index: " << k << endl;
     myfile << "N: " << N << endl;
     myfile << "Testnumber" << setw(15) << "Lambda" << endl;

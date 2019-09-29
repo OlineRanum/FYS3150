@@ -72,7 +72,7 @@ void Tests::Test_eigenvalues()
                 eigenval(j) = 0;
         }
 
-    jack_meth->Jacobi(test_N, a, a, 1, b, c, A, I);
+    jack_meth->Jacobi(test_N, a, 1, b, c, A, I);
     vec testres = jack_meth->lambda_jacobi;
 
     int teller = 0;

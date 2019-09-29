@@ -12,6 +12,8 @@ aps,
 \usepackage{physics}
 \usepackage{caption}
 \usepackage{subfig}
+\usepackage{float}
+\usepackage{stfloats}
 
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
@@ -44,9 +46,9 @@ The classical harmonic oscillator is described by the following equation of moti
  \frac{d^2 u(x)}{dx^2} = -k u(x)
 \end{equation}
 where $u(x)$ is the vertical displacement of the system in the $y$ direction. This general equation is the foundation for a large set of physical systems, for instance a spring force or the buckling beam problem. In the case of the buckling beam $k = F/\gamma$, where F is the force applied at the end of the beam in the direction towards the origin, and $\gamma$ is a constant defined by inherent properties of the beam. We will here apply the Dirichlet boundary conditions. If one defines the dimensionless variable $\rho = x/L$, L beeing the length of the beam, one can reorder the equation to
-\begin{equation*}
+\begin{equation}\label{bb}
 	 \frac{d^2 u(\rho)}{d\rho^2} = -\frac{FL^2}{R} u(\rho)=-\lambda u(\rho)
-\end{equation*}
+\end{equation}
 This equation becomes an eigenvalue problem when discretized, on the form 
 \begin{equation*}
 \mathbf{A}\mathbf{x} = \lambda\mathbf{x}
@@ -164,8 +166,9 @@ Where we have showed that the unitary transformation does not affect the inner p
 \end{equation}
 The Frobenius norm is conserved under orthogonal/unitary transformations. 
 
+
 \subsection{The Quantum Harmonic Oscillator} \noindent 
-Another famous harmonic oscillator is the famous description of electron-electron interaction. Electrons in a three-dimensional harmonic oscillator potential will repel each other via the static Coulomb interaction. We assume spherical symmetry. For such a system, the radial part of the Schroedinger equation for one electron reads
+Another famous harmonic oscillator is the description of electron-electron interaction. Electrons in a three-dimensional harmonic oscillator potential will repel each other via the static Coulomb interaction. We assume spherical symmetry. For such a system, the radial part of the Schroedinger equation for one electron reads
 \begin{equation*}
 -\frac{\hbar^2}{2 m} \left ( \frac{1}{r^2} \frac{d}{dr} r^2
 \frac{d}{dr} - \frac{l (l + 1)}{r^2} \right )R(r) 
@@ -241,39 +244,29 @@ u_{N}
 \end{bmatrix}
 \end{equation}
 
-\subsection{The Lanczos algorithm}
-The Lanczos iteration method is a method for diagonalizing symmetric matrices with huge dimensionalities. It will generate a sequence of real tridiagonal matrices $T_l$ ...
-
-\newpage.
-\newpage 
-
 \section*{Method}
-\subsection{Jacobi's method for Eigensolvers}
-\noindent We initialize a tridiagonal Toplitz matrix on the form of equation \ref{eqdis}, in order to solve the buckling beam problem. Next, we implement Jacobi's method based on the block of equation given in equation set \ref{jacobimethod}, where $c = \cos{\theta}$ and $s = sin{\theta}$ are defined as in equation \ref{sc}. We apply Dirichlet boundary conditions and set a threshold for the transformation-series on the Fobernius norm of equation \ref{forb} of all off-diagonal elements. The sum must be smaller than $10^{-10}$ for all off-diagonal elements to be considered to be zero. We then state that the transformed matrix is on a diagonal form, and we read the eigenvalues of the matrix $\hat{D}$ across the diagonal. \\
-When we have the eigenvalues produced by the Jacobi's method, we go on to compare them with the analytical eigenvalues of equation \ref{analytical}. To evaluate the efficiency of Jacobi's method in regards to other known possibilities for finding the eigenvalues, we implement the Armadillo \textit{eig$\_$sym} function. We compare both the time of both methods and the accuracy in regards to the analytical solutions. We furthermore count how many transformations is necessary in order to solve the system, in regards to the threshold we placed on the Fobernius norm. We look at how  the number of iterations vary as a function N. We test for N = 200 grid points for a two dimensional system.
+\subsection*{\rom{1}. Jacobi's method for solving the buckling beam problem}
+\noindent We initialize a tridiagonal Toplitz matrix on the form of equation \ref{eqdis}, in order to solve the buckling beam problem of equation \ref{bb}. Next, we implement Jacobi's method based on the block of equation given in equation set \ref{jacobimethod}, where $c = \cos{\theta}$ and $s = sin{\theta}$ are defined as in equation \ref{sc}. We apply Dirichlet boundary conditions and set a threshold for the transformation-series on the Fobernius norm of equation \ref{forb} of all off-diagonal elements. The sum must be smaller than $10^{-10}$ for all off-diagonal elements to be considered to be zero. We then state that the transformed matrix is on a diagonal form, and we read the eigenvalues of the matrix $\hat{D}$ across the diagonal. \\ \indent 
+When we have the eigenvalues produced by the Jacobi's method, we go on to compare them with the analytical eigenvalues of equation \ref{analytical}. To evaluate the efficiency of Jacobi's method in regards to other known possibilities for finding the eigenvalues, we implement the Armadillo \textit{eig$\_$sym} function. We compare both the time of both methods and the accuracy in regards to the analytical solutions. We furthermore count how many transformations is necessary in order to solve the system, in regards to the threshold we placed on the Fobernius norm. We look at how  the number of iterations vary as a function N. We test for N = 200 grid points for a two dimensional system. 
 
-\subsection{Extending the algorithm to the Quantum oscillator} \noindent 
-Equation \ref{qho} is on the same form as the equation of the buckling beam problem,
-and can therefore be subjected to 
- In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
+\subsection*{\rom{2}. Extending the algorithm to the Quantum oscillator} \noindent
+The shrodinger equation of a quantum harmonic oscillator is given by  equation \ref{qho}. This equation happens to be on the same form as equation \ref{bb} of the buckling beam, described by the system of equations in equation set \ref{eqho2}. The matrix elements are defined by equation \ref{hoeq3} and \ref{hoeq4}. This system is described in its completeness by equation \ref{evho}. We reuse the code from the Buckling beam problem and can thus solve the quantum system by simply extending our algorithm by adding a new factor of $\rho^2$ to the diagonal elements of the Toplitz matrix. 
 
 \subsection{2D:Quantum dots in three dimensions, one electron} \noindent 
-We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. We set N = 200 for the rest of this section. 
+We have extended our algorithm to solve for two electron in three dimensions. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. We set N = 200 for the rest of this section. 
 
 \subsection{2E. Quantum dots in three dimensions, two electrons}
-Next, we expand our algorithm to consider two electrons in a harmonic oscillator well, which also interact via a Coulomb interaction. We implement the potential as given in equation \ref{theory...}. We discretized the problem, and apply the Jacobi method to the given matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only consider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. We run the estimations 10 times per $\omega_r$, and then we take the average of the estimations to be the final ground state energy eigenvalue.
-
-\subsection{2F. Quantum physics analysis of the results}
+Next, we expand our algorithm to consider two electrons in a harmonic oscillator well, which also interact via a Coulomb repulsion. We implement the potential as given in equation \ref{theory...}. We discretized the problem, and apply the Jacobi method to the given matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only consider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. We run the estimations 10 times per $\omega_r$, and then we take the average of the estimations to be the final ground state energy eigenvalue.\\ \indent 
 We are then considering the wave functions for the two electrons as functions of the relative coordinate r and different values of $\omega_r$. We estimate the eigenvectors by applying the similarity matrix over and over on a initial identity matrix. We do this both with and without the repulsion between the two electrons. Then we find the eigenvector corresponding to the lowest eigenvalue, and plot the probability distribution for our selection of $\omega_r$ 
 
-\newpage.
-\newpage 
 
 \section*{Results}
+\subsection*{\rom{1}. Jacobi's method for solving the buckling beam problem} \noindent 
+The results of the time tests of the Jacobi algorithm and the armadillo function is presented in table \ref{tab1}.
 \begin{figure}[!h]
 	\begin{tabular} {|c|c|c|c|}
 		\hline
-		Run & \# Transforms & Time Jacobi [s] & Time armadillo [s] \\ 
+		Run & \# Transforms & Time$_J$ [s] & Time$_A$ [s] \\ 
 		\hline
 		&&& \\ 
 		1 & 19286 & 3.687817             & 0.002251            \\ 
@@ -287,53 +280,71 @@ We are then considering the wave functions for the two electrons as functions of
 		9 & 19286 & 4.872346             & 0.003301            \\ 
 		10 & 19286 & 3.865138             & 0.001855            \\ 
 		\hline 
-		& & &\\
-		Average &&& \\ 
+		& && \\
+		Average &19286& 3.8593227&0.0018697\\ 
 		\hline
 	\end{tabular}
-	\label{tab1}
-	\captionof{table}[foo]{Time estimations of the Jacobi and the armadillo eig\_sym solvers to find eigenvalues of a 100$\times$100 matrix. Included the number of similarity transformations nesecarry during this run of the Jacobi method.}
+	\captionof{table}[foo]{Time estimations of the Jacobi and the armadillo eig\_sym solvers to find eigenvalues of a 100$\times$100 matrix. Included the number of similarity transformations nesecarry during this run of the Jacobi method. \label{tab1}}
 \end{figure}
 
+\subsection*{\rom{2}. Extending the algorithm to the Quantum oscillator} \noindent 
+The relations between the relative error of Jacobi's method in regards to the analytical results are given in figure \ref{Nrho}, as a function of N and $\rho_{max}$. It appears that the relative error between the estimated eigenvalues and the analytical eigenvalues decreases as N increases. The tendency is illustrated in figure \ref{fig:RE}. On average we find thatation between the number for leading digits, in regards to the black bar representing four leading digits. setting $\rho_{max} = 5$ minimizes the relative error for the ground state. \\
+Looking at figure \ref{fig:RE} with $\rho_{max} = 5$, we see that the Jacobi method reproduce the analytical results up to four leading digits just below $N=100$ grid points in the ground state. Looking at the excited states, it is evident that $N=200$  or higher reproduce with the analytical eigenvalue $\lambda = 7$ with four leading digits. For even higher energies the there is no longer any similar consistent result. \\
 
 
-\subsection*{2D:Quantum dots in three dimensions, one electron}
-When estimating the given values of N and $\rho_{max}$ we find the relations in the relative error given in figure \ref{fig:2D10}, \ref{fig:2D100} and \ref{fig:2D200} in the appendix. The general tendency indicates that the relative error between the estimated eigenvalues and the analytical eigenvalues decreases as N increases, as illustrated in figure \ref{fig:RE}. On average we find that setting $\rho_{max} = 5$ minimizes the relative error for the ground state. \\
-Looking at figure \ref{fig:LD} with $\rho_{max} = 5$, we see that the Jacobi method reproduce the analytical results up to four leading digits just below $N=100$ grid points. Looking at the excited states, it is evident that $N=200$  or higher reproduce with the analytical eigenvalue $\lambda = 7$ with four leading digits. For even higher energies the there is no longer any similar consistent result.
-
+\begin{figure*}[!h]
+	\noindent\makebox[\textwidth]{
+		\centering 
+	\subfloat{\includegraphics[scale = 0.21]{N_10_relative_error.png}}
+	\subfloat{\includegraphics[scale = 0.21]{N_70_relative_error.png}} }
+\end{figure*}
+\begin{figure*}[!h]
+	\noindent\makebox[\textwidth]{
+		\centering 
+	\subfloat{\includegraphics[scale = 0.21]{N_100_relative_error.png}}
+	\subfloat{\includegraphics[scale = 0.21]{N_200_relative_error.png}}
+	}
+\caption{The relative errors between Jacobi's method and the analytical solution as a function of N and $\rho_{max}$. } \label{Nrho} 
+\end{figure*}
+\begin{figure*}[!h]
+	\noindent\makebox[\textwidth]{
+	\centering
+	\subfloat{\includegraphics[scale = 0.21]{Relative_error_rho_5.png}}
+	\subfloat{\includegraphics[scale = 0.21]{Leading_digits.png}} }
+	\caption{The figure show the relation between the number for leading digits, in regards to the black bar representing four leading digits.} \label{fig:RE}
+\end{figure*}
+ 
 \subsection*{2E. Quantum dots in three dimensions, two electrons} \noindent 
 The ground state energy of a two-electron system as a function $\omega$ is presented in table \ref{tab2}. It is evident that the energy eigenvalue increases as $\omega_r$ increases. 
 
-\begin{figure}[!h]
+\begin{table}[!h]
 	\begin{tabular} {|c|c|}
 		\hline
-		$\mathbf{\omega}_r$ & $\mathbf{\lambda}_0$\\ 
+		$\mathbf{\omega}_r$ & $\mathbf{E(\lambda_0)}$\\ 
 		\hline
 		& \\ 
-0.01 &  0.840704568261768 \\
-0.50 &  2.2308250178128604 \\
-1.00 &  4.05707424038981 \\
-5.00 &  17.4286222663169 \\ &\\
+0.01 &  0.840704 \\
+0.50 &  2.230826\\
+1.00 &  4.057074\\
+5.00 &  17.428622\\ 
 \hline 
 	\end{tabular}
 	\captionof{table}[foo]{The energy eigenvalue for the ground state of a two-electron system in three dimensions. The value is an average of 10 independent calculations of the eigenvalue.\label{tab2}}
-\end{figure}
+\end{table}
 
-\subsection*{2g. TQuantum physics analysis of the result} 
-
+\subsection{2F. Quantum Physics Analysis of the result}\noindent 
+The probability distribution with and without the repulsion between the two electrons are plotted in figure \ref{wavefunc} for the selected $\omega_r$ values. \\ \newpage 
 
 \begin{figure*}
 	\centering
 	\subfloat{\includegraphics[scale = 0.18]{Omega_0_01.png}}
-	\subfloat{\includegraphics[scale = 0.18]{Omega_0_5.png}}
-\end{figure*}
-
-\begin{figure*}
-	\centering
+	\subfloat{\includegraphics[scale = 0.18]{Omega_0_5.png}} \\ 
+	
 	\subfloat{\includegraphics[scale = 0.18]{Omega_1_0.png}}
 	\subfloat{\includegraphics[scale = 0.18]{Omega_5_0.png}}
-	\caption{The probability distribution with and without the repulsion between two electrons as a function of $\omega_r$}
+	\caption{The probability distribution with and without the repulsion between two electrons as a function of $\omega_r$} \label{wavefunc}
 \end{figure*}
+
 \section*{Discussion} 
 
 \subsection*{2D: Quantum dots in three dimensions, one electron} \noindent 
@@ -356,27 +367,5 @@ $[2]$
 \section*{Appendix A}
 For the code used for calculation our results, visit
 \url{https://github.com/OlineRanum/FYS3150/Project_2}
-\newpage 
-\subsection{Plots}
-\begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{N_10_relative_error.png}
-	\caption{\label{fig:2D10}}
-\end{figure*}
-\begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{N_100_relative_error.png}
-	\caption{\label{fig:2D100}}
-\end{figure*}
-\begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{N_200_relative_error.png}
-	\caption{\label{fig:2D200}}
-\end{figure*}
-\begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{Relative_error_rho_5.png}
-	\caption{\label{fig:RE} The figure show the relation between the number for leading digits, in regards to the black bar representing four leading digits.}
-\end{figure*}
-\begin{figure*}[!h]
-	\includegraphics[scale = 0.3]{Leading_digits.png}
-	\caption{\label{fig:LD} The figure show the relation between the number for leading digits, in regards to the black bar representing four leading digits.}
-\end{figure*}
 
 \end{document}

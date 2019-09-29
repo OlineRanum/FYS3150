@@ -24,7 +24,7 @@ void Jacobi_Method::find_max_index(mat A) {
     }
 }
 
-void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A, mat& I) {
+void Jacobi_Method::Jacobi(int N, double* Jacobi_t, int number_of_tests, int* num_transform, double* lambda_jacobi, mat A, mat& I) {
     this->N = N;
     off_A = 1;
     max_k = 0; max_l= 0;
@@ -70,6 +70,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
             I(i,max_k) = IK;
             I(i, max_l) = IL;
 
+
         }
 
 
@@ -83,6 +84,7 @@ void Jacobi_Method::Jacobi(int N, double* Jacobi_t, double* arma_t, int number_o
 
         off_A = sqrt(off_A);
         }
+
 
     fi = clock();
     tottime_jacobi = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
