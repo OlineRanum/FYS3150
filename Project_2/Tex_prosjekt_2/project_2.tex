@@ -11,6 +11,7 @@ aps,
 \usepackage{amsmath}
 \usepackage{physics}
 \usepackage{caption}
+\usepackage{subfig}
 
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
@@ -257,7 +258,10 @@ By looking at equation \ref{qho} we see that it is almost on the same form as th
 We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. We set N = 200 for the rest of this section. 
 
 \subsection{2E. Quantum dots in three dimensions, two electrons}
-Next, we expand our algorithm to consider two electrons in a harmonic oscillator well, which also interact via a Coulomb interaction. We implement the potential as given in equation \ref{theory...}. We discretized the problem, and apply the Jacobi method to the given matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only concider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. 
+Next, we expand our algorithm to consider two electrons in a harmonic oscillator well, which also interact via a Coulomb interaction. We implement the potential as given in equation \ref{theory...}. We discretized the problem, and apply the Jacobi method to the given matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only consider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. We run the estimations 10 times per $\omega_r$, and then we take the average of the estimations to be the final ground state energy eigenvalue.
+
+\subsection{2F. Quantum physics analysis of the results}
+We are then considering the wave functions for the two electrons as functions of the relative coordinate r and different values of $\omega_r$. We estimate the eigenvectors by applying the similarity matrix over and over on a initial identity matrix. We do this both with and without the repulsion between the two electrons. Then we find the eigenvector corresponding to the lowest eigenvalue, and plot the probability distribution for our selection of $\omega_r$ 
 
 \newpage.
 \newpage 
@@ -309,16 +313,32 @@ The ground state energy of a two-electron system as a function $\omega$ is prese
 5.00 &  17.4286222663169 \\ &\\
 \hline 
 	\end{tabular}
-	\captionof{table}[foo]{The energy eigenvalue for the ground state of a two-electron system in three dimensions. The value is an average off 10 independent calculations of the eigenvalue.\label{tab2}}
+	\captionof{table}[foo]{The energy eigenvalue for the ground state of a two-electron system in three dimensions. The value is an average of 10 independent calculations of the eigenvalue.\label{tab2}}
 \end{figure}
 
+\subsection*{2g. TQuantum physics analysis of the result} 
 
+
+\begin{figure*}
+	\centering
+	\subfloat{\includegraphics[scale = 0.18]{Omega_0_01.png}}
+	\subfloat{\includegraphics[scale = 0.18]{Omega_0_5.png}}
+\end{figure*}
+
+\begin{figure*}
+	\centering
+	\subfloat{\includegraphics[scale = 0.18]{Omega_1_0.png}}
+	\subfloat{\includegraphics[scale = 0.18]{Omega_5_0.png}}
+	\caption{The probability distribution with and without the repulsion between two electrons as a function of $\omega_r$}
+\end{figure*}
 \section*{Discussion} 
 
 \subsection*{2D: Quantum dots in three dimensions, one electron} \noindent 
 It is interesting to see how the relative error varies with each choice of N and $\rho_{max}$. It is evident that the error decreases as N increases, but furthermore, they all show the same tendencies in regards to $\rho_{max}$. $\rho_{max} = 5$ for all tested values of N appears to be the value that yields the lowest error for the ground state. At certain times one can see $\rho_{max} = 3$ or $\rho_{max} = 4$ yielding lower values for N $>$ 10. Of course, access to a broader selection of analytical eigenvalues would help us determine the quality of this information. \\
 Looking at figure \ref{fig:RE} we see a decay in the relative error for $\rho_{max} = 5$ with increasing N. This is to be expected accuracy and the sort of Toplitz matrix we are handling. We know that the error should go like $\order{h^2}$ as it appears to be doing here as well. 
 
+\subsection*{2E. Quantum dots in three dimensions, two electrons} \noindent 
+It is not surprising that the energy eigenvalue increases as the strength of the oscillator potential increases. 
 
 
 \section*{Conclusion}
