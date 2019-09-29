@@ -57,8 +57,8 @@ Applying a Taylor approximation to the second derivative the differential equati
 \end{equation}
 
 
-\subsubsection{The analytical solution of a tridiagonal matrix}
-Systems like equation \ref{eqdis} has analytical eigenpairs, as the matrix becomes a Toeplitz tridiagonal. The eigenvalues are given by the formula
+\subsubsection{The analytical solution of a tridiagonal matrix} \noindent 
+Systems on the form of equation \ref{eqdis} has analytical eigenpairs, and is known as a Toeplitz tridiagonal matrix. The eigenvalues are given by the formula
 \begin{equation}\label{analytical}
 \lambda_j = d+2a\cos{(\frac{j\pi}{N+1})} \hspace{0.1cm} j=1,2,\dots N-1
 \end{equation}
@@ -117,8 +117,20 @@ Where we choose the sign that minimizes t. Then $c$ and $s$ are easily obtained 
 \begin{equation}\label{sc}
 c = \frac{1}{\sqrt{1+t^2}} \hspace{5mm}  \textnormal{and} \hspace{5mm} s=tc
 \end{equation}  
+\noindent
+This leads to the following equations of transformation
+\begin{align*}
+&b_{ii} = a_{ii} \hspace{49mm} i\not=k & i\not=l\\
+&b_{ik} = a_{ik}\cos\theta -a_{il}\sin\theta \hspace{25mm} i\not=k & i\not=l \\
+&b_{il}  = a_{il}\cos\theta -a_{ik}\sin\theta \hspace{26mm} i\not=k & i\not=l\\ &&\\
+&b_{kk} = a_{kk}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{ll}\sin^2\theta&\\
+&b_{ll} = a_{ll}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{kk}\sin^2\theta& \\
+&b_{kl} = (a_{kk}-a_{ll})\cos\theta\sin\theta+a_{kl}(\cos^2\theta -\sin^2\theta)& \\
+\end{align*}\begin{equation}
+	\label{jacobimethod}
+\end{equation}
 
-\subsection{The Jacobi Method}
+
 
 \subsection{Unitary transformations} \noindent 
 A unitary transformation is a transformation that preserves the orthogonality and inner product. Given a basis of vectors $\vec{v_i}$ ,
@@ -147,7 +159,7 @@ To show that it preserves the inner product we define
 Where we have showed that the unitary transformation does not affect the inner product. 
 
 \subsection{The Frobenius norm}
-\begin{equation}
+\begin{equation}\label{forb}
 	\parallel A \parallel_F^2 = \parallel B \parallel_F^2 = \sum_{ij} \abs{a_{ij}}^2 = \sum_{ij} \abs{b_{ij}}^2
 \end{equation}
 The Frobenius norm is conserved under orthogonal/unitary transformations. 
@@ -237,22 +249,13 @@ The Lanczos iteration method is a method for diagonalizing symmetric matrices wi
 
 \section*{Method}
 \subsection{Jacobi's method for Eigensolvers}
-\noindent When implementing Jacobi's method we apply the following algorithm to a matrix A:
-\begin{align*}
-	&b_{ii} = a_{ii} \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l\\
-	&b_{ik} = a_{ik}\cos\theta -a_{il}\sin\theta \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l \\
-	&b_{il}  = a_{il}\cos\theta -a_{ik}\sin\theta \hspace{2mm}& i\not=k &\hspace{2mm} i\not=l\\
-	&b_{kk} = a_{kk}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{ll}\sin^2\theta&&\\
-	&b_{ll} = a_{ll}\cos^2\theta -2a_{kl}\cos\theta\sin\theta +a_{kk}\sin^2\theta&& \\
-	&b_{kl} = (a_{kk}-a_{ll})\cos\theta\sin\theta+a_{kl}(\cos^2\theta -\sin^2\theta)\\
-\end{align*}
-where $c = \cos\theta$ and $s = sin\theta$ are defined as in equation \ref{sc}. The system of iterations are implemented in a while loop that keeps track of the norm of all the off diagonal elements. We state that when this sum is belove a threshold of $10^{-10}$, we have reduced the matrix to a diagonal form. From this form we read the eigenvalues of the matrix $\hat{D}$ across the diagonal. \\
-In order to ensure that we obtained accurate results, we compare the egeinvalues produced by Jacobis method with the analytical solution produced by equation \ref{analytical}. To do so, we use an initial tridiagonal matrix where all off-diagonal are equal, and all elements across the diagonal are equal. \\
-To look closer at the efficiency of the method, we compare the results agains the armadillo function for solving eigenvalue problems. We look at the time both algorithm uses, as well as the proximity to the analytical results. We test for N = 20 grid points for a 2D tridiagonal matrix.  
-\subsection{Unit Testing}
+\noindent We initialize a tridiagonal Toplitz matrix on the form of equation \ref{eqdis}, in order to solve the buckling beam problem. Next, we implement Jacobi's method based on the block of equation given in equation set \ref{jacobimethod}, where $c = \cos{\theta}$ and $s = sin{\theta}$ are defined as in equation \ref{sc}. We apply Dirichlet boundary conditions and set a threshold for the transformation-series on the Fobernius norm of equation \ref{forb} of all off-diagonal elements. The sum must be smaller than $10^{-10}$ for all off-diagonal elements to be considered to be zero. We then state that the transformed matrix is on a diagonal form, and we read the eigenvalues of the matrix $\hat{D}$ across the diagonal. \\
+When we have the eigenvalues produced by the Jacobi's method, we go on to compare them with the analytical eigenvalues of equation \ref{analytical}. To evaluate the efficiency of Jacobi's method in regards to other known possibilities for finding the eigenvalues, we implement the Armadillo \textit{eig$\_$sym} function. We compare both the time of both methods and the accuracy in regards to the analytical solutions. We furthermore count how many transformations is necessary in order to solve the system, in regards to the threshold we placed on the Fobernius norm. We look at how  the number of iterations vary as a function N. We test for N = 200 grid points for a two dimensional system.
 
 \subsection{Extending the algorithm to the Quantum oscillator} \noindent 
-By looking at equation \ref{qho} we see that it is almost on the same form as the equation of the buckling beam problem. In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
+Equation \ref{qho} is on the same form as the equation of the buckling beam problem,
+and can therefore be subjected to 
+ In fact, it only deviates by a constant factor. Thus we make a small modification to our established algorithm in order to extend it to cover the electron-electron interaction. We next look to equation \ref{eqho2}, and define the matrix element as given by equation \ref{hoeq3} and \ref{hoeq4}. The eigenvalue problem we solve is described by equation \ref{evho}. We reuse the code from the Buckling beam problem, with the minor potential modification.
 
 \subsection{2D:Quantum dots in three dimensions, one electron} \noindent 
 We then extend our algorithm to solve for one electron in three dimensions, we do so by adding the harmonic oscillator potential to the tridiagonal Toeplitz matrix as in equation \ref{qho}. We then apply the Jacobi method to diagonalize the matrix, and read off the estimated eigenvalues on the diagonal elements. \\ \indent We study the results as functions of the number of integration points N and the approximation to $\rho_{max}$. For $N\in[10,100,200]$ we vary $\rho_{max} \in [1, 2, 3, 4, 5, 6, 7, 8, 15, 100]$. We then evaluate the results by estimating the relative error as given by equation \ref{relerror}, and compare values of $\rho$ per N. After evaluating these results we set $\rho_{max} = 5$, and vary N with values of $N\in[10, 70, 100, 200, 210, 250, 300, 350]$. We plot functions of both the variations of $\rho_{max}$ per N and by variations of $N$ with $\rho_{max} = 5$. We then evaluate the lowest value of integration points needed in order to reproduce the analytical solution with four leading digits after the decimal point. We set N = 200 for the rest of this section. 
