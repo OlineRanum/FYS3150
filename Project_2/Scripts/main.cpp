@@ -35,7 +35,7 @@ int main()
     double  * c  = new double [3];
     mat I = mat(3, 3, fill::eye);
     lm->Lanczos(3, a, a, 1, b, c, A, I);
-
+    /*
     // Comment these out if you don't want 10 times the values in N.txt
     //N_Text_Timer * ntimes = new N_Text_Timer();
     //ntimes->Timer();
@@ -132,9 +132,10 @@ int main()
        pf -> Prepare_results_2E(number_of_tests, N, lambda_jacobi_E);
        pf -> Prepare_results_2F_egienvectors(N, mtrx-> I, lambda_jacobi_E);
 
-       */
+
     delete[] lambda_analytical; delete[] lambda_jacobi; delete[] lambda_jacobi_2E; delete[] rho; delete[] lambda_arma;
     }}
+
 
 
    // cout << "Number of tests: " << number_of_tests << endl;
@@ -146,4 +147,5 @@ int main()
     delete[] Jacobi_t;
     delete[] arma_t;
     return 0;
+*/
 }

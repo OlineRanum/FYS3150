@@ -15,11 +15,29 @@ void Lanczos_method::Lanczos(int N, double * Jacobi_t, double * arma_t, int numb
     vec b = r_.t() * Q.col(0);
     vec a(N); a(0) = b(0);
     mat r = mat(N, N, fill::zeros); r.col(0) = r_ - a(0) * Q.col(0);
-    cout << r.col(0) << endl;
+    vec beta = vec(N, fill::zeros); beta(0) = 1;
+
+    int i = 0;
+    while (abs(beta(i) - 0) > 0.0001 and i < N - 1)
+    {
+        cout << "første linje" << endl;
+        Q.col(i + 1) = r.col(i) / beta(i);
+        cout << "andre linje" << endl;
+        r_ = A * Q.col(i);
+        cout << "tredje linje" << endl;
+        b = Q.col(i + 1).t() * r_; a(i + 1) = b(0);
+        cout << "fjerde linje" << endl;
+        beta(i) = norm(r.col(i));
+        cout << "femte linje" << endl;
+        r.col(i + 1) = r_(i + 1) - a(i + 1) * Q.col(i + 1) - beta(i) * Q.col(i);
+        cout << beta(i) << endl;
+        i++;
+    }
+    cout << a << endl;
+    cout << beta << endl;
     //int * r = new int; r =  q_1;
-    int beta = 1;
-    int q = 0;
-    int k = 0;
+    //int q = 0;
+    //int k = 0;
     /*while (beta != 0)
     {
         q_{k+1} = r_k/beta_k
