@@ -43,7 +43,6 @@ vector<int> ReadFiles::Read_rho_from_file()
         {
 
             y.push_back(atoi(line.c_str()));
-            cout<<"HELLOO"<<line.c_str()<<endl;
         }
         myfile.close();
       }

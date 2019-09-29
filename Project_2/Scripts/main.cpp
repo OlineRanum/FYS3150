@@ -12,15 +12,33 @@
 #include "External_Solvers.h"
 #include "tests.h"
 #include "n_text_timer.h"
+#include "lanczos_method.h"
 
 using namespace std;
 using namespace arma;
 
 int main()
 {
+    Lanczos_method * lm = new Lanczos_method();
+    mat A = mat(3, 3);
+    A(0, 0) = -1;
+    A(0, 1) = 2;
+    A(0, 2) = 2;
+    A(1, 0) = 2;
+    A(1, 1) = 2;
+    A(1, 2) = -1;
+    A(2, 0) = 2;
+    A(2, 1) = -1;
+    A(2, 2) = 2;
+    double  * a  = new double [1];
+    int     * b  = new int [1];
+    double  * c  = new double [3];
+    mat I = mat(3, 3, fill::eye);
+    lm->Lanczos(3, a, a, 1, b, c, A, I);
+
     // Comment these out if you don't want 10 times the values in N.txt
-    N_Text_Timer * ntimes = new N_Text_Timer();
-    ntimes->Timer();
+    //N_Text_Timer * ntimes = new N_Text_Timer();
+    //ntimes->Timer();
     // Prepare clases
     ReadFiles *rf = new ReadFiles();
     PrepareResults *pf = new PrepareResults();
@@ -35,7 +53,7 @@ int main()
 
     // Prepare variables
     int number_of_tests     = 0; for (int z: v) number_of_tests +=1;
-    double  * Jacobi_t      =  new double [number_of_tests];
+    double  * Jacobi_t      = new double [number_of_tests];
     double  * arma_t        = new double [number_of_tests];
     int     * num_transform = new int [number_of_tests];
     int     * N_of_test     = new int [number_of_tests];
@@ -48,7 +66,6 @@ int main()
     number_of_tests = 0;
     for (int z: v){
     for (int y: rhoValues){
-        cout << z<< " " <<y << endl;
        int N = z;
        double p_N = y; double p_0 = 0;
 
@@ -97,12 +114,11 @@ int main()
        pf -> Prepare_results_2E(number_of_tests, N, lambda_jacobi_E);
        pf -> Prepare_results_2F_egienvectors(N, mtrx-> I, lambda_jacobi_E);
 
-
+       */
     delete[] lambda_analytical; delete[] lambda_jacobi; delete[] lambda_jacobi_2E; delete[] rho; delete[] lambda_arma;
     }}
 
 
-        cout << "shady" << endl;
    // cout << "Number of tests: " << number_of_tests << endl;
 
 //   pf -> Prepare_results_2B(number_of_tests, num_transform, Jacobi_t, arma_t);

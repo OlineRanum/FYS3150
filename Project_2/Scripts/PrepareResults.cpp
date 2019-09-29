@@ -43,7 +43,7 @@ void PrepareResults::Prepare_results_2B_eigenvalues(int N, double* lambda_jacobi
     myfile.open ("Results_2b_lambda.txt", fstream::out);
     myfile << "# " << setw(10)<< "       Lambda Analytical    "<< setw(20) << "Lambda Jacobi" << endl;
     for(int k = 0; k < N; k++){
-        myfile  << k+1 <<setw(10) << " & " << setprecision(15)<< lambda_sorted(k) << "      & " << lambda_analytical[k] << endl ;
+        myfile  << k+1 <<setw(10) << " & " << setprecision(15) << lambda_sorted(k) << "      & " << lambda_analytical[k] << endl ;
     }
     myfile.close();
 
