@@ -14,7 +14,7 @@ class MatrixMaker
 public:
     void Tridiag(double h, int N,  double* lambda_analytical);
     void Tridiag_QD_1e(double h, int N, double* rho);
-    void Tridiag_QD_2e(double h, int N, double* rho);
+    void Tridiag_QD_2e(double h, int N, double* rho, double omega_r);
     void Make_Identity(int N);
 
     int N;

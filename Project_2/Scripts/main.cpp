@@ -59,8 +59,8 @@ int main()
     int     * N_of_test     = new int [number_of_tests];
                      //double p_N = 1;
 
-    test->Test_max_non_diag_value();
-    test->Test_eigenvalues();
+//    test->Test_max_non_diag_value();
+//    test->Test_eigenvalues();
 
     // Evaluate z files in N.txt
     number_of_tests = 0;
@@ -87,18 +87,33 @@ int main()
 
        string filecode = "_N_" + to_string(z) + "_rho_"+ to_string(y);
        mtrx-> Make_Identity(N);
+       cout << filecode << endl;
 
+// The buckeling beam problem
 //    mtrx->Tridiag(h,N,lambda_analytical);
-      mtrx->Tridiag_QD_1e(h, N, rho);
-//    mtrx->Tridiag_QD_2e(h, N, rho);
+//    jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A, mtrx->I);
+//    external_solvers->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
+//    pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
 
+// The Harmonic Oscillator potential, 1 electron
+//    mtrx->Tridiag_QD_1e(h, N, rho);
+//     jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q, mtrx->I);
+//       pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E, filecode);
 
-//         jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi, mtrx->A, mtrx->I);
-       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_2E, mtrx->A_q, mtrx->I);
-//       jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_E, mtrx->A_q_2e, mtrx->I);
+// The harmonic oscillator potential, 2 electrons
+      // Run for selection of w_r = 0.01, 0.5, 1.0, 5.0
+      double * omega = new double [4];
+      omega[0] = 0.01; omega[1] = 0.5; omega[2] = 1; omega[3] = 5;
 
-     //  external_solvers->eigen_solvers_arma(lambda_arma, N, mtrx->A_copy);
+      for (int x = 0; x < 4; x++) {
+          double omg = omega[x];
+          cout << "omega:" << omg <<" Num_test:"<< number_of_tests << endl;
+          mtrx->Tridiag_QD_2e(h, N, rho, omg);
+          jacobi_method->Jacobi(N, Jacobi_t, arma_t, number_of_tests, num_transform, lambda_jacobi_E, mtrx->A_q_2e, mtrx->I);
+          pf -> Prepare_results_2E(number_of_tests, N, lambda_jacobi_E, to_string(omg), to_string(number_of_tests));
+        }
 
+      pf -> Prepare_results_2F_egienvectors(N, mtrx-> I, lambda_jacobi_E);
 
 
 
