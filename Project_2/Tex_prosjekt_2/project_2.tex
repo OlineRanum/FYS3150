@@ -211,7 +211,9 @@ See any introductory book on quantum mechanics for for further details. [Griffit
 \subsubsection{Discretizing the quantum harmonic osccilator}
 Looking to the discretization of equation \ref{eqdis}, we see that it can be expanded to also cover this problem by a small modification. By including the electron-electron potential we now write 
 \begin{equation}\label{eqho2}
-	-\frac{u_{i+1} -2u_i +u_{i-1}}{h^2}+\rho_i^2u_i=-\frac{u_{i+1} -2u_i +u_{i-1} }{h^2}+V_iu_i  = \lambda u_i
+\begin{aligned}
+	-\frac{u_{i+1} -2u_i +u_{i-1}}{h^2}+\rho_i^2u_i \\=-\frac{u_{i+1} -2u_i +u_{i-1} }{h^2}+V_iu_i  = \lambda u_i
+\end{aligned}
 \end{equation}
 where $V_i=\rho_i^2$ is the harmonic oscillator potential. To solve this problem numerically one sets all diagonal elements to 
 \begin{equation}\label{hoeq3}
@@ -242,6 +244,70 @@ u_{1} \\
 \dots\\ \dots\\ \dots\\
 u_{N}
 \end{bmatrix}
+\end{equation}
+
+\subsubsection{Quantum harmonic osccilator with two electrons}
+Now we will study the same harmonic osccilator, but with two electrons. This means the electrons will also interact via a repulsive Coloumb interaction. We start by looking at the single-electron equation
+\begin{equation*}
+    -\frac{\hbar^2}{2m}\frac{d^2}{dr^2}u(r)+\frac{1}{2}kr^2u(r) = E^{(1)}u(r),
+\end{equation*}
+here $E^{(1)}$ stands for the energy with only one electron. For two electrons, with no repulsive Coloumb interaction for now, we get this Schroedinger equation
+\begin{equation*}
+    \left(-\frac{\hbar^2}{2m}\frac{d^2}{dr^2_1}-\frac{\hbar^2}{2m}\frac{d^2}{dr^2_2}+\frac{1}{2}kr^2_1+\frac{1}{2}kr^2_2\right)u(r_1,r_2) = E^{(2)}u(r_1,r_2).
+\end{equation*}
+Now  we are dealing with both a two-electron wave function $u(r_1,r_2)$ and two electron energy $E^{(2)}$.\par
+Since we have no interaction we have a solution on closed form, that means it can be written as the product of two single-electron wave functions.\par
+We introduce two new coordinates, the relative coordinate $\bm{r}=\bm{r}_1-\bm{r}_2$ and the center-of-mass coordinate $\bm{R}=1/2(\bm{r}_1+\bm{r}_2)$. And now the radial Schroedinger equation reads
+\begin{equation*}
+    \left(-\frac{\hbar^2}{m}\frac{d^2}{dr^2}-\frac{\hbar^2}{4m}\frac{d^2}{dR^2}+\frac{1}{4}kr^2+kR^2\right)u(r,R) = E^{(2)}u(r,R).
+\end{equation*}
+\par We can separate the equations for $r$ and $R$ via the ansatz for the wave function $u(r,R)=\psi(r)\phi(R)$ and the energy is given by the sum of the relative energy and the center-of-mass energy, so we rewrite it like
+\begin{equation*}
+    E^{(2)} = E_r+E_R.
+\end{equation*}
+\par To include the repulsive Coulomb interaction between two electrons we add the term
+\begin{equation*}
+    V(r_1,r_2) = \frac{\beta e^2}{|\bm{r}_1-\bm{r}_2|} = \frac{\beta e^2}{r},
+\end{equation*}
+with $\beta e^2=1.44 eVnm$.
+\par Now the r-dependent Schroedinger equation becomes 
+\begin{equation*}
+    \left(-\frac{\hbar^2}{m}\frac{d^2}{dr^2}+\frac{1}{4}kr^2+\frac{\beta e^2}{r}\right)\psi(r) = E_r\psi(r)
+\end{equation*}
+This equation is similar to the one we had previously when we had just one electron, and again we introduce
+a dimensionless variable $\rho = r/\alpha$. By repeating the same
+steps as before, we get
+
+\begin{equation*}
+  -\frac{d^2}{d\rho^2} \psi(\rho) 
+       + \frac{1}{4}\frac{mk}{\hbar^2} \alpha^4\rho^2\psi(\rho)+\frac{m\alpha \beta e^2}{\rho\hbar^2}\psi(\rho)  = 
+\frac{m\alpha^2}{\hbar^2}E_r \psi(\rho).
+\end{equation*}
+We want to make the equation as similar to that in \ref{qho}
+as possible. We define a new 'frequency'
+
+\begin{equation*}
+\omega_r^2=\frac{1}{4}\frac{mk}{\hbar^2} \alpha^4,
+\end{equation*}
+and fix the constant $\alpha$ by requiring
+
+\begin{equation*}
+\frac{m\alpha \beta e^2}{\hbar^2}=1
+\end{equation*}
+or
+
+\begin{equation*}
+\alpha = \frac{\hbar^2}{m\beta e^2}.
+\end{equation*}
+Defining
+
+\begin{equation*}
+\lambda = \frac{m\alpha^2}{\hbar^2}E,
+\end{equation*}
+we can rewrite Schroedinger's equation as
+
+\begin{equation}\label{qho2}
+  -\frac{d^2}{d\rho^2} \psi(\rho) + \omega_r^2\rho^2\psi(\rho) +\frac{1}{\rho} = \lambda \psi(\rho).
 \end{equation}
 
 \section*{Method}
