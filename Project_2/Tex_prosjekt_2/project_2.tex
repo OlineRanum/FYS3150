@@ -24,7 +24,7 @@ aps,
 \author{Torstein S. Ølberg, Ada M. Veddegjerde and Oline A. Ranum}
 \affiliation{%
  \textnormal{Universitetet i Oslo, Institutt for fysikk}\\
- olinear@student.matnat.uio.no : torsteol@student.matnat.uio.no
+ olinear@student.matnat.uio.no : torsteol@student.matnat.uio.no : amveddeg@student.matnat.uio.no
 }
 \date{\today}
 
@@ -35,7 +35,8 @@ aps,
 \maketitle
 
 \section*{Introduction}
-
+In this raport we want to develop a code to solve eigenvalueproblems, in order to find solutions for the buckling beam problem, and Schroedinger's equation for electrons in a three dimentional harmonic oscillator well.
+why? challenges (short)
 
 \section*{Theory}
 \subsection{The eigenvalue problem} \noindent 
@@ -363,6 +364,12 @@ The results of the time tests of the Jacobi algorithm and the armadillo function
 		\hline
 	\end{tabular}
 	\captionof{table}[foo]{Time estimations of the Jacobi and the armadillo eig\_sym solvers to find eigenvalues of a 100$\times$100 matrix. Included the number of similarity transformations nesecarry during this run of the Jacobi method. \label{tab1}}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{results_2b.png}
+    \caption{Looking at the accuracy of the jacobi method vs the armadillo method.}
+    \label{fig:my_label}
 \end{figure}
 
 \subsection*{R\rom{2}. The quantum oscillator of one electron} \noindent 
