@@ -38,38 +38,31 @@ aps,
 
 
 \section*{Theory}
-
-
-\subsection{The buckeling beam problem} \noindent 
-The classical harmonic oscillator is described by the following equation of motion
-\begin{equation}\label{evp}
- \frac{d^2 u(x)}{dx^2} = -k u(x)
+\subsection{The eigenvalue problem} \noindent 
+Given a matrix A of dimension N, the eigenvalues of A are defined through the equation
+\begin{equation}\label{eigenval}
+	\mathbf{Ax}^{(v)} = \lambda^{(v)}\mathbf{x}^{(v)}
 \end{equation}
-where $u(x)$ is the vertical displacement of the system in the $y$ direction. This general equation is the foundation for a large set of physical systems, for instance a spring force or the buckling beam problem. In the case of the buckling beam $k = F/\gamma$, where F is the force applied at the end of the beam in the direction towards the origin, and $\gamma$ is a constant defined by inherent properties of the beam. We will here apply the Dirichlet boundary conditions. If one defines the dimensionless variable $\rho = x/L$, L beeing the length of the beam, one can reorder the equation to
-\begin{equation}\label{bb}
-	 \frac{d^2 u(\rho)}{d\rho^2} = -\frac{FL^2}{R} u(\rho)=-\lambda u(\rho)
-\end{equation}
-This equation becomes an eigenvalue problem when discretized, on the form 
+where $\lambda^{(v)}$ is the eigenvalues and $\mathbf{x}^{(v)}$ the corresponding eigenvectors. The eigenvalue problem is equivalent to a set of $n$ equations with $n$ unknowns 
+\begin{align*}
+	a_{11}x_1 + a_{12}x_2 +\dots + a_{1n}x_n = \lambda x_1 \\a_{21}x_1 + a_{22}x_2 +\dots + a_{2n}x_n = \lambda x_2 \\ \dots \hspace{2mm} \dots \\
+	a_{n1}x_1 + a_{n2}x_2 +\dots + a_{nn}x_n = \lambda x_n \\
+\end{align*}
+Such a set of equations can be solved by moving all factors to the left hand side and then take the determinant of the system. This is often considered to be a highly inefficient way of solving the problem for large values of n. Therefore, alternative numerical solutions have been developed for solving such systems. 
+
+\subsection{Eigensystem solvers} \noindent 
+In the case that the matrix $\mathbf{A}$ is on a diagonal form, the eigenvalues of $\mathbf{A}$ is the diagonal elements. Similarity transformations provides one way of transforming a $N\times N$ matrix $\mathbf{A}$ into a diagonal matrix $\mathbf{D}$. In general, a similarity transformation $\mathbf{S}$ is a conformal mapping yielding the transformation matrix $\mathbf{B}$ on the form
 \begin{equation*}
-\mathbf{A}\mathbf{x} = \lambda\mathbf{x}
+	\mathbf{B} = \mathbf{SAS^{-1}}
 \end{equation*}
-Applying a Taylor approximation to the second derivative the differential equation, one writes the discretized variant as 
-\begin{equation}\label{eqdis}
-	-\frac{u_{i+1} -2u_i +u_{i-1} }{h^2}  = \lambda u_i
-\end{equation}
+\noindent In the case that the matrix $\mathbf{A}$ is both symmetric and real, this is equivalent to  
 
-
-\subsubsection{The analytical solution of a tridiagonal matrix} \noindent 
-Systems on the form of equation \ref{eqdis} has analytical eigenpairs, and is known as a Toeplitz tridiagonal matrix. The eigenvalues are given by the formula
-\begin{equation}\label{analytical}
-\lambda_j = d+2a\cos{(\frac{j\pi}{N+1})} \hspace{0.1cm} j=1,2,\dots N-1
-\end{equation}
-
-
-\subsection*{Eigensystem solvers} \noindent 
-For a discretized systems it is possible to directly solve eigenvalue problems using similarity transformations. For instance using the Jacobi rotation method. The jacobi method transforms the matrix into a tridiagonal form using Housholder's algorithm. Given a symmetric matrix $A\in \mathbb{R}^{n\times n}$, we know that there exsists a orthogonal matrix S so that 
+\begin{equation*} \label{eq2}
+\mathbf{B} = \mathbf{S}^T\mathbf{A}\mathbf{S}, \hspace{3mm} \textnormal{where} \hspace{3mm} \mathbf{S}^T\mathbf{S} = \mathbf{S}^{-1}\mathbf{S} = \mathbf{I}
+\end{equation*}
+By choosing the correct transformation it is possible to preform a series of similarity transformations on $\mathbf{A}$ in order to reduce it to a diagonal form. That is, by subsequently applying a similarity transform so that 
 \begin{equation*}
-	\mathbf{S}^T\mathbf{A}\mathbf{S} = \mathbf{D}
+\mathbf{D} = \mathbf{S}_N^T...\mathbf{S}_1^T\mathbf{A}\mathbf{S}_1...\mathbf{S}_N 
 \end{equation*}
 where 
 \begin{equation*}
@@ -80,19 +73,10 @@ where
 	0 & 0 & 0 &\dots & \lambda_n
 	\end{bmatrix}
 \end{equation*}
-and $\lambda_i$ are the eigenvalues of $A$. Thus one can preform a series of similarity transformations on $\mathbf{A}$ in order to reduce it to a diagonal form. Matrix $\mathbf{B}$ is said to be a similarity transform of $\mathbf{A}$ if 
-\begin{equation} \label{eq2}
-	\mathbf{B} = \mathbf{S}^T\mathbf{A}\mathbf{S}, \hspace{3mm} \textnormal{where} \hspace{3mm} \mathbf{S}^T\mathbf{S} = \mathbf{S}^{-1}\mathbf{S} = \mathbf{I}
-\end{equation}
-A similarity transform yields a matrix with the same eigenvalues, but in general different eigenvectors. \\
-Initially, one has the eigenvalue problem and a similarity matrix as defined in \ref{eq2}. One then subsequently apply a similarity transform so that 
-\begin{equation}
-	\mathbf{S}_N^T...\mathbf{S}_1^T\mathbf{A}\mathbf{S}_1...\mathbf{S}_N = \mathbf{D}
-\end{equation}
-Where the diagonal elements of $\mathbf{D}$ are the eigenvalues of $\mathbf{A}$, this method is better known as Jacobi's method [M. Jensen].
+where $\lambda_i$ are the eigenvalues of $\mathbf{A}$. A similarity transformation on $\mathbf{A}$ yields a matrix with the same eigenvalues, but in general different eigenvectors. This is the concept underlying the method known as Jacobi's method [M. Jensen, 2015].
 
 \subsubsection*{Jacobi's method}  \noindent 
-Jacobi's method considers an $n\times n$ orthogonal transformation matrix on the form 
+Jacobi's method exploits similarity transformations to preform a rotation of the plane. The method transforms a matrix into a diagonal or tridiagonal form using Housholder's algorithm. In this case the matrix considered is an $n\times n$ orthogonal transformation matrix on the form \vspace{1mm}
 \begin{equation*}
 \mathbf{S} = \begin{bmatrix}
 1 & 0  & \dots & 0 &\vdots &0 \\
@@ -103,11 +87,12 @@ Jacobi's method considers an $n\times n$ orthogonal transformation matrix on the
  \vdots & \vdots &\vdots&\vdots&\vdots&\vdots\\
  0 & 0 &\dots & -\sin{\theta} & \vdots & \cos{\theta}
 \end{bmatrix}
-\end{equation*}
-where $\mathbf{S} = \mathbf{S}^-1$. This matrix makes a plane rotation of an angle $\theta$ in the Euclidean n-dimensional space. The similarity matrix is defined through the quantities $\tan\theta = t= s/c$, with $s=\sin\theta$ and $c=\cos\theta$ and
+\end{equation*}\vspace{1mm}
+\noindent 
+This matrix makes a plane rotation of an angle $\theta$ in the Euclidean n-dimensional space. The similarity matrix is defined through the quantities $\tan\theta = t= s/c$, with $s=\sin\theta$ and $c=\cos\theta$ and
 \begin{equation*}\cot 2\theta=\tau = \frac{a_{ll}-a_{kk}}{2a_{kl}}.
 \end{equation*}
-where $a_{kl}$ should be the largest off-diagonal matrix element in order to ensure that all other off-diagonal elements converges towards zero. The identity $\cot 2\theta=1/2(\cot \theta-\tan\theta)$ leads to the quadratic equation
+where $a_{kl}$ should be the largest off-diagonal matrix element in order to ensure that all other off-diagonal elements converges towards zero during the sequential transformations. The identity $\cot 2\theta=1/2(\cot \theta-\tan\theta)$ leads to the quadratic equation
 \begin{equation*}
 t^2+2\tau t-1= 0,
 \end{equation*}
@@ -115,12 +100,12 @@ resulting in
 \begin{equation*}
 t = -\tau \pm \sqrt{1+\tau^2},
 \end{equation*}
-Where we choose the sign that minimizes t. Then $c$ and $s$ are easily obtained via
+One chooses the sign that minimizes t. Then $c$ and $s$ are easily obtained via
 \begin{equation}\label{sc}
 c = \frac{1}{\sqrt{1+t^2}} \hspace{5mm}  \textnormal{and} \hspace{5mm} s=tc
-\end{equation}  
+\end{equation}  \vspace{2mm}
 \noindent
-This leads to the following equations of transformation
+This leads to the following equations of transformation \vspace{1mm}
 \begin{align*}
 &b_{ii} = a_{ii} \hspace{49mm} i\not=k & i\not=l\\
 &b_{ik} = a_{ik}\cos\theta -a_{il}\sin\theta \hspace{25mm} i\not=k & i\not=l \\
@@ -132,10 +117,8 @@ This leads to the following equations of transformation
 	\label{jacobimethod}
 \end{equation}
 
-
-
 \subsection{Unitary transformations} \noindent 
-A unitary transformation is a transformation that preserves the orthogonality and inner product. Given a basis of vectors $\vec{v_i}$ ,
+It can be showed that a unitary transformation is a transformation that preserves the orthogonality and inner product. Given a basis of vectors $\vec{v_i}$ ,
 \begin{equation*}
 	\mathbf{v}_i = \begin{bmatrix} v_{i1} \\ \dots \\ \dots \\v_{in} \end{bmatrix}
 \end{equation*}
@@ -160,15 +143,37 @@ To show that it preserves the inner product we define
 \end{align*}
 Where we have showed that the unitary transformation does not affect the inner product. 
 
-\subsection{The Frobenius norm}
-\begin{equation}\label{forb}
-	\parallel A \parallel_F^2 = \parallel B \parallel_F^2 = \sum_{ij} \abs{a_{ij}}^2 = \sum_{ij} \abs{b_{ij}}^2
+
+\subsection{The buckeling beam problem} \noindent 
+The classical harmonic oscillator potential is described by the following equation of motion
+\begin{equation}\label{evp}
+\frac{d^2 u(x)}{dx^2} = -k u(x)
 \end{equation}
-The Frobenius norm is conserved under orthogonal/unitary transformations. 
+where $u(x)$ is the vertical displacement of the system in the $y$ direction. This general equation is the foundation for a large set of physical systems, that often can be solved using numerical eigenvalue solvers. For instance a spring force or the buckling beam problem. \\ \indent 
+ In the case of the buckling beam $k = F/\gamma$, where F is the force applied at the end of the beam in the direction towards the origin, and $\gamma$ is a constant defined by inherent properties of the beam. This system will here assume the Dirichlet boundary conditions
+ \begin{equation*}
+ 	u(0) = u(L) = 0
+ \end{equation*}
+where L is the length of the beam. If one defines the dimensionless variable $\rho = x/L$, one can reorder the equation into
+\begin{equation}\label{bb}
+\frac{d^2 u(\rho)}{d\rho^2} = -\frac{FL^2}{R} u(\rho)=-\lambda u(\rho)
+\end{equation}
+This equation becomes an eigenvalue problem when discretized, on the form equation \ref{eigenval}. Applying a Taylor approximation to the second derivative of the differential equation, a discretized variant of the equation can be expressed as
+\begin{equation}\label{eqdis}
+-\frac{u_{i+1} -2u_i +u_{i-1} }{h^2}  = \lambda u_i
+\end{equation}
+
+
+\subsubsection{The analytical solution of a tridiagonal matrix} \noindent 
+Systems on the form of equation \ref{eqdis} is known as a Toeplitz tridiagonal matrix, and has analytical eigenpairs. These eigenvalues are given by the formula
+\begin{equation}\label{analytical}
+\lambda_j = d+2a\cos{(\frac{j\pi}{N+1})} \hspace{0.1cm} j=1,2,\dots N-1
+\end{equation}
+
 
 
 \subsection{The Quantum Harmonic Oscillator} \noindent 
-Another famous harmonic oscillator is the description of electron-electron interaction. Electrons in a three-dimensional harmonic oscillator potential will repel each other via the static Coulomb interaction. We assume spherical symmetry. For such a system, the radial part of the Schroedinger equation for one electron reads
+Another famous harmonic oscillator is the description of electron systems. For a system assuming spherical symmetry, the radial part of the Schroedinger equation for one electron reads
 \begin{equation*}
 -\frac{\hbar^2}{2 m} \left ( \frac{1}{r^2} \frac{d}{dr} r^2
 \frac{d}{dr} - \frac{l (l + 1)}{r^2} \right )R(r) 
@@ -179,7 +184,6 @@ where V(r) is set to be the harmonic oscillator potential
 	V(r) = \dfrac{1}{2}kr^2 = \dfrac{1}{2}m\omega^2r^2
 \end{equation*}
 E is the energy of the harmonic oscillator in three dimensions, and given the oscillator frequency $\omega$ the energy eigenvalues correspond to 
-
 \begin{equation*}
 E_{nl}=  \hbar \omega \left(2n+l+\frac{3}{2}\right),
 \end{equation*}
@@ -190,7 +194,7 @@ with energy level $n=0,1,2,\dots$ and the orbital momentum $l=0,1,2,\dots$ of th
 + \left ( V(\rho) + \frac{l (l + 1)}{\rho^2}
 \frac{\hbar^2}{2 m\alpha^2} \right ) u(\rho)  = E u(\rho)
 \end{equation*}
-The boundary condition is given by $u(0) = u(\infty) = 0$, and the equation is further reducible by inserting the potential and set l = 0. After some shuffling of constants one gets the equation  
+The boundary condition is given by the Dirichlet conditions, and the equation is further reduced by inserting the potential with l = 0. After some shuffling of constants one gets the equation  
 \begin{equation*}
 -\frac{d^2}{d\rho^2} u(\rho) 
 + \frac{mk}{\hbar^2} \alpha^4\rho^2u(\rho)  = \frac{2m\alpha^2}{\hbar^2}E u(\rho) .
@@ -207,8 +211,9 @@ and the Schroedinger's equation can be expressed as
 \begin{equation}\label{qho}
 -\frac{d^2}{d\rho^2} u(\rho) + \rho^2u(\rho)  = \lambda u(\rho)
 \end{equation}
-See any introductory book on quantum mechanics for for further details. [Griffiths, 2014]. 
-\subsubsection{Discretizing the quantum harmonic osccilator}
+See any introductory book on quantum mechanics for for further details. [Griffiths, 2018]. 
+
+\subsubsection{The discretized quantum harmonic oscillator}
 Looking to the discretization of equation \ref{eqdis}, we see that it can be expanded to also cover this problem by a small modification. By including the electron-electron potential we now write 
 \begin{equation}\label{eqho2}
 \begin{aligned}
@@ -223,7 +228,7 @@ and set all non-diagonal matrix elements to
 \begin{equation}\label{hoeq4}
 e_i=-\frac{1}{h^2}
 \end{equation}
-By this definition the Schrodinger equation can be described as
+By this definition the Schrödinger equation can be described as
 \begin{equation*}
 d_iu_i+e_{i-1}u_{i-1}+e_{i+1}u_{i+1}  = \lambda u_i,
 \end{equation*}
@@ -246,26 +251,26 @@ u_{N}
 \end{bmatrix}
 \end{equation}
 
-\subsubsection{Quantum harmonic osccilator with two electrons}
-Now we will study the same harmonic osccilator, but with two electrons. This means the electrons will also interact via a repulsive Coloumb interaction. We start by looking at the single-electron equation
+\subsubsection{Quantum harmonic oscillator with two electrons} \noindent 
+The two electron system can be described in a similar way, but one the repulsive Coulomb interaction must be included as well. The single-single electron equation is more precisely described as
 \begin{equation*}
     -\frac{\hbar^2}{2m}\frac{d^2}{dr^2}u(r)+\frac{1}{2}kr^2u(r) = E^{(1)}u(r),
 \end{equation*}
-here $E^{(1)}$ stands for the energy with only one electron. For two electrons, with no repulsive Coloumb interaction for now, we get this Schroedinger equation
+here $E^{(1)}$ stands for the energy with only one electron. For two electrons, with no repulsive Coloumb interaction for now, the Schroedinger equation becomes
 \begin{equation*}
     \left(-\frac{\hbar^2}{2m}\frac{d^2}{dr^2_1}-\frac{\hbar^2}{2m}\frac{d^2}{dr^2_2}+\frac{1}{2}kr^2_1+\frac{1}{2}kr^2_2\right)u(r_1,r_2) = E^{(2)}u(r_1,r_2).
 \end{equation*}
-Now  we are dealing with both a two-electron wave function $u(r_1,r_2)$ and two electron energy $E^{(2)}$.\par
-Since we have no interaction we have a solution on closed form, that means it can be written as the product of two single-electron wave functions.\par
-We introduce two new coordinates, the relative coordinate $\bm{r}=\bm{r}_1-\bm{r}_2$ and the center-of-mass coordinate $\bm{R}=1/2(\bm{r}_1+\bm{r}_2)$. And now the radial Schroedinger equation reads
+This equation can easily be expanded to a two-electron wave function $u(r_1,r_2)$ with energy $E^{(2)}$.\par
+Since there is no interaction the solution will be of a closed form, that means it can be written as the product of two single-electron wave functions.\par
+By introducing two new coordinates, the relative coordinate $\bm{r}=\bm{r}_1-\bm{r}_2$ and the center-of-mass coordinate $\bm{R}=1/2(\bm{r}_1+\bm{r}_2)$, the radial Schroedinger equation reads
 \begin{equation*}
     \left(-\frac{\hbar^2}{m}\frac{d^2}{dr^2}-\frac{\hbar^2}{4m}\frac{d^2}{dR^2}+\frac{1}{4}kr^2+kR^2\right)u(r,R) = E^{(2)}u(r,R).
 \end{equation*}
-\par We can separate the equations for $r$ and $R$ via the ansatz for the wave function $u(r,R)=\psi(r)\phi(R)$ and the energy is given by the sum of the relative energy and the center-of-mass energy, so we rewrite it like
+\par The equation can be separated into $r$ and $R$ via the ansatz for the wave function $u(r,R)=\psi(r)\phi(R)$ and the energy is given by the sum of the relative energy and the center-of-mass energy. Therefore the equation can be formulated as
 \begin{equation*}
     E^{(2)} = E_r+E_R.
 \end{equation*}
-\par To include the repulsive Coulomb interaction between two electrons we add the term
+\par To include the repulsive Coulomb interaction between two electrons one can add the term
 \begin{equation*}
     V(r_1,r_2) = \frac{\beta e^2}{|\bm{r}_1-\bm{r}_2|} = \frac{\beta e^2}{r},
 \end{equation*}
@@ -274,22 +279,20 @@ with $\beta e^2=1.44 eVnm$.
 \begin{equation*}
     \left(-\frac{\hbar^2}{m}\frac{d^2}{dr^2}+\frac{1}{4}kr^2+\frac{\beta e^2}{r}\right)\psi(r) = E_r\psi(r)
 \end{equation*}
-This equation is similar to the one we had previously when we had just one electron, and again we introduce
-a dimensionless variable $\rho = r/\alpha$. By repeating the same
-steps as before, we get
-
+This equation is similar to the one of the one electron case, and again the dimensionless variable $\rho = r/\alpha$ can be introduced. By repeating the same
+steps as before, the equation reads
 \begin{equation*}
   -\frac{d^2}{d\rho^2} \psi(\rho) 
        + \frac{1}{4}\frac{mk}{\hbar^2} \alpha^4\rho^2\psi(\rho)+\frac{m\alpha \beta e^2}{\rho\hbar^2}\psi(\rho)  = 
 \frac{m\alpha^2}{\hbar^2}E_r \psi(\rho).
 \end{equation*}
-We want to make the equation as similar to that in \ref{qho}
-as possible. We define a new 'frequency'
+In order to make the equation as similar to that in \ref{qho}
+as possible, new 'frequency' can be defined as
 
 \begin{equation*}
 \omega_r^2=\frac{1}{4}\frac{mk}{\hbar^2} \alpha^4,
 \end{equation*}
-and fix the constant $\alpha$ by requiring
+Then constant $\alpha$ can be fixed by requiring
 
 \begin{equation*}
 \frac{m\alpha \beta e^2}{\hbar^2}=1
@@ -304,12 +307,19 @@ Defining
 \begin{equation*}
 \lambda = \frac{m\alpha^2}{\hbar^2}E,
 \end{equation*}
-we can rewrite Schroedinger's equation as
-
+The Schroedinger's equation can be expressed as
 \begin{equation}\label{qho2}
   -\frac{d^2}{d\rho^2} \psi(\rho) + \omega_r^2\rho^2\psi(\rho) +\frac{1}{\rho} = \lambda \psi(\rho).
 \end{equation}
 
+
+\subsection{The Frobenius norm} \noindent 
+The Frobenius norm is a matrix norm defined as the square root of the sum of the absolute squares of its elements 
+\begin{equation}\label{forb}
+\parallel A \parallel_F^2 = \parallel B \parallel_F^2 = \sum_{ij} \abs{a_{ij}}^2 = \sum_{ij} \abs{b_{ij}}^2
+\end{equation}
+The Frobenius norm is conserved under orthogonal/unitary transformations. 
+\newpage 
 \section*{Method}
 \subsection*{M\rom{1}. Jacobi's method for solving the buckling beam problem}
 \noindent We initialize a tridiagonal Toplitz matrix on the form of equation \ref{eqdis}, in order to solve the buckling beam problem of equation \ref{bb}. Next, we implement Jacobi's method based on the block of equation given in equation set \ref{jacobimethod}, where $c = \cos{\theta}$ and $s = sin{\theta}$ are defined as in equation \ref{sc}. We apply Dirichlet boundary conditions and set a threshold for the transformation-series on the Fobernius norm of equation \ref{forb} of all off-diagonal elements. The sum must be smaller than $10^{-10}$ for all off-diagonal elements to be considered to be zero. We then state that the transformed matrix is on a diagonal form, and we read the eigenvalues of the matrix $\hat{D}$ across the diagonal. \\ \indent 
@@ -434,8 +444,8 @@ It is not surprising that the energy eigenvalue increases as the strength of the
 \newpage 
 \onecolumngrid
 \section*{Bibliography}
-\noindent $[1]$ Griffiths Quantum Mechanics\\ 
-$[2]$
+\noindent $[1]$ Introduction to quantum mechanics, D.J. Griffiths and D. F. Schroter, 3rd edition, 2018, Cambridge University Press\\ 
+$[2]$ Lecture notes 2015 for FYS3150, M. Jensen, 2015, university of Oslo
 \section*{Appendix A}
 For the code used for calculation our results, visit
 \url{https://github.com/OlineRanum/FYS3150/Project_2}
