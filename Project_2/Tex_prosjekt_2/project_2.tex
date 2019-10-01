@@ -341,7 +341,20 @@ We then apply our algorithm to solve for two electron in three dimensions, and u
 We then expand our system to include two electrons in a harmonic oscillator well, which also interact via a Coulomb repulsion. We implement the potential as given in equation \ref{qho2}, discretize the problem and apply the Jacobi method to the set matrix. We then run the problem for a variety of oscillator potential strengths, $\omega_r = [0.01,0.5,1,5]$, in the ground state. Furthermore, we only consider the ground state with angular momentum $l = 0$, and omit the center-of-mass energy. We run the estimations 10 times per $\omega_r$, and then we take the average of the estimations to be the final ground state energy eigenvalue.\\ \indent 
 We are then considering the wave functions for the two electrons as a function of the relative coordinate r and different values of $\omega_r$. We estimate the eigenvectors by applying the similarity matrix over and over on a initial identity matrix. We do this both with and without the repulsion between the two electrons. Then we find the eigenvector corresponding to the lowest eigenvalue, and plot the probability distribution for our selection of $\omega_r$ 
 
-		\subsection{M\rom{5}. Unit test} \noindent
+		\subsection*{M\rom{5}. Unit test} \noindent
+The first test we made was one for the process of finding the largest nondiagonal value of a matrix. This was done by calling the function used for this with a predifined matrix with random numbers. Then we called the function and extracted the max value, checked if the value was the largest number off the diagonal of A and printed passed if the function got the right number. If not the tests printed "not passed" and also the true max value and the value found by the algorithm. \\
+
+The second test we made was for checking if the eigenvalue solver in and of themselves are correct. This test set up the matrix: 
+			\begin{equation}
+A = \left[
+				\begin{bmatrix}
+-1 & 2 & 2 \\
+2 & 2 & -1 \\
+2 & -1 & 2
+				\end{bmatrix}
+\right],
+			\end{equation}
+find the eigenvalues by armadillo::eig\_sym, and call the function with the matrix A as input. Then it compares the values found by the function with the values found by eig\_sym and if the difference is smaller than $10^{-10}$ the test is passed.
 
 \newpage 
 
@@ -367,7 +380,7 @@ Run & \# Transforms & Time$_J$ [s] & Time$_A$ [s] \\
 10 & 19286 & 3.865138             & 0.001855            \\ 
 \hline 
  &  &  & \\
-Average &19286& 3.8593227&0.0018697\\ 
+Average &19286& 3.8593227&0.0018697 \\ 
 \hline
 				\end{tabular}
 \captionof{table}[foo]{Time estimations of the Jacobi and the armadillo eig\_sym solvers to find eigenvalues of a 100$\times$100 matrix. Included the number of similarity transformations nesecarry during this run of the Jacobi method. \label{tab1}}
@@ -426,7 +439,9 @@ $\mathbf{\omega}_r$ & $\mathbf{E(\lambda_0)}$\\
 			\end{table}
 
 		\subsection*{R\rom{4}. The wave equation of a two electron system}\noindent 
-The probability distribution with and without the repulsion between the two electrons are plotted in figure \ref{wavefunc} for the selected $\omega_r$ values. \\ \newpage 
+The probability distribution with and without the repulsion between the two electrons are plotted in figure \ref{wavefunc} for the selected $\omega_r$ values. \\ 
+
+\newpage 
 
 			\begin{figure*}
 \centering
@@ -436,6 +451,9 @@ The probability distribution with and without the repulsion between the two elec
 \subfloat{\includegraphics[scale = 0.18]{Omega_0_01.png}} 
 \caption{The probability distribution with and without the repulsion between two electrons as a function of $\omega_r$} \label{wavefunc}
 			\end{figure*}
+
+		\subsection*{R\rom{5}. Unit test}
+Jacobi's method passed both test functions.
 
 	\section*{Discussion} 
 		\subsection*{D\rom{1}. The buckling beam}
@@ -451,6 +469,8 @@ Furthermore, it is not surprising that the the number of grid points needed to r
 It is not surprising that the energy eigenvalue increases as the strength of the oscillator potential increases. A higher potential strength will of course indicate a higher internal energy in the system for a given $r$.  \\
 When looking at the wave-function for the ground state energy as a function of $\omega_r$, it is evident that the Coulomb repulsion has a significant impact on the probability distribution. For $\omega_r \leq 1 $ we see a sharper distribution of the probabilities when we disregard the Coulomb repulsion. For $\omega_r > 1$, it is the opposite case. Further work is necessary in order to say what causes this. 
 
+		\subsection*{R\rom{5}. Unit test}
+The tests we implemented has a few problems it is practical to think of next time. The first test uses a random matrix which is impractical. This gives us less control over the test, as we do not know what the correct answer is before the test is run. We do also not know if this test takes all special cases into account. For instance, we do not know if there are negative numbers in the matrix or if there are negative numbers in the matrix with bigger value than the positive ones. As for the other test, it uses a specific matrix, but it does not have negative numbers with larger values than the positive ones. This resulted in our function passing the test even though it did not take in to account this specific case. The second test did also test the values found by the function with all of the values from eig\_sym, which makes it unusable on functions that can only get some of the eigenvalues.
 
 	\section*{Conclusion}
 

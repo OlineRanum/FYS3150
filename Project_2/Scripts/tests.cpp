@@ -11,20 +11,20 @@ using namespace arma;
 void Tests::Test_max_non_diag_value()
 {
     /* Test of the function Jacobi_Method::find_max_index() */
-    mat A = randu<mat> (5, 5);
+    mat A = randu<mat> (5, 5);                      // Sets up the test matrix
 
     Jacobi_Method * jack_meth = new Jacobi_Method;
-    jack_meth->N = 5 - 1;
-    jack_meth->find_max_index(A);
-    double value = jack_meth->max_element;
+    jack_meth->N = 5 - 1;                           // Sett the dimension of the testmatrix
+    jack_meth->find_max_index(A);                   // Call the function
+    double value = jack_meth->max_element;          // Extract the max value
 
-    int test_value = 0;
-    double max_value = A.max();
+    int test_value = 0;                             // Makes sure the max value of the matrix is not on the diagonal
+    double max_value = A.max();                     // Find the max value of the matrix A
 
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 5; j++)
         {
-            if (value <= A(i, j) and i != j)
+            if (value <= A(i, j) and i != j)        // Check if the value found by the the function is larger than all other values of A
            {
                test_value++;
                max_value = A(i, j);
@@ -51,7 +51,7 @@ void Tests::Test_eigenvalues()
 
     Jacobi_Method * jack_meth = new Jacobi_Method;
     int N = 20;
-    mat I = mat(N,N,fill::eye);
+    mat I = mat(N, N,fill::eye);
 
     mat A = mat(test_N, test_N);
     A(0, 0) = -1;
