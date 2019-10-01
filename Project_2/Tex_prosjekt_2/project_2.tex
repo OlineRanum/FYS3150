@@ -30,13 +30,16 @@ aps,]{revtex4-1}
 
 
 \begin{abstract}
-	The following experiment was undertaken as
+	The following experiment was undertaken to explore the use of different eigenvalue solvers, and how well these work in different situations. We tested the Jacobi's method up against the Armadillo function and analytical calculations. They were tested on different problems, the buckling beam problem and the quantum harmonic oscillator.
+	We saw that the Jacobi's method is a lot less efficient than the Armadillo function.
 \end{abstract}
 \maketitle
 
 	\section*{Introduction}
-In this raport we want to develop a code to solve eigenvalueproblems, in order to find solutions for the buckling beam problem, and Schroedinger's equation for electrons in a three dimentional harmonic oscillator well.
-why? challenges (short)
+In this paper we will explore how important the choice of method is when solving eigenvalue problems. Eigenvalue problems are known to describe a broad variety of physical situation, amongst others the Buckling Beam problem and the quantum harmonic oscillator. When a physical situation can be discretized so that the eigenvalue problem can be formulated as a matrix-eigenpair problem, it can often  be subjected to numerical solvers. Over the last decades hundred of such solvers have been developed, and amongst the most famous we have Jacobi’s method. This is the method we will focus on, we will compute it by self developed code, and compare it to the armadillo eigenvalue solver and analytic calculations.
+\par In this paper we will explore numerical solutions to the eigenvalue problem, and the efficiency of applying Jacobi’s method to the buckling beam problem and  the quantum harmonic oscillator. We will first present the underlying theory of the numerical solvers and the physical systems. Following, we will describe the Jacobi based method used to solve the different problems. We will then present the result of our calculations, then we will discuss what these mean.
+\par Eigenvalue solvers have proved invaluable when it comes to finding the eigenvalues of systems where the dimensions grow large. It has helped provide solutions to a broad variety of technical challenges such as airplane crashes and cellphone technology among many things.
+\par We hope that this paper will be a contribution to better understand the efficiency and quality of Jacobi’s method to such problems.
 
 	\section*{Theory}
 		\subsection{The eigenvalue problem} \noindent 
@@ -472,8 +475,11 @@ When looking at the wave-function for the ground state energy as a function of $
 		\subsection*{R\rom{5}. Unit test}
 The tests we implemented has a few problems it is practical to think of next time. The first test uses a random matrix which is impractical. This gives us less control over the test, as we do not know what the correct answer is before the test is run. We do also not know if this test takes all special cases into account. For instance, we do not know if there are negative numbers in the matrix or if there are negative numbers in the matrix with bigger value than the positive ones. As for the other test, it uses a specific matrix, but it does not have negative numbers with larger values than the positive ones. This resulted in our function passing the test even though it did not take in to account this specific case. The second test did also test the values found by the function with all of the values from eig\_sym, which makes it unusable on functions that can only get some of the eigenvalues.
 
-	\section*{Conclusion}
+%diskusjon:
+%There are many different ways of solving eigenvalueproblems numerically, some argually better than others. When choosing a method you should take in to account what kind of matrix we are dealing with. The general method is to perform a series of similarity transformations on the matrix, in order to get a matrix on diagonal or triagonal form. When you compute this it can result in quite a lot of calculations, so if your matrix is already on this form you could save a lot of time by using an appropriate method. For example if you were to have a real symmetric triagonal matrix, the Bisection method could be a good choice. But if you have a real symmetric matrix you would have to use a method like the Jacobi eigenvalue algorithm.
 
+	\section*{Conclusion}
+In short what we observed was that the Jacobi's method is a lot less efficient than the Armadillo function. And there was no significant differece in stability between these two methods.
 
 \newpage .
 \newpage 
