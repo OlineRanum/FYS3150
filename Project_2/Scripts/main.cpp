@@ -123,9 +123,9 @@ int main()
 
 
 
-       cout << filecode << endl;
+       //cout << filecode << endl;
 
-       pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E, filecode);
+       //pf -> Prepare_results_2D(number_of_tests, N, lambda_jacobi_2E, filecode);
 
       /*
        pf -> Prepare_results_2B_eigenvalues(N, lambda_jacobi, lambda_analytical);
