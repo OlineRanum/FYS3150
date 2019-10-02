@@ -1,0 +1,79 @@
+\documentclass[%
+reprint,
+amsmath,amssymb,
+aps,
+]{revtex4-1}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\begin{document}
+\title{Numerical integration}
+\author{Oline A. Ranum}
+\affiliation{%
+ University of Oslo \\ Institute for physics\\
+ olinear@student.matnat.uio.no
+}
+\date{\today}
+
+
+\begin{abstract}
+	The following experiment was undertaken as a mean to 
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+
+
+\section{Theory}
+\subsection{Gauss-Legendre quadrature}
+\subsection{Gauss-Laguerre quadrature}
+\subsection{Monte-Carlo Integration}
+\subsection{Parallelization}
+
+\subsection{Wave function} \noindent 
+The single-particcle wave function for an electron $i$ in the $1s$ state is given in terms of a dimensionless variable 
+\begin{equation*}
+	 {\bf r}_i =  x_i {\bf e}_x + y_i {\bf e}_y +z_i {\bf e}_z 
+\end{equation*}
+as 
+\begin{equation*}
+	\psi_{1s}({\bf r}_i)  =   e^{-\alpha r_i},
+\end{equation*}
+where $\alpha$ is a parameter and 
+\begin{equation*}
+	r_i = \sqrt{x_i^2+y_i^2+z_i^2}
+\end{equation*}
+For a helium atom, $\alpha = 2$ with $Z = 2$. The ansatz for the wave function for two electrons is then given by the product of two so-called 1s wave functions
+\begin{equation*}
+	\Psi({\bf r}_1,{\bf r}_2)  =   e^{-\alpha (r_1+r_2)}
+\end{equation*}
+This ansatz does not yield a closed-form or analytical solution to Schrodinger's equation for two interacting electrons in the helium atom. \\
+We are then left with the following integral yielding the quantum mechanical expectation value of the correlation energy between two electrons which repel each other via the classical Coulomb interaction
+\begin{equation}
+	   \langle \frac{1}{|{\bf r}_1-{\bf r}_2|} \rangle =
+	\int_{-\infty}^{\infty} d{\bf r}_1d{\bf r}_2  e^{-2\alpha (r_1+r_2)}\frac{1}{|{\bf r}_1-{\bf r}_2|}
+\end{equation}
+This wavefunction is not normalized, so the integral has the closed form solution 
+\begin{equation}
+\langle \frac{1}{|{\bf r}_1-{\bf r}_2|} \rangle = \dfrac{5}{16^2}\pi^2
+\end{equation}
+\vspace{10mm}
+\section{Method}
+\subsection{1. Integration}
+Integrate in a brute force manner a six dimensional integral which is used to determine the ground state correlation energy between two electrons in a helium atom. 
+
+We assume that the wave function of each electron can be modelled like the single-particle wave function of an electron in the hydrogen atom. 
+
+\section{Result}
+\section{Discussion}
+\section{Conclusion }
+
+\end{document}
