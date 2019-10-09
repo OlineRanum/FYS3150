@@ -33,6 +33,33 @@ aps,
 
 
 \section{Theory}
+
+
+
+\subsection{Numerical integration \& the Gaussian quadrature} \noindent 
+The basic idea behind all numerical integration methods is to approximate the integral 
+\begin{equation}\label{numint}
+	I = \int_{a}^{b}f(x)dx \approx \sum_{i=1}^{N} \omega_if(x_i)
+\end{equation}
+where $\omega$ and $x$ are the weights and the chosen mesh points, respectively.
+
+Interpolatory quadrature rules, such as Simpson's- or the trapezoidal rule, are based on the assumption that the quadrature points, or nodes, are preassigned equidistantly or with a fixed distribution. The Gaussian quadrature (hereafter GQ) is based on the notion first made by Gauss, that a suitable variation of the nodes would in general lead to a better accuracy. As such, many variations and generalizations of the Gaussian formulas have been developed on the form equation \ref{numint}, where the weights $\omega_i$ are positive zeros of certain orthogonal polynomials and the nodes $x_i$ are distinct points in the interval $x\in[-1,1]$ [Kythe \& Schaferkotter, 2005]. 
+
+\subsection{Orthogonal polynomials} \noindent 
+A set of polynomials $\{p_i\}$ with degree $i$ is called orthogonal with respect to the inner-product if $<p_i, p_j> = 0$ for $i\not = j$ on a finite or infinite interval $[a,b]$. That is, if the powers are orthonormalized, one should obtain a unique set of polynomials $p_i(x)$ of degree $n$ such that
+\begin{equation}
+	\int_{a}^{b} \omega(x)p_i(x)p_j(x)dx = \delta_{ij} = \left\{
+	\begin{array}{ll}
+	1 & i = j\\
+	0 & i \not =j 
+	\end{array} \right\}
+\end{equation}
+where $\delta_{ij}$ is the Kronecker delta. Orthogonal polynomials defined in this manner also satisfy a discrete orthogonality. 
+\begin{equation}
+	\sum_{i=1}^{n+1} \omega_i p_j(x_i)p_k(x_i) = \delta_{jk}
+\end{equation}
+See Kythe \& Schaferkotter 2005 for further elaboration of this property. 
+
 \subsection{Gauss-Legendre quadrature}
 \subsection{Gauss-Laguerre quadrature}
 \subsection{Monte-Carlo Integration}
@@ -65,6 +92,8 @@ This wavefunction is not normalized, so the integral has the closed form solutio
 \begin{equation}
 \langle \frac{1}{|{\bf r}_1-{\bf r}_2|} \rangle = \dfrac{5}{16^2}\pi^2
 \end{equation}
+\subsubsection*{Numerical integration of the wave function}
+For all practical purposes the lower- and upper infinite integration limits can be substituted by a finitie nummber $\lambda$. The single-particle wave function $e^{-\alpha r_i}$ is more or less zero at a finite value $r_i\approx \lambda$, therefore the limitis $-\infty$ and $\infty$ can be substituted by $-\lambda$ and $\lambda$ respectively. 
 \vspace{10mm}
 \section{Method}
 \subsection{1. Integration}
@@ -72,8 +101,14 @@ Integrate in a brute force manner a six dimensional integral which is used to de
 
 We assume that the wave function of each electron can be modelled like the single-particle wave function of an electron in the hydrogen atom. 
 
+\subsection*{Gauss-Legendre Quadrature}
+I use Gauss-Legendre quadrature to compute a six dimensional integral over all Cartesian spatial variables $x_1, y_1, z_1, x_2,y_2,z_2$. To find the integration limits for this numerical integration, I plot the single-particle wave function and locate the value where the wave function is smaller than $10^{-5}$. I then preforme an integral over various N to find how many mesh points is needed before the results converges at the level of the thir leading digit. 
+
 \section{Result}
 \section{Discussion}
 \section{Conclusion }
+
+\section{Referances}
+[1] Handbook of computational methods for integration, P. K. Kythe and M. R. Schaferkotter, Chapman \& Hall/CRC, Boca Raton Florida, 2005.
 
 \end{document}
