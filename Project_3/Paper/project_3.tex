@@ -60,6 +60,40 @@ where $\delta_{ij}$ is the Kronecker delta. Orthogonal polynomials defined in th
 \end{equation}
 See Kythe \& Schaferkotter 2005 for further elaboration of this property. 
 
+\subsubsection{Legendre Polynomials}
+$P_n$ over the interval $[-1,1]$, so that $P_n(1) = 1$. If $x_{m,n}$ denotes the $m$-th zero of $P_n(x)$, where $x_{n,1} > x_{n,2} > \dots > x_{n,n} $, then 
+\begin{equation}
+x_{n, m}=\left(1-\frac{1}{8 n^{2}}+\frac{1}{8 n^{3}}\right) \cos \frac{(4 m-1) \pi}{4 n+2}+O\left(n^{-4}\right)
+\end{equation}
+The norm is equal to $2/(2n+1)$. The orthonormal legendre polynomials $p_n(x)$ are defined as 
+\begin{equation}
+p_{n}(x)=\sqrt{\frac{2 n+1}{2}} P_{n}(x)
+\end{equation}
+with the leading coefficient of $p_n(x)$ is 
+\begin{equation}
+a_{n}=\sqrt{\frac{2 n+1}{2}} \frac{(2 n) !}{2^{n}(n !)^{2}}
+\end{equation}
+It's seriesform is
+ \begin{equation}
+ P_{n}(x)=\frac{1}{2^{n}} \sum_{k=0}^{[n / 2]}(-1)^{k}\left(\begin{array}{l}{n} \\ {k}\end{array}\right)\left(\begin{array}{c}{2 n-2 k} \\ {n}\end{array}\right) x^{n-2 k}
+ \end{equation}
+\subsubsection{Laguerre Polynomials}
+For the polynomial $L_n(x)$ over the intervall $[0,\infty)$, so that $L_n(0) = n!$ and
+\begin{equation}
+\int_{0}^{\infty} e^{-x} L_{n}(x) L_{m}(x) d x=\left\{\begin{array}{ll}{0} & {\text { if } n \neq m} \\ {(n !)^{2}} & {\text { if } n=m}\end{array}\right.
+\end{equation}
+where its m-th zero $xn,m$ is given by 
+\begin{equation}
+x_{n, m}=\frac{j_{m}^{2}}{4 k_{n}}\left(1+\frac{j_{m}^{2}-2}{48 k_{n}^{2}}\right)+O\left(n^{-5}\right)
+\end{equation}
+where $k_n = n\1/2$ and $j_m$ is the m-th positive zero of the bessel function $J_n(x)$. The norm of the polynomials is 1. 
+Its seriesform is
+\begin{equation}
+L_{n}(x)=\sum_{k=0}^{n}(-1)^{k}\left(\begin{array}{c}{n} \\ {n-k}\end{array}\right) \frac{1}{k !} x^{k}
+\end{equation}
+
+
+
 \subsection{Gauss-Legendre quadrature}
 \subsection{Gauss-Laguerre quadrature}
 \subsection{Monte-Carlo Integration}
