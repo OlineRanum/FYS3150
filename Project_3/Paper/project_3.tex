@@ -9,6 +9,7 @@ aps,
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{physics}
 
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
@@ -39,26 +40,66 @@ aps,
 \subsection{Numerical integration \& the Gaussian quadrature} \noindent 
 The basic idea behind all numerical integration methods is to approximate the integral 
 \begin{equation}\label{numint}
-	I = \int_{a}^{b}f(x)dx \approx \sum_{i=1}^{N} \omega_if(x_i)
+	I = \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{N-1} \omega_if(x_i)
 \end{equation}
-where $\omega$ and $x$ are the weights and the chosen mesh points, respectively.
-
-Interpolatory quadrature rules, such as Simpson's- or the trapezoidal rule, are based on the assumption that the quadrature points, or nodes, are preassigned equidistantly or with a fixed distribution. The Gaussian quadrature (hereafter GQ) is based on the notion first made by Gauss, that a suitable variation of the nodes would in general lead to a better accuracy. As such, many variations and generalizations of the Gaussian formulas have been developed on the form equation \ref{numint}, where the weights $\omega_i$ are positive zeros of certain orthogonal polynomials and the nodes $x_i$ are distinct points in the interval $x\in[-1,1]$ [Kythe \& Schaferkotter, 2005]. 
-
-\subsection{Orthogonal polynomials} \noindent 
-A set of polynomials $\{p_i\}$ with degree $i$ is called orthogonal with respect to the inner-product if $<p_i, p_j> = 0$ for $i\not = j$ on a finite or infinite interval $[a,b]$. That is, if the powers are orthonormalized, one should obtain a unique set of polynomials $p_i(x)$ of degree $n$ such that
+where $\omega$ and $x$ are the weights and the chosen mesh points, respectively. Interpolatory quadrature rules, such as Simpson's- or the trapezoidal rule, are based on the assumption that the quadrature points, or nodes, are preassigned equidistantly or with a fixed distribution. The Gaussian quadrature (hereafter GQ) is based on the notion first made by Gauss, that a suitable variation of the nodes would in general lead to a better accuracy [Kythe \& Schaferkotter, 2005]. The core idea of GQ is to have the freedom to choose both the weighting coefficients and the location of the abscissas/nodes at which the function is to be evaluated. One therefore no longer requires the nodes to be equally spaced, and therefore giving twice the number of degrees of freedom in regards to the classical interpolatory quadratures [Press et al. 2007]. As such, many variations and generalizations of the Gaussian formulas have been developed on the form equation \ref{numint}, where the weights $\omega_i$ are positive zeros of certain orthogonal polynomials and the nodes $x_i$ are distinct points in a given interval [Kythe \& Schaferkotter, 2005]. \\
+\indent It is important to note that higher order does not necessarily imply higher accuracy. The former only implies the latter in the case where the integrand is very smooth, in the sense that the integrand is well approximated by a polynomial. In the case of a Gaussian quadrature, it is possible to arrange both weights and abscissas to make integrals exact for a class of integrands on the form of polynomials times some known function $W(x)$. One chooses $W(x)$ to remove integratable singularities from the desired integral. As stated in Press et al., given $W(x)$ and an integer N, it is possible to find a set of weights $w_j$ and nodes $x_j$ such that the approximation 
 \begin{equation}
-	\int_{a}^{b} \omega(x)p_i(x)p_j(x)dx = \delta_{ij} = \left\{
+	\int_{a}^{b}W(x)f(x)dx \approx \sum_{j = 0}^{N-1}w_jf(x_j)
+\end{equation}
+is exact if $f(x)$ is a polynomial. [Press et al., 2015]
+
+
+\subsection{Orthonormal polynomials} \noindent 
+The subject of Gaussian quadratures was further developed by Jacobi's derivation of Gauss's work by means of orthogonal polynomials [Press et al. 2007]. A set of polynomials $\{p_i\}$ of degree $i$ is said to be orthogonal with respect to the inner-product if $<p_i, p_j> = 0$ for $i\not = j$ on a finite or infinite interval $[a,b]$. That is, if the powers are orthonormalized, one should obtain a unique set of polynomials $p_i(x)$ of degree $n$ such that
+\begin{equation}
+	\braket{p_i}{p_j} = 
+	\int_{a}^{b} W(x)p_i(x)p_j(x)dx = \delta_{ij} 
+\end{equation}
+where $\delta_{ij}$ is the Kronecker delta
+\begin{equation}
+	\delta_{ij} = \left\{
 	\begin{array}{ll}
 	1 & i = j\\
 	0 & i \not =j 
 	\end{array} \right\}
 \end{equation}
-where $\delta_{ij}$ is the Kronecker delta. Orthogonal polynomials defined in this manner also satisfy a discrete orthogonality. 
+The orthogonality property for polynomials defined in this manner is equivalently defined for a discrete set of polynomials [Kythe \& Schaferkotter, 2005]. Two functions are said to be normalized if its scalar product with itself is unity. A set of functions that are all mutually orthogonal and also all  individually normalized is called an orthonormal set.  [Press et al., 2015]
+
+\subsubsection{Constructing orthogonal polynomial sets}
+It is possible to find a set of polynomials through recurrence relations which has the property of beeing mutually orthogonal over a spesified weight function W(x) and that includes exactly one polynomial of order $j$, called $p_j(x)$ for each $j = 0,1,2,\dots$. Such a constructive procedure is described by Press et al.:
+\begin{align*}
+	p_{-1}(x) &\equiv 0\\
+	p_{0}(x) &\equiv 1\\
+	p_{j+1}(x) &\equiv (x-a_j)p_j(x)-b_jp_{j-1}(x)\\
+\end{align*}
+where
+\begin{align*}
+	a_j &= \dfrac{\braket{xp_j}{p_j}}{\braket{p_j}{p_j}} &\hspace{1mm} j = 0,1, \dots \\ &&\\
+	b_j &=\dfrac{\braket{p_j}{p_j}}{\braket{p_{j-1}}{p_{j-1}}} &\hspace{1mm} j = 1,2, \dots
+\end{align*}
+The coefficient $b_0$ would be arbitrary, and can therefore be set to zero. It can be showen that the polynomial $p_j(x)$ have exactly $j$ distinct roots in a given interval $[a,b]$. \\
+The fundamental theorem of Gaussian quadratures then states that the  abscissas of the N point Gaussian quadrature equations with weighting function W(x) in the interval $[a,b]$ are precisely the roots of the orthogonal polynomial $p_N(x)$ for the same interval and weighting function. Once the abscissas are known, one needs to find the weights $w_j$. For classical orthogonal polynomials, such as the Gauss-Legendre and Gauss-Laguerre, the coefficients $a_j$ and $b_j$ have an explicit solution. Thus, the problem reduces to determining the zeros of the polynomial $p_N(x)$, and the computation of the weights [Press et al.]\\
+
+\subsubsection{Computation of abscissas and weights}
+Both the Gauss-Legendre and - Laguerre are classical, well-studied, orthogonal polynomials and can be used as good starting guesses. After an initial guess is made, one can apply Newtons method, and expect  it to converge rather rapidly to locate the zero-point. [Press et al.] \\
+For the Gauss-Legendre and Gauss-Laguerre the following direct root finding is concidered to be faster by a factor of 3 to 5, than any other method [Press et al.]\\
+\textit{Gauss-Legendre}:
+\begin{equation*}
+	W(x) = 1 \hspace{3mm} -1 < x < 1 
+\end{equation*}
 \begin{equation}
-	\sum_{i=1}^{n+1} \omega_i p_j(x_i)p_k(x_i) = \delta_{jk}
+	(j+1)P_{j+1} = (2j +1)xP_j - jP_{j-1}
 \end{equation}
-See Kythe \& Schaferkotter 2005 for further elaboration of this property. 
+\textit{Gauss-Laguerre}
+\begin{equation*}
+W(x) = x^\alpha e^{-x} \hspace{3mm} 0 < x < \infty 
+\end{equation*}
+\begin{equation}
+(j+1)L_{j+1}^\alpha = (-x+2j+\alpha+1)L_j^\alpha -(j+\alpha)L_{j-1}^\alpha
+\end{equation}
+\subsubsection{Newtons method}
+Newton's method requires the derivative of the polynomial, which is evaluated by standard relations in terms of $p_N$ and $p_{N-1}$. 
 
 \subsubsection{Legendre Polynomials}
 $P_n$ over the interval $[-1,1]$, so that $P_n(1) = 1$. If $x_{m,n}$ denotes the $m$-th zero of $P_n(x)$, where $x_{n,1} > x_{n,2} > \dots > x_{n,n} $, then 
@@ -86,8 +127,8 @@ where its m-th zero $xn,m$ is given by
 \begin{equation}
 x_{n, m}=\frac{j_{m}^{2}}{4 k_{n}}\left(1+\frac{j_{m}^{2}-2}{48 k_{n}^{2}}\right)+O\left(n^{-5}\right)
 \end{equation}
-where $k_n = n\1/2$ and $j_m$ is the m-th positive zero of the bessel function $J_n(x)$. The norm of the polynomials is 1. 
-Its seriesform is
+where $k_n = n + 1/2$ and $j_m$ is the m-th positive zero of the bessel function $J_n(x)$. The norm of the polynomials is 1. 
+Its series form is
 \begin{equation}
 L_{n}(x)=\sum_{k=0}^{n}(-1)^{k}\left(\begin{array}{c}{n} \\ {n-k}\end{array}\right) \frac{1}{k !} x^{k}
 \end{equation}

@@ -1,7 +1,17 @@
 TEMPLATE = app
-CONFIG += console
+CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.c
+        GaussLaguerre.cpp \
+        GaussLegendre.cpp \
+        ReadFiles.cpp \
+        WriteResults.cpp \
+        main.cpp
+
+HEADERS += \
+    GaussLaguerre.h \
+    GaussLegendre.h \
+    ReadFiles.h \
+    WriteResults.h

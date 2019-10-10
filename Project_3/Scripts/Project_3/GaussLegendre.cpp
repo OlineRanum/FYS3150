@@ -15,27 +15,25 @@ void GaussLegendre::Init_GaussLegendre(vector<int> N, double* Gauss_Legendre, in
     // Integration as a function of N
     int iteration_counter = 0;
     for (int N_: N){
-       double integral_GLeg = 0;
+       double integral_GLegendre = 0;
        int n = N_;
        N_values[iteration_counter] = N_;
 
         // Gauss-Legendre integration
-        Calculation_GaussLegendre(n,a,b,integral_GLeg);
-        printf("Gauss-Legandre:     \t%.8f\t\n", integral_GLeg);
-        Gauss_Legendre[iteration_counter] = integral_GLeg;
+        Calculation_GaussLegendre(n, a, b, integral_GLegendre);
+        printf("Gauss-Legendre:     \t%.8f\t\n", integral_GLegendre);
+
+        Gauss_Legendre[iteration_counter] = integral_GLegendre;
         iteration_counter += 1;
-}
+}}
 
-}
-
-void GaussLegendre::Calculation_GaussLegendre(int n,  double a, double b, double  &integral)
+void GaussLegendre::Calculation_GaussLegendre(int n,  double a, double b, double  &integral_value)
 {
     double * x = new double [n];
     double * w = new double [n];
+    double integral_gauss_legandre = 0.0;
 
-    gauleg(a,b,x,w,n);
-
-    double int_gauss = 0.0;
+    G_Legendre_NodesWeights(a,b,x,w,n);
 
     for (int i = 0;  i < n; i++){
     for (int j = 0;  j < n; j++){
@@ -43,78 +41,74 @@ void GaussLegendre::Calculation_GaussLegendre(int n,  double a, double b, double
     for (int l = 0;  l < n; l++){
     for (int f = 0;  f < n; f++){
     for (int t = 0;  t < n; t++){
-        int_gauss+=w[i]*w[j]*w[k]*w[l]*w[f]*w[t]*func_cart(x[i],x[j],x[k],x[l],x[f],x[t]);
+        integral_gauss_legandre += w[i] * w[j] * w[k] * w[l] * w[f] * w[t] *Cartesian_nodes(x[i], x[j], x[k], x[l], x[f], x[t]);
     }}}}}}
-    integral = int_gauss;
-    delete [] x;
-    delete [] w;
+
+    integral_value = integral_gauss_legandre;
+
+    delete [] x; delete [] w;
 }
 
 
-void GaussLegendre::gauleg(double x1, double x2, double x[], double w[], int n)
+
+
+void GaussLegendre::G_Legendre_NodesWeights(double a, double b, double* x, double* w, int n)
 {
-   int         m,j,i;
-   double      z1,z,xm,xl,pp,p3,p2,p1;
-   double      const  pi = 3.14159265359;
-   double      *x_low, *x_high, *w_low, *w_high;
+    /* Given the integration limits a and b, the function returns arrays x and n
+     * of length n. The arrays contain the abscissas and weights of the Gauss-Legendre n-point
+     * quadrature formula as described by Press et al.
+    */
 
-   m  = (n + 1)/2;                             // roots are symmetric in the interval
-   xm = 0.5 * (x2 + x1);
-   xl = 0.5 * (x2 - x1);
+   // Rescaling the integration limits to the interval [-1, 1]
+   int mid_point  = (n + 1)/2;                                           // Due to the roots beeing symmetric in the interval, one only needs to find half of them
+   double xm = 0.5 * (b + a);
+   double xl = 0.5 * (b - a);
 
-   x_low  = x;                                       // pointer initialization
-   x_high = x + n - 1;
-   w_low  = w;
-   w_high = w + n - 1;
+   double* x_low  = x;                                                   // pointer initialization
+   double* x_high = x + n - 1;
+   double* w_low  = w;
+   double* w_high = w + n - 1;
 
-   for(i = 1; i <= m; i++) {                             // loops over desired roots
-      z = cos(pi * (i - 0.25)/(n + 0.5));
-
-           /*
-       ** Starting with the above approximation to the ith root
-           ** we enter the mani loop of refinement bt Newtons method.
-           */
+   double z_guess, z_approx, poly_derivative;
+   // loops over desired roots
+   for(int i = 1; i <= mid_point; i++) {
+      // Initial guess
+      z_guess = cos(M_PI * (4*i - 1)/(4*n + 2));
 
       do {
-         p1 =1.0;
-     p2 =0.0;
+         double poly_1 =1.0;
+         double poly_2 =0.0;
 
-       /*
-       ** loop up recurrence relation to get the
-           ** Legendre polynomial evaluated at x
-           */
 
-     for(j = 1; j <= n; j++) {
-        p3 = p2;
-        p2 = p1;
-        p1 = ((2.0 * j - 1.0) * z * p2 - (j - 1.0) * p3)/j;
-     }
+        /* Running the recurrence relation to obtain legendre polynomial evaluated at z_guess
+           Yields poly_1 which becomes the desiered Legendre polynomial
+           Poly_2 is the poylnomial of one lower order from Poly_1   */
 
-       /*
-       ** p1 is now the desired Legrendre polynomial. Next compute
-           ** ppp its derivative by standard relation involving also p2,
-           ** polynomial of one lower order.
-           */
+         for(int j = 1; j <= n; j++) {
+            double poly_3 = poly_2;
+            poly_2 = poly_1;
+            poly_1 = ((2.0 * j - 1.0) * z_guess * poly_2 - (j - 1.0) * poly_3)/j;
+         }
 
-     pp = n * (z * p1 - p2)/(z * z - 1.0);
-     z1 = z;
-     z  = z1 - p1/pp;                   // Newton's method
-      } while(fabs(z - z1) > ZERO);
 
-          /*
-      ** Scale the root to the desired interval and put in its symmetric
-          ** counterpart. Compute the weight and its symmetric counterpart
-          */
+         // Computing the derivative poly_derivative of the polynomial
+         poly_derivative = n * (z_guess * poly_1 - poly_2)/(z_guess * z_guess - 1.0);
+         z_approx = z_guess;
 
-      *(x_low++)  = xm - xl * z;
-      *(x_high--) = xm + xl * z;
-      *w_low      = 2.0 * xl/((1.0 - z * z) * pp * pp);
+         // Apply newton's method to find zeropoint
+         z_guess  = z_approx - poly_1/poly_derivative ;
+      } while(fabs(z_guess - z_approx) > ZERO);
+
+
+      // Scaling roots and weights to interval of [-1,1], and put in symmetric counterparts
+      *(x_low++)  = xm - xl * z_guess;
+      *(x_high--) = xm + xl * z_guess;
+      *w_low      = 2.0 * xl/((1.0 - z_guess * z_guess) * poly_derivative * poly_derivative);
       *(w_high--) = *(w_low++);
-   }
-} // End_ function gauleg()
+   }}
 
 
-double GaussLegendre::func_cart(double x1, double y1, double z1, double x2, double y2, double z2){
+double GaussLegendre::Cartesian_nodes(double x1, double y1, double z1, double x2, double y2, double z2){
     if  ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2) != 0)
         return exp(-4*(sqrt(x1*x1+y1*y1+z1*z1)+sqrt(x2*x2+y2*y2+z2*z2)))
                   / sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2));

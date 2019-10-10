@@ -5,6 +5,7 @@
 #include <armadillo>
 #include <string>
 
+#include "GaussLaguerre.h"
 #include "GaussLegendre.h"
 #include "ReadFiles.h"
 #include "WriteResults.h"
@@ -18,7 +19,8 @@ int main()
     int b = 3;
 
     // Defining instances and variables
-    GaussLegendre *GL = new GaussLegendre();
+    GaussLegendre *GLEG = new GaussLegendre();
+    GaussLaguerre *GLAG = new GaussLaguerre();
     ReadFiles *rf = new ReadFiles();
     WriteResults *wr = new WriteResults();
     vector<int> N;
@@ -34,11 +36,12 @@ int main()
     // Define pointers
     int number_of_tests = N.size();
     double * Gauss_Legendre = new double [number_of_tests];
+    double * Gauss_Laguerre = new double [number_of_tests];
     int * N_Values = new int [number_of_tests];
 
-    GL-> Init_GaussLegendre(N, Gauss_Legendre, N_Values, a, b);
+//    GLEG-> Init_GaussLegendre(N, Gauss_Legendre, N_Values, a, b);
+//    wr -> WR_2A(exact_result, Gauss_Legendre, number_of_tests, N_Values);
 
-    wr -> WR_2A(exact_result, Gauss_Legendre, number_of_tests, N_Values);
-
+    GLAG -> Init_GaussLaguerre(N, Gauss_Laguerre, N_Values, a, b, 2.0);
 
 }
