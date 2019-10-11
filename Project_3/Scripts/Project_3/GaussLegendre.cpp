@@ -108,10 +108,14 @@ void GaussLegendre::G_Legendre_NodesWeights(double a, double b, double* x, doubl
    }}
 
 
-double GaussLegendre::Cartesian_nodes(double x1, double y1, double z1, double x2, double y2, double z2){
-    if  ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2) != 0)
-        return exp(-4*(sqrt(x1*x1+y1*y1+z1*z1)+sqrt(x2*x2+y2*y2+z2*z2)))
-                  / sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2));
+
+double GaussLegendre::Cartesian_nodes(double x_1 , double  y_1 , double  z_1 , double  x_2 , double  y_2 , double  z_2 ){
+    double r = (x_1 - x_2 ) * (x_1 - x_2 ) + ( y_1 - y_2 ) * ( y_1 - y_2 ) + ( z_1 - z_2 ) * ( z_1 - z_2 );
+    double r_1 = x_1 *x_1 + y_1 * y_1 + z_1 * z_1;
+    double r_2 = x_2 * x_2 + y_2 * y_2 + z_2 * z_2;
+
+    if  (r != 0)
+        return exp(-4*(sqrt(r_1)+sqrt(r_2))) / sqrt(r);
     else
         return 0;
 }
