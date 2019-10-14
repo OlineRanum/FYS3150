@@ -11,37 +11,49 @@ aps,
 \usepackage{amsmath}
 \usepackage{physics}
 \usepackage{booktabs}
+\usepackage{float}
 \bgroup
 \def\arraystretch{1.3}
-
+\newcommand{\HRule}{\rule{\textwidth}{0.5mm}}
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 \makeatother
 
 \begin{document}
-\title{Numerical integration}
-\author{Oline A. Ranum}
-\affiliation{%
- University of Oslo \\ Institute for physics\\
- olinear@student.matnat.uio.no
-}
-\date{\today}
+\onecolumngrid
 
+\begin{center}
+	\large\textbf{Numerical integration methods\\ \small{The Gaussian Quadrature and Monte Carlo Procedures}}
+\end{center}
+\vspace{5mm}
 
-\begin{abstract}
-	The following experiment was undertaken as a mean to 
-\end{abstract}
-\maketitle
+\begin{center}
+	\small{$^1$ Oline A. Ranum}\\
+\end{center}
+
+\begin{center}
+	\small{$^1$ University of Oslo, Institute of physics, 
+		olinear@student.matnat.uio.no}
+\end{center}
+
+\begin{center}
+	\textit{\today}
+\end{center}
+\vspace{7mm}
+\noindent 
+\HRule \\
+In this numerical experiment the numerical integration of the expectation value of the exchange energy between two electrons in a helium atom, $E[f]$, is estimated using both the Gaussian Quadrature and Monte Carlo integration. The integral is estimate using a Gauss-Legendre procedure yielding $E[f] \approx (1.9 \pm 0.2)$ and a Gauss-Laguerre procedure yielding $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$. The error is taken to be the relative error. The estimates are compared with the exact value for $alpha = 2$ that is $I = 1.928\times 10^{-1}$. A brute force Monte Carlo method finds the value and variation $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$ based on a uniform distribution. An improvement to this estimate using importance sampling finds the value $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$. In the end, the importance sampling is parallelized and set to run on four processors, yielding $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$ with a grater potential for efficiency. It is concluded that a parallelized Monte Carlo integration with importance sampling is the most efficient method, as well as yielding the highest accuracy. 
+  \\
+\HRule
+\vspace{1cm}
 
 \section{Introduction}
-Wherever you go in science, there is the need to find integrals.
-- what are integrals 
--what is numerical integration 
-Numerical integration makes estimations  of any integral possible, not just the ones that fit a mathematical framework. 
-A broad selection of numerical integration methods has since been developed. 
-
-Monte Carlo methods are widely used in Science, from integration of multi-dimensional integrals to solving ab initio problems in for instance chemistry, physics, medicine or bilogy. Computational finance is one of the novel fields where monte carlo methods have found a new field of applications
-\newpage 
+\vspace{3mm}
+\twocolumngrid 
+Wherever you go in modern day science, there is a need for approximating integrals where an exact solution has not yet been established. Numerical integration is a term that first occurred in the 20th century. It has since become one of the most valuable tools in modern day science, and a widely studied subject. Amongst some of the most famous and useful approaches to numerical integration is both the Gaussian Quadrature and Monte Carlo Integration. I will in this paper investigate both of these approaches to solve for the expectation value of the ground state correlation energy between two electrons in a helium atom. \\
+\indent The papers initially presents all necessary theory for the experiment, and goes through the methods applied. The integral is first estimated using a Gauss-Legendre procedure, followed by an approach using Gauss-Laguerre. Thereafter, a brute force Monte Carlo integration is implemented using a uniform distribution function. The Monte Carlo approach is then improved implementing importance sampling and parallelization. The results are presented and discussed in regards to both efficiency and accuracy. A conclusion is presented on the back of the discussion, and states that the Monte Carlo method was found preferable for the above purpose. \\
+Monte Carlo methods are widely used in Science, from integration of multi-dimensional integrals to solving ab initio problems in for instance chemistry, physics, medicine or biology. The Gauss quadrature yielding an alternative approach to solve for some of these problems, presents the opportunity for discussion around both efficiency and accuracy in our methods. Numerical integration is a rich field that continuous to grow, and exaclty because of that this paper is important in regards to understanding the various components and contributions of our methods. A more thourough understanding of our methods leads to new fields and application, like for instance the finding of applying Monte Carlo methods into the newly upcoming field of computational science. I hope that this paper will be a contribution to a more thorough understanding of Monte Carlo integration as well as the Gaussian Quadrature. \newpage 
+ 
 \section{Theory}
 
 
@@ -312,39 +324,77 @@ The procedure is improved by applying importance sampling. That includes a trans
 \subsubsection*{Parallelization of procedure}
 I then use MPI to parallelize the procedure, and divide the samples on 4 processors. I employ various complier flags and comment on the results.
 
-\newpage 
+\newpage . \newpage
 \section{Result} \noindent 
-The ground state wave function for a two-electron system is plotted in figure \ref{wavefigure}. The wave function appears to have converged to zero at $r = \pm 1$. The value appears to be converging towards a value somewhat below the expected value of the closed form solution, and never approximates the closed form solution with three leading digits. The closest the integrated solution gets to a three digit precision is at N = 27 mesh points. The integrated values using the Gauss-Legendre Quadrature is plotted in figure \ref{integrated_results}. The time used by both the Gauss-Legendre and Gauss-Laguerre procedures are plotted in figure \ref{integrated_time} 
+The ground state wave function for a two-electron system is plotted in figure \ref{wavefigure}. The wave function appears to have converged to zero at $r = \pm 1$. \\ \indent 
+The results of the Gauss-quadrature based integration are presented in figure \ref{integrated_results}, who shows the expectation value estimate as a function of mesh points N. The time is indicated by the color gradient of the plot. The time as function of N is given explicitly in the appendix in figure \ref{itegrated time}for further details, alongside all tabulated values. The relative error is tabulated in the appendix as well, and follows the same function form as the expectation value and decreases as a function of N. The estimate of the expectation value integral appears to be converging towards values slightly diverging from exact value. It never fully approximates the solution for the selection of N values with three leading digits. The closest value for the Gauss-Legendre process is given by N = 27 converging slightly below and for Gauss-Laguerre at N = 15 converging slightly above the exact value.  
 
-\begin{figure}[!h]
+\newpage 
+\begin{figure}[!ht]
 	\includegraphics[scale = 0.24]{Wavefunction.png}
 	\caption{\label{wavefigure} The wave function or two electrons as the product of two 1s states. The function appears to have converged to zero at r = $\pm$1 for all practical purposes.}
 \end{figure}
+\vspace{20mm}
+\onecolumngrid
 
-\begin{figure}[!h]
-	\includegraphics[scale = 0.24]{Gauss_lagleg.png}
-	\caption{\label{integrated_results} The result of the Gauss-Legendre integration as a function of N. The exact result is $1.9277\times 10^{-1}$. }
-\end{figure}
-\begin{figure}[!h]
-	\includegraphics[scale = 0.24]{Gauss_time.png}
-	\caption{\label{integrated_time} The time used by the Gauss-Legendre (purple) and Gauss-Laguerre (blue) procedures to preform an integration as a function of N. }
-\end{figure}
+\begin{figure*}[hb!]
+	\includegraphics[width=\textwidth]{Gauss_lagleg_2.png}
+	\caption{\label{integrated_results} The result of the Gauss-Legendre and Gauss-Laguerre procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure*}
 
+\newpage 
+\twocolumngrid
+The results of the Monte Carlo integration procedures are presented in figure \ref{mc}. It is evident that the importance sampling and parallelized code produces the qualitatively best approximations. The importance sampling results are on average the closest to the exact value, but for every increase in N the approximations appears to converge closer to the exact solution.  \\  \indent 
+Looking at figure \ref{mc_time} representing the time evolutions as a function of N, it is evident that the parallelized procedure of the importance sampling is significantly faster than the procedure only running on a single  processor.  Figure \ref{mc_err} gives an indication of the variance of the various Monte Carlo procedures, and figure \ref{mc_pt} shows the precision as a function of time, $t(N)$. The variance converge towards zero as N increases for all three procedures. The parallelized Monte Carlo method has initially the highest variance, followed by the brute force importance sampled procedure and then the uniform distribution based procedure. 
+\\ \newpage 
+\begin{figure}[H]
+	\includegraphics[scale = 0.2]{MC_time.png}
+	\caption{\label{mc_time} The time result of the Monte Carlo integration procedures to approximate the expectation value of the interaction energy, as a function of N. The brute force Monte Carlo are represented by the stars, the importance sampling by the circles and the parallelized results by the triangles. }
+\end{figure} 
+
+\onecolumngrid
+
+\begin{figure*}[!h]
+	\includegraphics[width=\textwidth]{MC_integration.png}
+	\caption{\label{mc_err} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure*}
+
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.33]{MC_integration_error.png}
+	\caption{\label{mc_pt} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure*}
+
+\begin{figure*}[!h]
+	\includegraphics[scale = 0.33]{MC_integration_PT.png}
+	\caption{\label{mc} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure*}
+\twocolumngrid
+\newpage.
+\newpage.
+\newpage.
+\newpage.
 \newpage 
 \section{Discussion}
 In regards to the chosen $\pm \lambda$ integration limits, the results seems reasonable. A way of thesting this is ofcourse to run the program for a various selection of $\lambda$ values and map how it affects the finite results. This is deemed excessive for the purposes of this paper, and is left for future work. 
 Why the results appears to converge to the wrong number, or perhaps a saddle point, is yet to be disclosed. It might be an error made in the coding, or it might be caused by a fault of method. 
 \section{Conclusion }
 
-\newpage 
+\newpage. \newpage
 \onecolumngrid
 \section{Referances}
 [1] Handbook of computational methods for integration, P. K. Kythe and M. R. Schaferkotter, Chapman \& Hall/CRC, Boca Raton Florida, 2005.
-
+\newpage 
 \section{Appendix}
-\section{Tabulated values}
+\subsection{Time of Legendre and Laguerre procedures }
+\begin{figure}[!h]
+	\includegraphics[scale = 0.3]{Gauss_time.png}
+	\caption{\label{integrated_time} The result of the Gauss-Legendre integration as a function of N. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure}
+
+\subsection{Tabulated values}
 
 \begin{table}[!h]
+	\caption {Gauss-Legendre Quadrature} 
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value $\times 10^{-1}$} & \hspace{3mm}\textbf{Relative error $\times 10^{-1}$} & \hspace{3mm}\textbf{Time  [s]} \hspace{5mm}\\
@@ -369,11 +419,12 @@ Why the results appears to converge to the wrong number, or perhaps a saddle poi
 			39 & 1.896  & 0.2  & 95.8025 \\
 
 		\hline 
-	\end{tabular}
-	\caption{\label{legendre_values} \centering The integrated value of the system using Gauss-Legendre quadrature. The error estimate is given as the relative error. The exact value is equal to $I_{exact} = 1.92766 \times 10^{-1}$.}
+	\end{tabular} \\ [5pt]
+	\label{legendre_values} \centering  Integrated expectation value estimate using Gauss-Legendre quadrature. The error estimate is given as the relative error.
 \end{table}
 
 \begin{table}[!h]
+	\caption{Gauss-Laguerre Quadrature }
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$ & \textbf{Relative Error} $\times 10^{-1}$ & \hspace{3mm}\textbf{Time  [s]} \hspace{5mm}\\
@@ -400,12 +451,13 @@ Why the results appears to converge to the wrong number, or perhaps a saddle poi
 		
 		\hline 
 	\end{tabular}
-	\caption{\label{laguerre_values} \centering The integrated value of the system using Gauss-Laguerre quadrature. The exact value is equal to $I_{exact} = 1.92766 \times 10^{-1}$.}
+	\\ [3pt] \label{laguerre_values} \centering Integrated expectation value estimate using Gauss-Laguerre quadrature. The error estimate is given as the relative error.
 \end{table}
 
 
 
 \begin{table}[!h]
+	\caption{Brute force Monte Carlo integration}
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$& \hspace{3mm} \textbf{Variance} $\times 10^{-1}$ & \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -416,12 +468,13 @@ Why the results appears to converge to the wrong number, or perhaps a saddle poi
 			1000000 & 2.1790  & 0.0009  & 14.3547 \\
 			10000000 & 1.8983  & 0.0003  & 145.0928 \\
 		\hline 
-	\end{tabular}
-	\caption{\label{mc_values} \centering The integrated value of the system using Monte Carlo integration. The values are the averages of 10 independent runs of the procedure. The exact value is equal to $I_{exact} = 1.92766 \times 10^{-1}$.}
+	\end{tabular} \\ [3pt]
+	\label{mc_values} \centering The integrated value of the system using Monte Carlo integration. The values are the averages of 10 independent runs of the procedure. 
 \end{table}
 
 
 \begin{table}[!h]
+	\caption{Monte Carlo Importance Sampling}
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$& \hspace{3mm} \textbf{Variance}  $\times 10^{-1}$& \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -433,12 +486,13 @@ Why the results appears to converge to the wrong number, or perhaps a saddle poi
 			10000000 & 1.9292  & 0.0004  & 163.2929 \\
 
 		\hline 
-	\end{tabular}
-	\caption{\label{mc_values_is} \centering The integrated value of the system using Monte Carlo integration with importance sampling. The values are the averages of 10 independent runs of the procedure. The exact value is equal to $I_{exact} = 1.92766 \times 10^{-1}$.}
+	\end{tabular} \\ 
+	[3pt]\label{mc_values_is} \centering The integrated value of the system using Monte Carlo integration with importance sampling. The values are the averages of 10 independent runs of the procedure.
 \end{table}
 
 
 \begin{table}[!h]
+	\caption{Monte Carlo Parallelized Importance Sampling }
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value}$\times 10^{-1}$ & \hspace{3mm} \textbf{Variance} $\times 10^{-1}$ & \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -449,48 +503,45 @@ Why the results appears to converge to the wrong number, or perhaps a saddle poi
 			1000000 & 1.9222  & 0.0014  & 4.8073 \\
 			10000000 & 1.9264  & 0.0004  & 49.3534 \\
 		\hline 
-	\end{tabular}
-	\caption{\label{mc_values_par} \centering The integrated value of the system using Monte Carlo integration with importance sampling and parallelization The values are the averages of 10 independent runs of the procedure. The exact value is equal to $I_{exact} = 1.92766 \times 10^{-1}$.}
+	\end{tabular} \\ [3pt]
+	\label{mc_values_par} \centering The integrated value of the system using Monte Carlo integration with importance sampling and parallelization The values are the averages of 10 independent runs of the procedure.
 \end{table}
 
-
-
-\newpage
-\twocolumngrid
-
-\subsubsection{Legendre Polynomials}
-$P_n$ over the interval $[-1,1]$, so that $P_n(1) = 1$. If $x_{m,n}$ denotes the $m$-th zero of $P_n(x)$, where $x_{n,1} > x_{n,2} > \dots > x_{n,n} $, then 
-\begin{equation}
+\newpage. \newpage
+\subsection{Legendre and Laguerre Polynomials}
+\subsubsection{Legendre Polynomials} \noindent 
+The Legendre polynomial $P_n$ is defined over the interval $[-1,1]$, so that $P_n(1) = 1$. If $x_{m,n}$ denotes the $m$-th zero of $P_n(x)$, where $x_{n,1} > x_{n,2} > \dots > x_{n,n} $, then the abscissas is given by
+\begin{equation*}
 x_{n, m}=\left(1-\frac{1}{8 n^{2}}+\frac{1}{8 n^{3}}\right) \cos \frac{(4 m-1) \pi}{4 n+2}+O\left(n^{-4}\right)
-\end{equation}
-The norm is equal to $2/(2n+1)$. The orthonormal legendre polynomials $p_n(x)$ are defined as 
-\begin{equation}
+\end{equation*}
+with a norm is equal to $2/(2n+1)$. The orthonormal Legendre polynomials $p_n(x)$ are defined as 
+\begin{equation*}
 p_{n}(x)=\sqrt{\frac{2 n+1}{2}} P_{n}(x)
-\end{equation}
+\end{equation*}
 with the leading coefficient of $p_n(x)$ is 
-\begin{equation}
+\begin{equation*}
 a_{n}=\sqrt{\frac{2 n+1}{2}} \frac{(2 n) !}{2^{n}(n !)^{2}}
-\end{equation}
-It's seriesform is
-\begin{equation}
+\end{equation*}
+The Legendre series form thus becomes 
+\begin{equation}\label{polyleg}
 P_{n}(x)=\frac{1}{2^{n}} \sum_{k=0}^{[n / 2]}(-1)^{k}\left(\begin{array}{l}{n} \\ {k}\end{array}\right)\left(\begin{array}{c}{2 n-2 k} \\ {n}\end{array}\right) x^{n-2 k}
-\end{equation}
+\end{equation} \\ 
+
 \subsubsection{Laguerre Polynomials}
-For the polynomial $L_n(x)$ over the intervall $[0,\infty)$, so that $L_n(0) = n!$ and
-\begin{equation}
+The Laguerre polynomial $L_n(x)$ is defined over the interval $[0,\infty)$, so that $L_n(0) = n!$ and
+\begin{equation*}
 \int_{0}^{\infty} e^{-x} L_{n}(x) L_{m}(x) d x=\left\{\begin{array}{ll}{0} & {\text { if } n \neq m} \\ {(n !)^{2}} & {\text { if } n=m}\end{array}\right.
-\end{equation}
-where its m-th zero $xn,m$ is given by 
-\begin{equation}
+\end{equation*}
+where the m-th zero $x_{n,m}$ is given by 
+\begin{equation*}
 x_{n, m}=\frac{j_{m}^{2}}{4 k_{n}}\left(1+\frac{j_{m}^{2}-2}{48 k_{n}^{2}}\right)+O\left(n^{-5}\right)
-\end{equation}
-where $k_n = n + 1/2$ and $j_m$ is the m-th positive zero of the bessel function $J_n(x)$. The norm of the polynomials is 1. 
-Its series form is
-\begin{equation}
+\end{equation*}
+Here $k_n = n + 1/2$ and $j_m$ is the m-th positive zero of the bessel function $J_n(x)$. The norm of the polynomials is 1. Thus the series form of the Laguerre polynomials becomes
+\begin{equation}\label{polylag}
 L_{n}(x)=\sum_{k=0}^{n}(-1)^{k}\left(\begin{array}{c}{n} \\ {n-k}\end{array}\right) \frac{1}{k !} x^{k}
 \end{equation}
+[Kythe \& Schafotter].
 
-\subsection{Derivation of analytical expectation value of the correlation energy}
-The expectation value of the correlation energy between two electrons which repel each other via the classical Coulomb interaction can be 
+
 
 \end{document}
