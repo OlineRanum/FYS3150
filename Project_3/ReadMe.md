@@ -18,7 +18,7 @@ The program is structured in the usual way with main script and class extensions
 | Importance Sampling MC|  1 |
 | Parallellized Importance Sampling MC |  2 |
 
-The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ containing all the values 
+The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ containing all preferred values of N, presented as in the example below.  
 
 ##### Example of _N.txt_ file:
 ```diff
