@@ -22,7 +22,7 @@ The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ conta
 
 ### Example of _N.txt_ file:
 
-<span style="background-color:pink">Mrs. Robinson</span>
+<span style="background-color:green">Mrs. Robinson</span>
 
 
 ## Setup & Running 
