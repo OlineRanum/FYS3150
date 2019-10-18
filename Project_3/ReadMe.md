@@ -21,9 +21,12 @@ The program is structured in the usual way with main script and class extensions
 The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ containing all the values 
 
 ### Example of _N.txt_ file:
-
- <div style="background-color:rgba(0.5, 0.5, 0, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
+<div style="background-color:rgba(0, 0, 0, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
  <a href="/donate">DONATE</a>
+ </div>
+ 
+ <div style="background-color:rgba(0, 0, 0, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0; margin-top:30px">
+ <a href="/blog">VIEW THE BLOG</a>
  </div>
 
 
