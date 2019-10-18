@@ -1,5 +1,5 @@
 \documentclass[%
-reprint,
+reprint,nofootinbib,
 amsmath,amssymb,
 aps,
 ]{revtex4-1}
@@ -12,6 +12,8 @@ aps,
 \usepackage{physics}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage[bottom]{footmisc}
+\usepackage{scrextend}
 \bgroup
 \def\arraystretch{1.3}
 \newcommand{\HRule}{\rule{\textwidth}{0.5mm}}
@@ -42,20 +44,20 @@ aps,
 \vspace{7mm}
 \noindent 
 \HRule \vspace{2mm}\\
-The main objective of this paper is to evaluate the efficiency and accuracy of Monte Carlo Integration compared to the Gauss-Legendre and Gauss-Laguerre procedures. As such, both methods are employed to preform a numerical integration of the expectation value of the exchange energy between two electrons in a helium atom, $E[f]$. The Gauss-Legendre procedure results in $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The Gauss-Laguerre procedure yields $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$. The accuracy is based the relative error. The best result from brute force Monte Carlo integration using a uniform distribution function is found for $N=10^7$ yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The Monte Carlo is improved by implementing the concept of importance sampling, yielding a result of $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ using an exponential distribution function. The accuracy estimate is given as the variance for the Monte Carlo estimations. In the last section of this paper the Monte Carlo integration method is parallelized to run on four processors simultaneously using MPI, yielding a result $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$. The parallelized process is found to have the greatest temporal efficiency in regards to accuracy. 
-\vspace{2mm}  \\
+The main objective of this paper is to evaluate the efficiency and accuracy of Monte Carlo Integration compared to the Gauss-Legendre and Gauss-Laguerre quadrature. As such, the procedures are employed to preform numerical integration yielding the expectation value of the ground state correlation energy, $E[f]$, between two electrons in an helium atom. The Gauss-Legendre procedure results in $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The Gauss-Laguerre procedure yields $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$. The accuracy is based on the relative error, which is considered to be a poor method for approaching the error although a more elaborate error analysis is left for future work. The best result from brute force Monte Carlo integration using a uniform distribution function is found for $N=10^7$, yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The Monte Carlo estimate is improved by implementing the concept of importance sampling, yielding a result of $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ using an exponential distribution function. The accuracy estimate is given as the variance for the Monte Carlo estimations. In the last section of this paper the Monte Carlo integration method is parallelized to run on four processors simultaneously using MPI, giving the result $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$. The parallelized Monte Carlo process is found to have the greatest temporal efficiency in regards to accuracy. 
+\vspace{1.5mm}  \\
 \HRule
-\vspace{1.4cm}
+\vspace{0.3cm}
 
 \section{Introduction}
 \vspace{5mm}
 \twocolumngrid \noindent
-Wherever you go in science today, there is a need for approximating integrals that do not have known closed form solutions. The term numerical integration first occurred in the 20th century, and has since become one of the most valuable tools in modern science. Amongst some of the most famous approaches to numerical integration are the Gaussian Quadrature and Monte Carlo integration. The Gaussian quadrature seeks the best numerical estimate of an integral by attempting to optimize a selection of abscissas. Monte Carlo methods, on the other hand, is a far simpler selection of random abscissas preformed on a much larger scale. This paper intends to evaluate the efficiency of both approaches by applying the two to solve for a physical system where an exact solution is known. The estimate will be preformed on the expectation value of the ground state correlation energy between two electrons in a helium atom. \\
-\indent The paper initially presents the theory behind the integration methods, and elaborates on how the procedures are applied to estimate the correlation energy. The integral is first estimated using a Gauss-Legendre approach, followed by a Gauss-Laguerre procedure. In the following section a brute force Monte Carlo integration is implemented using a uniform distribution function. The Monte Carlo approach is then improved by implementing the concept of importance sampling and by parallelization of the code. The results are presented and discussed in regards to both efficiency and accuracy. In the end a conclusion is presented on the back of the discussion. \\ \indent 
-A comprehension for the foundations of numerical methods yield grounds for new applications. For instance, the appreciation of Monte Carlo methods across various fields has given sciences like chemistry, physics and biology an invaluable tool. Monte Carlo methods are widely used to preform  multi-dimensional integrals across all sections of science. It even happens to gives life to new sections, like the up and coming sector of statistical finance. When compared to methods of differentiating origins, like the Gaussian quadrature, the evaluation broadens our comprehension for numerical approaches in general. Comparing alternative approaches presents the  opportunity for discussion around both efficiency and accuracy of methods. Numerical integration is a rich field that continuous to grow, and it is my hope that this paper will be a contribution to a deeper understanding of the relationship between our selected methods. \newpage 
+Wherever you go in science today, there is a need for approximating integrals that do not have a known closed form solution. The term numerical integration first occurred in the 20th century, and has since become one of the most valuable tools in modern science. Amongst some of the most famous approaches to numerical integration are the Gaussian Quadrature and Monte Carlo integration. The Gaussian quadrature seeks the best numerical estimate of an integral by attempting to optimize a selection of abscissas. Monte Carlo integration, on the other hand, is based on a far simpler selection of random abscissas preformed on a much larger scale. This paper intends to evaluate the efficiency of both approaches by applying the two methods to solve for a physical system where an exact solution is known. The estimate will be preformed on the expectation value of the ground state correlation energy between two electrons in an helium atom. \\
+\indent The paper initially presents the theory behind the integration methods, and elaborates on how the procedures are applied to estimate the correlation energy. In the first part of the paper the integral is estimated using the Gauss-Legendre quadrature, followed by the Gauss-Laguerre quadrature. In the second part of the paper a brute force Monte Carlo integration is implemented using a uniform distribution function. The Monte Carlo approach is then improved by implementing the concept of importance sampling and by parallelization of the code. Results are presented and discussed in regards to both efficiency and accuracy. In the end a conclusion is presented on the back of the discussion. \\ \indent 
+A comprehension for the foundations of numerical methods yield ground for new applications. For instance, the appreciation of Monte Carlo methods across various fields has given sciences like chemistry, physics and biology an invaluable tool. Monte Carlo methods are widely used to preform  multi-dimensional integrals across all sections of science. It even happens to gives life to new sections, like the up and coming sector of statistical finance. When compared to methods of differentiating origins, like the Gaussian quadrature, the evaluation broadens our comprehension for numerical approaches in general. Comparing alternative approaches presents the  opportunity for discussion of both efficiency and accuracy of methods. Numerical integration is a rich field that continuous to grow, and it is my hope that this paper will be a contribution to a deeper understanding of the relationship between our selected methods. \newpage 
  
 \section{Theory} \noindent 
-The basic idea behind all numerical integration is to approximate an integral 
+The basic idea behind all numerical integration is to approximate an integral with
 \begin{equation}\label{numint}
 I = \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{N-1} \omega_if(x_i)
 \end{equation}
@@ -65,14 +67,14 @@ where $\omega$ and $x$ are respectively the chosen weights and abscissas.
 \subsection*{The Gaussian quadrature} \noindent 
 The Gaussian quadrature is based on the notion that a suitable variation of the abscissas would in general lead to a better accuracy than the traditional interpolatory quadrature rules, such as Simpson's- or the trapezoidal method. The traditional approaches preassigns the abscissas equidistantly, or with a fixed distribution, while Gaussian quadrature seeks the best numerical estimate by optimizing the choice of abscissas. The fundamental theorem of Gaussian quadrature states that this optimal choice is precisely the roots of the orthonormal polynomial of the same interval and weighting function. As stated in Kyte and Schaferkotter, the $n$-point Gaussian quadrature is optimal because it fits all polynomials up to a degree $2n-1$ exactly [Kythe \& Schaferkotter, 2005]. \\ \indent 
 The Gaussian quadrature provides the freedom to choose both the weighting coefficients and the location of the abscissas at which the function is to be evaluated, leaving twice the degrees of freedom in regards to the classical interpolatory quadratures [Press et al. 2007]. As such, many variations and generalizations of the Gaussian formulas have been developed on the form of equation \ref{numint}, where the weights $\omega_i$ are positive zeros of certain orthogonal polynomials of suitable abscissas $x_i$ [Kythe \& Schaferkotter]. \\
-\indent It is important to note that higher order does not necessarily imply higher accuracy. The former only implies the latter in the case where the integrand is very smooth, in the sense that the integrand is well approximated by a polynomial. In the case of a Gaussian quadrature, it is possible to arrange both weights and abscissas to make integrals exact for a class of integrands on the form of polynomials times some known function $W(x)$. One chooses $W(x)$ to remove integrable singularities from the desired integral. I.e. given $W(x)$ and an integer N, it is possible to find a set of weights $w_j$ and nodes $x_j$ such that the approximation 
+\indent It is important to note that higher order does not necessarily imply higher accuracy. The former only implies the latter in the case where the integrand is very smooth, in the sense that the integrand is well approximated by a polynomial. In the case of a Gaussian quadrature, it is possible to arrange both weights and abscissas to make integrals exact for a class of integrands on the form of polynomials times some known function $W(x)$. One chooses $W(x)$ to remove singularities from the desired integral. I.e. given $W(x)$ and an integer N, it is possible to find a set of weights $w_j$ and nodes $x_j$ such that the approximation 
 \begin{equation*}
 	\int_{a}^{b}W(x)f(x)dx \approx \sum_{j = 0}^{N-1}w_jf(x_j)
 \end{equation*}
-is exact if $f(x)$ is a polynomial [Press et al., 2015].
+is exact if $f(x)$ is a polynomial [Press et al.].
 
 \subsubsection*{Orthonormal polynomials} \noindent 
-The subject of Gaussian quadratures was elaborated by Jacobi's derivation of Gauss's work by means of orthogonal polynomials. A set of polynomials $\{p_i\}$ of degree $i$ is said to be orthogonal with respect to the inner-product if $\langle p_i, p_j \rangle = 0$ for $i\not = j$ on a finite or infinite interval $[a,b]$. That is, if the powers are orthonormalized, one should obtain a unique set of polynomials $p_i(x)$ of degree $n$ such that \vspace{2mm} \\
+The subject of Gaussian quadratures was extended by Jacobi's derivation of Gauss's work, by means of orthogonal polynomials. A set of polynomials $\{p_i\}$ of degree $i$ is said to be orthogonal with respect to the inner-product if $\langle p_i, p_j \rangle = 0$ for $i\not = j$ on a finite or infinite interval $[a,b]$. That is, if the powers are orthonormalized, one should obtain a unique set of polynomials $p_i(x)$ of degree $n$ such that \vspace{2mm} \\
 \begin{equation*}
 	\braket{p_i}{p_j} = 
 	\int_{a}^{b} W(x)p_i(x)p_j(x)dx = \delta_{ij} 
@@ -85,8 +87,7 @@ where $\delta_{ij}$ is the Kronecker delta\vspace{1mm} \\
 	0 & i \not =j 
 	\end{array} \right\}
 \end{equation*}\vspace{1mm} \\
-The orthogonality property for polynomials defined in this manner is equivalently defined for a discrete set of polynomials. Two functions are said to be normalized if its scalar product with itself is unity. A set of functions that are all mutually orthogonal and also all  individually normalized is called an orthonormal set [Press et al.].
-
+The orthogonality property for polynomials defined in this manner is directly translatable to discrete set of polynomials. Two functions are said to be normalized if its scalar product with itself is unity. A set of functions that are all mutually orthogonal and also all  individually normalized is called an orthonormal set [Press et al.].
 \subsubsection{Constructing orthogonal polynomial sets} \noindent 
 It is possible to find a set of polynomials through recurrence relations which has the property of being mutually orthogonal over a specified weight function W(x) and that includes exactly one polynomial $p_j(x)$, of order $j$. Press et al. describes the constructive procedure as following\vspace{0.5mm} \\
 \begin{align*}
@@ -99,10 +100,10 @@ where  \\
 	a_j &= \dfrac{\braket{xp_j}{p_j}}{\braket{p_j}{p_j}} &\hspace{1mm} j = 0,1, \dots \\ &&\\
 	b_j &=\dfrac{\braket{p_j}{p_j}}{\braket{p_{j-1}}{p_{j-1}}} &\hspace{1mm} j = 1,2, \dots
 \end{align*} \vspace{0.5mm} \\
-The coefficient $b_0$ would be arbitrary, and can therefore be set to zero. Then the polynomial $p_j(x)$ have exactly $j$ distinct roots in a given interval $[a,b]$. For classical orthogonal polynomials, such as the Gauss-Legendre and Gauss-Laguerre, the coefficients $a_j$ and $b_j$ have an explicit solution. Thus, the problem reduces to determining the zeros of the polynomial $p_N(x)$, and computation of the weights $w_i$ [Press et al.]\\
+The coefficient $b_0$ would be arbitrary, and can therefore be set to zero. Then the polynomial $p_j(x)$ have exactly $j$ distinct roots in a given interval $[a,b]$. For classical orthogonal polynomials, such as the Gauss-Legendre and Gauss-Laguerre, the coefficients $a_j$ and $b_j$ have an explicit solution. Thus, the problem reduces to determining the zeros of the polynomial $p_N(x)$, and computation of the weights $w_i$ [Press et al.]
 
 \subsubsection{Computation of abscissas and weights} \noindent
-Both the Gauss-Legendre and - Laguerre are classical, well-studied, orthogonal polynomials and can be used as good starting guesses for iterative polynomial recurrence relations. After an initial guess is made, one can apply Newtons method, and expect  it to converge rather rapidly to locate zero-points. For the Gauss-Legendre and Gauss-Laguerre procedure the following direct root finding is considered to be faster by a factor of 3 to 5, than any other method [Press et al.] \vspace{5mm}\\
+Both the Gauss-Legendre and - Laguerre are classical, well-studied, orthogonal polynomials and can be used as good starting guesses for iterative polynomial recurrence relations. After an initial guess is made, one can apply Newtons method, and expect  it to converge rather rapidly to locate zero-points. For the Gauss-Legendre and Gauss-Laguerre quadrature the following direct root finding based on the coefficients $a_j$ and $b_j$ is considered to be faster than any other method by a factor of 3 to 5\vspace{5mm}\\
 \vspace{2mm} \noindent 
 \textit{Gauss-Legendre}: 
 \begin{align}\label{glegfunc} 
@@ -115,8 +116,9 @@ Both the Gauss-Legendre and - Laguerre are classical, well-studied, orthogonal p
 &W(x) = x^\alpha e^{-x} \hspace{3mm} 0 < x < \infty \nonumber  \\ & \nonumber \\ 
 &(j+1)L_{j+1}^\alpha = (-x+2j+\alpha+1)L_j^\alpha \nonumber \\ & \hspace{35mm}-(j+\alpha)L_{j-1}^\alpha
 \end{align} 
+\hspace{6.8cm}[Press et al.] 
 \subsubsection{The Newton-Raphson method} \noindent 
-In order to employ Newtons method to locate the the appropriate abscissas, one only needs the suitable polynomial, its derivative and an initial abscissas.  The Newton-Raphson method is a one-dimensional root-finding routine, that easily generalizes to multiple dimensions. The method requires evaluation of the function and its derivative, at arbitrary points x. The method is geometrically an extension of a tangent line at the current point $x_i$. The tangent is extended until it crosses zero, then the next guess is placed at $x_{i+1}$ to the abscissa of that zero crossing. The method derives from a Taylor series expansion of a function in the neighborhood of a point. The Newton-Raphson formula is expressed as \vspace{2mm} \\
+In order to employ Newtons method to locate the the appropriate abscissas, one only needs the suitable polynomial, its derivative and an initial abscissas.  The Newton-Raphson method is a one-dimensional root-finding routine, that easily generalizes to multiple dimensions. The method requires evaluation of the function and its derivative at arbitrary abscissas x, and is geometrically an extension of a tangent line at the current point $x_i$. The tangent is extended until it crosses zero, then the next guess is placed at $x_{i+1}$ to the abscissa of that zero crossing. The method derives from a Taylor series expansion of a function in the neighborhood of a point. The Newton-Raphson formula is expressed as \vspace{2mm} \\
 \begin{equation*}
 	x_{i+1} = x_i -\dfrac{f(x_i)}{f'(x_i)}
 \end{equation*}
@@ -126,7 +128,7 @@ with associated error propagation\vspace{2mm} \\
 \end{equation}\vspace{2mm} \\
 This method is efficient as it converges quadratically. The derivate of the polynomial can be evaluated using the standard relations in terms of $p_N$ and $p_{N-1}$ \vspace{2mm} \\
 \begin{equation*}
-	f'(x) \approx \dfrac{f(x+dx)- f(x)}{dz}
+	f'(x) \approx \dfrac{f(x+dx)- f(x)}{dx}
 \end{equation*}\vspace{2mm} 
  \hspace{65mm} [Press et al.]
 
@@ -174,15 +176,15 @@ where $p(y)$ is given by the uniform distribution of $y\in[0,1]$. Assuming that 
 \begin{equation*}
 p(y)dy = \exp{-y}dy = dx
 \end{equation*} \\ 
-The above definition is a functions of a single stochastic variable, and is  known as univariant. A PDF consisting of multiple variables is usually referred to as mutlivariant, and the multivariant expectation value is defined similarly as the univariante case. If all stochastic variables are taken into account simultaneously, the form of the expectation value becomes\vspace{2mm} 
+The above definition is a functions of a single stochastic variable, and is  known as univariate. A PDF consisting of multiple variables is usually referred to as multivariate, and its expectation value is defined similarly as the univariate evaluation. If all stochastic variables are taken into account simultaneously, the form of the expectation value becomes\vspace{2mm} 
 \begin{align*}
 	E[f] =  \int\dots\int &f(x_1\dots x_N)P(x_1\dots x_N)dx_1\dots dx_2
 \end{align*}
-In the case where the variables are uncorrelated, the factor $P(x_1,...,x_N)$ can be factorized so that \\
+In the case where the variables are uncorrelated, the distribution factor $P(x_1,...,x_N)$ can be factorized so that \\
 \begin{equation*}
 	P(x_1,\dots,x_N) = \prod_{i = 1}^{N} p_i(x_i)
 \end{equation*} \\
-where $p_i(x_i)$ is the univariant PDF of $X_i$. \vspace{2mm}
+where $p_i(x_i)$ is the univariate PDF of $X_i$. \vspace{2mm}
 
 \subsubsection{The Monte Carlo method} \noindent 
 Given the above definition of the PDF and taking the weights of the integral definition from equation \ref{numint} to be equal to one, $\omega_i = 1$, the corresponding rectangle method becomes \\
@@ -200,8 +202,8 @@ Then the average of the function $f$ for a given PDF is\vspace{2mm} \\
 
 \hspace{52mm} [M. Jensen, 2015]
 
-\subsubsection{Monte Carlo Error}
-For a stochastic variable X, the variance is\\
+\subsubsection{Monte Carlo Error}\noindent 
+The variance of a stochastic variable X is defined as\\
 \begin{align}\label{var}
 	Var(x) = \sigma_X^2 &= \expval{(x-\expval{x})^2} c\nonumber \\
 	&= \int(x-\expval{x})^2p(x)dx\nonumber\\
@@ -213,7 +215,7 @@ For a stochastic variable X, the variance is\\
 
 
 \subsubsection{Importance sampling} \noindent 
-A way of improving the Monte Carlo integration is by employing the concept of importance sampling. Importance sampling is based on a change of variables $p(x)\rightarrow p(y)$ in the case that a probability distribution function $p(y)$ follows $f$ closely. The principle leads to a smooth integrand where it is possible to sample over only the relevant abscissas. In the case that $p(y)$ is a normalized PDF whose behavior resembles that of function $f$ defined on $y\in[a, b]$, the integral can be rewritten as  \\
+A way of improving the Monte Carlo integration is by employing the concept of importance sampling. Importance sampling is based on a change of variables $p(x)\rightarrow p(y)$ in the case that a probability distribution function $p(y)$ follows $f$ closely. The principle leads to a smooth integrand where it is possible to sample over only the relevant abscissas. In the case that $p(y)$ is a normalized PDF whose behavior resembles that of function $f$ defined on $y\in[a, b]$, the integral of equation 8 can be rewritten as  \\
 \begin{equation*}
 	I = \int_{a}^{b}f(y)dy = \int_{a}^{b}p(y)\dfrac{f(y)}{p(y)}dy 
 \end{equation*}\vspace{2mm} \\
@@ -239,9 +241,9 @@ The variance after such a transformation will be \vspace{2mm} \\
 	\sigma^2 = \dfrac{1}{N}\sum_{i = 1}^{N}\qty(\dfrac{F(y(x))}{p(y(x))})^2 -\qty(\dfrac{1}{N}\sum_{i = 1}^{N}\dfrac{F(y(x))}{p(y(x))})^2
 \end{equation}\\
 
-\hspace{50mm}[M. Jensen]
+\hspace{60mm}[M. Jensen]
 \subsection*{The wave-function for a helium atom} \noindent 
-The system that the numerical integration approaches will be applied to is the helium atom of two electrons. The single-particle wave function for a single electron $i$ in the $1s$ state is given in terms of a dimensionless variable 
+The numerical integration approaches will be applied to a two electron system of an helium atom. The single-particle wave function for a single electron $i$ in the $1s$ state is given in terms of a dimensionless variable 
 \begin{equation*}
 	 {\bf r}_i =  x_i {\bf e}_x + y_i {\bf e}_y +z_i {\bf e}_z 
 \end{equation*}
@@ -253,12 +255,12 @@ where $\alpha$ is a parameter and \vspace{1mm} \\
 \begin{equation*}
 	r_i = \sqrt{x_i^2+y_i^2+z_i^2}
 \end{equation*}\vspace{2mm} \\
-For a helium atom, $\alpha = 2$ corresponds to the charge of the atom $Z = 2$. The ansatz for the wave function for a two electron system in a helium atom is then assumed to be given by the product of two such 1s wave functions,  \\
+For a helium atom, $\alpha = 2$ corresponds to the charge of the atom $Z = 2$. The ansatz for the wave function for a two electron system in an helium atom is then assumed to be given by the product of two such 1s wave functions,  \\
 \begin{equation}\label{waveequation}
 	\Psi({\bf r}_1,{\bf r}_2)  =   e^{-\alpha (r_1+r_2)}
 \end{equation}\vspace{2mm} \\
-This ansatz does not yield a closed-form or analytical solution to Schrödinger's equation for two interacting electrons in the helium atom in general. \\ \indent 
-To find the ground state correlation energy between the two electrons, one looks to the following six-dimensional integral yielding the quantum mechanical energy expectation value between two electrons which repel each other via the classical Coulomb interaction\vspace{2mm} \\
+This ansatz does not yield a closed-form or analytical solution to Schrödinger's equation for the current system in general. \\ \indent 
+To find the ground state correlation energy, one looks to the following six-dimensional integral yielding the quantum mechanical energy expectation value between two electrons which repel each other via the classical Coulomb interaction\vspace{2mm} \\
 \begin{equation}\label{ccintegration}
 	   \langle \frac{1}{|{\bf r}_1-{\bf r}_2|} \rangle =
 	\int_{-\infty}^{\infty} d{\bf r}_1d{\bf r}_2  e^{-2\alpha (r_1+r_2)}\frac{1}{|{\bf r}_1-{\bf r}_2|}
@@ -317,7 +319,7 @@ where the m-th zero $x_{n,m}$ is given by \vspace{2mm} \\
 \begin{equation}\label{abs_2}
 x_{n, m}=\frac{j_{m}^{2}}{4 k_{n}}\left(1+\frac{j_{m}^{2}-2}{48 k_{n}^{2}}\right)+O\left(n^{-5}\right)
 \end{equation}\vspace{2mm} \\
-Here $k_n = n + 1/2$ and $j_m$ is the m-th positive zero of the Bessel function $J_n(x)$ whose series expansion \vspace{2mm} \\
+Here $k_n = n + 1/2$ and $j_m$ is the m-th positive zero of the Bessel function $J_n(x)$ whose series expansion is \vspace{2mm} \\
 \begin{equation}\label{bessel}
 	J_n(x) = \qty(\dfrac{x}{2})^n\sum_{l=0}^{\infty}\dfrac{\qty(
 	\dfrac{ix}{2})^{2l}}{l!\Gamma (n+l+1)}
@@ -330,100 +332,103 @@ L_{n}(x)=\sum_{k=0}^{n}(-1)^{k}\left(\begin{array}{c}{n} \\ {n-k}\end{array}\rig
 \section{Method}\noindent 
 I will in this paper estimate the quantum mechanical expectation value of the correlation energy between two electrons which repel each other via the classical Coulomb interaction as given in equation \ref{ccintegration}. I will preform the estimate using the Gaussian quadrature and Monte Carlo integration. I will initially exploit a Gauss-Legendre approach, then a further development using a Gauss-Laguerre approach and in the end I will investigate the efficiency of a Monte Carlo integration. 
 \subsubsection*{The ground state wave equation} \noindent 
-Initially a plot is produced of the ground state wave equation for a two electron system, as described by equation \ref{waveequation}. The plot is used to determine the appropriate integration limits $\pm \infty \rightarrow \pm \lambda$ for evaluation of integral \ref{ccintegration}, and $\lambda = 3$ is set for the duration of this paper.  
+Initially a plot is produced of the ground state wave equation for a two electron system, as described by equation \ref{waveequation}. The plot is used to determine the appropriate integration limits $\pm \infty \rightarrow \pm \lambda$ for evaluation of integral \ref{ccintegration}. $\lambda = 3$ is set for the duration of this paper.  
 
 \subsection{Integration using Gauss-Legendre Quadrature}\noindent 
-A Gauss-Legendre procedure is applied to compute the six dimensional integral over all Cartesian spatial variables. The weights and abscissas are calculated using the Legendre orthonormal  polynomials as described in the following section. \\ \indent  
-An iteration over half of the $n$-roots are preformed, since the roots are symmetric in a given interval. An initial guess is made of the abscissas based on equation \ref{abs}. A polynomial recurrence relation is initiated on the form of equation \ref{glegfunc} to obtain the polynomial evaluated at the initial guess, and after N iterations the recurrence relation yields the desired Legendre polynomial. The derivative of the polynomial is estimated using standard derivation rules. An approximation of the value is then put equal to the abscissas guess, and a new guess for the zero point value is evaluated using the approximation value, the polynomial and the polynomials derivative through newtons method described by equation \ref{newton}.\\ \indent The process above is repeated until the difference between the guess and approximation is $\epsilon = 1\times 10^{-8} \approx 0$. The abscissas is placed equal to the guessing value, and the weights are estimated in the expected way.After the estimated weights and zero points are determined the integral is preformed across N-points in all six dimensions. The abscissas and integral is evaluated using integral \ref{ccintegration}. \\ \indent I evaluate the integral for a selection of N values, consisting of $N = 2n+1 \hspace{2mm} \forall \hspace{2mm}n\in[4,19]$. The results are plotted and presented in the result section. Tabulated values are presented in the appendix. Only odd values of N are used on the basis of the symmetry of the roots. The case of  $\abs{\mathbf{r_1} -\mathbf{r_2}} = 0$ is discharged from the integral, and not taken into consideration. The integration procedure is based on the method outlined in Press et al. [Press et al., 2007].
+A Gauss-Legendre procedure is applied to compute the six dimensional integral over all Cartesian spatial variables. The weights and abscissas are calculated using the Legendre orthonormal  polynomials as described in the following section based on the method outlined in Press et al.. \\ \indent  
+An iteration over half of the $n$-roots are preformed, since the roots are symmetric in a given interval. An initial guess is made of the abscissas based on equation \ref{abs}. A polynomial recurrence relation is initiated on the form of equation \ref{glegfunc} to obtain the polynomial evaluated at the current guess, and after N iterations the recurrence relation yields the desired Legendre polynomial. The derivative of the polynomial is estimated using standard derivation rules. An approximation of the value is then put equal to the abscissas guess, and a new guess for the zero point value is evaluated using the approximation value, the polynomial and the polynomials derivative through newtons method described by equation \ref{newton}.\\ \indent The process above is repeated until the difference between the guess and approximation is less than $\epsilon = 1\times 10^{-8} \approx 0$. The abscissas is placed equal to the guessing value, and the weights are estimated in the expected way. After the estimated weights and zero points are determined, the integral is preformed across N-points in all six dimensions. The abscissas and integral is evaluated using integral \ref{ccintegration}. \\ \indent I evaluate the integral for a selection of N values, consisting of $N = 2n+1 \hspace{2mm} \forall \hspace{2mm}n\in[4,19]$. For each value of N, the expectation value is predicted 10 times and the final estimate of $E[f]$ is taken as the average of the 10 individual samples. The results are plotted and presented in the result section. Tabulated values are presented in the appendix. Only odd values of N are used on the basis of the symmetry of the roots. The case of  $\abs{\mathbf{r_1} -\mathbf{r_2}} = 0$ is discharged from the integral, and it is not taken into consideration [Press et al.].
 
 \subsection{Integration using Gauss-Laguerre Quadrature} \noindent 
-The estimation procedure is then further developed by a transformation of integral \ref{ccintegration} into polar coordinates as presented in equation \ref{cpintegration} and by the employment of the Laguerre polynomials. In a similar fashion as above, the abscissas and weights are calculated as following. \\ \indent 
-The weights and nodes of the dimensions spanned by $\phi\in [0,2\pi]$ and $\theta\in[0,\pi]$ is evaluated using the exact same procedure as described for the Legendre polynomials. In the case of the radial part $r\in[0,\infty]$ some modifications are preformed. The $\alpha$ of the Laguerre polynomials equal to 2. An iteration process over all n roots is then initiated, and an initial guess is made for the first and second smallest root, and then all other roots, based on the abscissas formula of equation \ref{abs_2} and the Bessel function of equation \ref{bessel}. Thereafter the recurrence relations for the roots are employed over 10 iterations  to find the Laguerre polynomials as described by equation \ref{glagfunc}. The derivative of the final polynomial is found, and employed in Newton method to find a final estimate for our guess. The process above is repeated until the difference between the guess and approximation is $\epsilon = 3.0\times 10^{-14} \approx 0$. The abscissas is placed equal to the guessing value, and the weights are estimated in the expected way. After the estimated weights and zero points are determined the integral is preformed across N-points across all six dimensions. The abscissas and integral is evaluated using integral \ref{cpintegration}, with integration limits $\theta_i \in [0,\pi]$, $\phi_i \in [0,2\pi]$ and $r_i\in[0,\infty]$ per $i$-th dimension. \\ \indent I evaluate the integral for the same selection of N values as in the case for the Legendre polynomials. The results are plotted and presented in the result section. Tabulated values are presented in the appendix. The case of  $\abs{\mathbf{r_1} -\mathbf{r_2}} = 0$ is discharged from the integral, and not taken into consideration. The integration procedure is once again based on the method outlined in Press et al [Press et al., 2007].\\
-\subsection{Monte Carlo Integration}
-In the second part of this project a brute force Monte Carlo integration, as defined by equation \ref{mcint}, is applied to give an estimate of the integral. The evaluation will be preformed first for a uniform distribution, and then for an exponential distribution. The evaluation will exploit a Mersenne Twister pseudo-random generator of 64-bit numbers with a state size of 19937 bits to generate canonical random abscissas. \\ \indent A Cartesian abscissas system is employed, and 6 random spatial variables are obtained using the pseudo-random generator. All  variables are then scaled in accordance to the uniform distribution function as defined in equation \ref{unipdf}. Integral \ref{ccintegration} is approximated using the random abscissas and added to the integral value. After N iterations the sum of the integrated values are averaged on N and multiplied with the probability distribution function to the sixth power. The variance is estimated in accordance to equation \ref{var}. The evaluation is preformed and weighted N times, for $N=10^i, \textnormal{ where i = 3,4,5,6,7}$.\\ \indent 
+The estimation procedure is then further developed by a transformation of integral \ref{ccintegration} into polar coordinates as presented in equation \ref{cpintegration}, and by the employment of Laguerre polynomials. In a similar fashion as above, the abscissas and weights are calculated based on the method outlined by Press et al.. \\ \indent 
+The weights and nodes of the dimensions spanned by $\phi\in [0,2\pi]$ and $\theta\in[0,\pi]$ is evaluated using the exact same procedure as described for the Legendre polynomials. In the case of the radial part $r\in[0,\infty]$ some modifications are preformed. The $\alpha$ of the Laguerre polynomials is set to $\alpha = 2$. An iteration process over all $n$ roots is then initiated, and an initial guess is made for the first and second smallest root, and then all other roots, based on the abscissas formula of equation \ref{abs_2} and the Bessel function of equation \ref{bessel}. Thereafter the recurrence relations for the roots are employed over 10 iterations  to find the Laguerre polynomials as described by equation \ref{glagfunc}. The derivative of the final polynomial is found, and employed in Newton method to find a final estimate for the guess. The process above is repeated until the difference between the guess and approximation is less than $\epsilon = 3.0\times 10^{-14} \approx 0$. The abscissas is placed equal to the guessing value, and the weights are estimated in the expected way. After the estimated weights and zero points are determined the integral is preformed across N-points across all six dimensions. The abscissas and integral is evaluated using integral \ref{cpintegration}, with integration limits $\theta_i \in [0,\pi]$, $\phi_i \in [0,2\pi]$ and $r_i\in[0,\infty]$ per $i$-th dimension. \\ \indent I evaluate the integral for the same selection of N values though 10 independent runs as for the Legendre polynomials. Results are plotted and presented in the result section. and tabulated values are found in the appendix. The point $\abs{\mathbf{r_1} -\mathbf{r_2}} = 0$ is discharged from the integral, and not taken into consideration [Press et al.].
+\subsection{Monte Carlo Integration} \noindent 
+In the second part of this project a brute force Monte Carlo integration, as defined by equation \ref{mcint}, is applied to give an estimate of the $E[f]$. The evaluation will be preformed first for a uniform distribution, and then for an exponential distribution exploiting importance sampling. The evaluation employs a Mersenne Twister pseudo-random generator of 64-bit numbers with a state size of 19937 bits to generate canonical random abscissas. \\ \indent A Cartesian abscissas system of 6 random spatial variables are obtained using the pseudo-random generator. All  variables are scaled in accordance to the uniform distribution function as defined in equation \ref{unipdf}. Integral \ref{ccintegration} is approximated using the random abscissas and added to the integral value. After N iterations the sum of the integrated values are averaged on N and multiplied with the probability distribution function to the sixth power. The variance is estimated in accordance to equation \ref{var}. The evaluation is preformed and weighted N times, for $N=10^i, \textnormal{ where i = 3,4,5,6,7}$.\\ \indent 
 The procedure is improved by applying importance sampling as described by equation \ref{mcise}. This involves rescaling the random factors in a spherical coordinate system so that $r_i = -\log(1-rnd)/4$, $\theta = \pi rnd$ and $\phi = 2\pi rnd$ where $rnd$ is a random factor. The integral is evaluated in regards to equation \ref{cpintegration}. The calculation is preformed N times, before the sum of all N contributions is averaged by N and weighted by the exponential distribution of equation  \ref{exppdf}. The variance is estimated in accordance to equation \ref{mcise}. \\ \indent 
 Finally, the importance sampling is parallelized using the message passing interface (MPI). The workload of the N samples are distributed equally across 4 possessors. Each processor is seeded with a separate value represented by the processor rank to secure independent random number generating.
 \begin{figure}[!hb]
-	\includegraphics[scale = 0.24]{Wavefunction.png}
+	\includegraphics[width=\columnwidth]{Wavefunction.png}
 	\caption{\label{wavefigure} The wave function or two electrons as the product of two 1s states. The function appears to have converged to zero at r = $\pm$1 for all practical purposes.}
 \end{figure}
- The CPU time is estimated using the $WPI\_Wtime$ function. When the computation is preformed the function $WPI\_Reduce$ is applied to reassemble the result of the integral and variance estimates. In the end, the program is tested using various complier flags. Both the temporal efficiency and the accuracy for all three cases are evaluated and compared. The results are graphically represented in the result section, and tabulated values are located in the appendix. \\ \indent 
- Finally, the program is tested using various compiler flags. $N=10^7$ is used and run 10 times per compiler flag \textit{-O1, -O2} and \textit{O3}. The time per compiler flag is then estimated as the average of all 10 runs. 
+ The CPU time is estimated using the $WPI\_Wtime$ function. When the computation is preformed at each individual processor the function $WPI\_Reduce$ is applied to reassemble the result of the integral and variance estimates. Both the temporal efficiency and the accuracy for all three cases are evaluated and compared. The results are graphically represented in the result section, and tabulated values are located in the appendix. \\ \indent 
+ Finally, the program is tested for $N=10^7$ using various compiler flags. The experiment is preformed 10 times per compiler flag \textit{-O1, -O2} and \textit{O3}. The time per compiler flag is then given as the average of all 10 runs. 
  
 \section{Results}  \noindent
-The ground state wave function for a two-electron system is plotted in figure \ref{wavefigure}. It is evident that the function is evenly distributed around zero with an exponentially decaying form. From a graphical evaluation the wave function appears to have converged to zero for $r = \pm 1$, for all practical purposes. Thus $\lambda = \pm 3$ is placed to leave a certain error margin. \\ \indent 
-The main results of the Gauss-quadrature based integration are presented in figure figure \ref{integrated_time_l} and \ref{integrated_results}. The tabulated values corresponding to the figures are presented in the appendix. It can be seen in figure \ref{integrated_time_l} that the Gauss-Laguerre procedure is more time costly than the simpler Gauss-Legendre function for all selected N values.\\ \indent The figure indicates that the logarithmic development of the time cost as a function of N grows with at the same logarithmic rate. That is, the cost of producing the Laguerre polynomials will rapidly become vastly more expensive than the Gauss-Legendre polynomials. The estimates are given for both Gauss-Laguerre (represented by the circles) and  Gauss-Legendre (represented by the
+The ground state wave function for a two-electron system is plotted in figure \ref{wavefigure}. It is evident that the function is evenly distributed around zero with an exponentially decaying form. From a graphical evaluation the wave function appears to have converged to zero for $r = \pm 1$, for all practical purposes. $\lambda = \pm 3$ thus seams appropriate in order to leave a certain error margin. \\ \indent 
+The main results of the Gauss-quadrature based integration are presented in figure figure \ref{integrated_time_l} and \ref{integrated_results}. The tabulated values corresponding to the figures are presented in the appendix. It can be seen in figure \ref{integrated_time_l} that the Gauss-Laguerre procedure is more time costly than the simpler Gauss-Legendre function for all selected N values.\\ \indent The figure indicates that the logarithmic development of the time cost as a function of N grows at approximately the same rate, but with a different constant factor. That is, the cost of producing the Laguerre polynomials will rapidly become more expensive than the production of the Gauss-Legendre polynomials. The estimates are given for both Gauss-Laguerre (represented by circles) and  Gauss-Legendre (represented by triangles).
 \begin{figure}[!hb]
-	\includegraphics[scale = 0.24]{Gauss_time.png}
-	\caption{\label{integrated_time_l} The result of the Gauss-Legendre integration as a function of N. The exact result is $1.9277\times 10^{-1}$. }
+	\includegraphics[width=\columnwidth]{Gauss_time.png}
+	\caption{\label{integrated_time_l} The temporal result of the Gauss-Legendre and -Laguerre estimations of the ground state correlation energy as a function of N in the log-log scale }
 \end{figure} 
 
 \begin{figure*}[!ht]
 	\includegraphics[scale = 0.4]{Gauss_lagleg_2.png}
 	\caption{\label{integrated_results} The result of the Gauss-Legendre and Gauss-Laguerre procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The exact result is $1.9277\times 10^{-1}$. \vspace{2cm}}
 \end{figure*}
-
 \noindent 
-triangles). The color bar axis indicates again the time cost of both procedures.  \\ \indent The relative error is tabulated in the appendix, and follows the same function form as the expectation value. The relative error evidently decreases as a function of N. From a graphical evaluation of figure \ref{integrated_results} it is evident that both procedures are converging towards the area of the closed form solution as N increases. The Legendre polynomials converges from above, while the Laguerre polynomials converge from below the closed form solution. What can also be seen is that the Legendre polynomials actually converges slightly below the closed form solution, while the Laguerre polynomials converges to value slightly above. The Laguerre polynomials appears to be the better approximation, and stabilizes earlier than the Legendre polynomials. That is, the former appears to have converged at N = 15 while the latter converges around N = 33. Thus, none of the polynomials ever fully reach the closed form solution with three leading digits for the selection of N values. The closest approximation is reached at N = 27 for the Gauss-Legendre polynomials with a value of $E[f] (1.9 \pm 0.2)\times 10^{-1}$, and $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ through the Gauss-Laguerre polynomials. \newpage  \noindent 
-The results of the Monte Carlo integration procedures are presented in figure 5, \ref{mc_pt} and \ref{mc}. Figure 5 presents the expectation value of the correlation energy of the two electrons as a function of N random samples. Both the brute force Monte Carlo integration $I_{mc}$, the importance sampled variance and the parallelized averaged experiments are present, alongside the closed form solution value. In all three cases, the correlation energy estimates appears to converge towards the closed form solution as N increases. The brute force Monte Carlo estimate is the one that appears to preform the poorest for lowest values of N, as well as appearing to converging slower than the two improved methods. Looking at the appended tabulated values, the variance of the former method is although somewhat lower than the others. The best estimate is found for $N=10^7$ for $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$ \\ \indent 
-The Monte Carlo integration method applying importance sampling, using a spherical coordinate frame with an exponential distribution, $I_{MC,IS}$ converges quickly. It is consistently better than the brute force $I_{MC}$ procedure, and the best value is found for $N = 10^7$ with $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$. \\
-
-\begin{figure*}[H]
-	\includegraphics[scale = 0.2]{MC_time.png}
-	\caption{\label{mc_time} The time result of the Monte Carlo integration procedures to approximate the expectation value of the interaction energy, as a function of N. The brute force Monte Carlo are represented by the stars, the importance sampling by the circles and the parallelized results by the triangles. }
-\end{figure*} \newpage 
-
-\noindent The parallelized importance sampling estimate $I_{MC,PAR}$ converges slightly slower than $I_{MC,IS}$, but still a lot faster than the brute force $I_{MC}$ estimate. \\ \indent 
-Figure \ref{mc_err} presents the variation of the model as a function of N. It is evident that $I_{MC}$ has consistently the loves variation as N increases, and that the variance of $I_{mc}$ stays almost constant approximating zero. For both $I_{MC,PAR}$ and $I_{MC,IS}$ the variance decreases and converges towards zero as N increases. The parallelized Monte Carlo initially have the highest error, but reaches approximately the same level or variation as the unparalleled importance sampling for $M \leq 10^4$. At $N=10^7$ all procedures have reached an accuracy of four leading digits. \\ 
+Figure 3 illustrates how the the Gaussian quadrature procedures converges as a function of N. The tabulated value and a plot of the relative error are available in the appendix, and follows the same function form as in figure 3. The relative error evidently decreases as a function of N. From a graphical evaluation of figure \ref{integrated_results} it is evident that both procedures are converging towards the area of the closed form solution as N increases. The Legendre polynomials converges from above, while the Laguerre polynomials converge from below the closed form solution. What can also be seen is that the Legendre polynomials actually converges slightly below the closed form solution, while the Laguerre polynomials converges to value slightly above. The Laguerre polynomials appears to be the better approximation, and stabilizes earlier than the Legendre polynomials. That is, the former appears to have converged at N = 15 while the latter converges around N = 33. Thus, none of the polynomials ever fully reach the closed form solution with three leading digits for the selection of N values. The closest approximation is reached at N = 27 for the Gauss-Legendre polynomials with a value of $E[f] (1.9 \pm 0.2)\times 10^{-1}$, and $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ through the Gauss-Laguerre polynomials. \newpage  \noindent 
+The exception value of the correlation energy yielded by the Monte Carlo integration, as a function of the N random samples, are presented in figure \ref{mc}. The brute force Monte Carlo integration $I_{MC}$, the importance sampled variance $I_{MC,IS} $and the parallelized estimate $I_{MC, PAR}$ averaged experiments are represented, alongside the closed form solution value. Upon graphical evaluation of the plot it appears that the estimated energy converges towards the closed form solution as N increases by all three methods. The brute force Monte Carlo estimate is the one that appears to preform the poorest for lowest values of N, and appears to converge slower than the two improved methods. The unparalleled importance sampling appears to converge the fastest, at least for low values of N. Furthermore, for low values of N $I_{MC,IS}$ appears to yield the most accurate results. The best estimate is found for $N = 10^7$ with $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$ for $I_{MC}$,  $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $I_{MC,IS}$ and $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$ for $I_{MC,PAR}$. The parallelized importance sampling is thus found to be the most accurate solution for a sufficiently large N, while $I_{MC}$ is the most accurate for the lower values of N. 
 \begin{figure}[H]
-	\vspace{10mm}
-	\includegraphics[width=\textwidth]{MC_integration.png}
-	\caption{\label{mc_err} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
-\end{figure}
-\newpage
-Figure \ref{mc} shows the deviation of the estimates in relation to the exact result as a function of time. The trend in the plot indicates that the precision in general off all procedures tends to become more precise as the cost of time increases. The value of increasing the time as a function of N is evidently highest for the brute force Monte Carlo, and only to a smaller degree for the importance sampling model. \\ \indent 
-The average values of the compiler flag test are presented in table \ref{compilerflags}, with standard deviations of the estimates. From this experiment it is not possible to determine whether or not one of the compiler flags reduce the time cost. 
-\newpage
-\begin{figure}[!ht]
-	\includegraphics[scale = 0.22]{MC_integration_error.png}
-	\caption{\label{mc_pt} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
-\end{figure} 
-
-\begin{figure}[!h]
-	\includegraphics[scale = 0.22]{MC_integration_PT.png}
+	\includegraphics[width=\columnwidth]{MC_integration.png}
 	\caption{\label{mc} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
 \end{figure}
+\begin{figure}[H]
+	\vspace{35mm}
+\includegraphics[width=\columnwidth]{MC_time.png}
+\caption{\label{mc_time} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure} \newpage \noindent 
+Figure \ref{mc_time} yields the time cost of each Monte Carlo procedure, while table \ref{time_mc_tab} shows the rates between the parallelized method with $I_{MC}$ and $I_{MC,IS}$. Looking at the plot it is evident that the time cost increases approximately linear in log-space. The time cost appears to be roughly the same for both $I_{MC}$ and $I_{MC,IS}$, but for the highest values of N one can see that $I_{MC,IS}$ becomes slightly more expensive than $I_{MC}$. The curve for $I_{MC,PAR}$ is shifted lower than $I_{MC}$ and $I_{MC,IS}$, and establishes that the parallelized version indeed reduces the time cost. Looking at the tabulated relative relations, it is apparent that this reduction is in the order of 2.5-4 times cheaper for $I_{MC,PAR}$. \\
+Figure \ref{mc_err} presents the variation of the model as a function of N. It is evident that $I_{MC}$ has consistently the lowest variation as N increases, in the order of four leading digits accuracy. For both $I_{MC,PAR}$ and $I_{MC,IS}$ the variance decreases and converges towards zero as N increases at roughly the same rate. The parallelized Monte Carlo initially have the highest error, but reaches approximately the same value as the unparalleled importance sampling for $M \leq 10^4$. At $N=10^7$ all procedures have reached an accuracy of four leading digits. \\ \indent
+The average values of the compiler flag test are presented in table \ref{compilerflags}, with estimated variance of the 10 sample runs. The estimates all appears to be within each others variance range. \\
 
-
+\begin{figure}[H]
+		\vspace{20mm}
+	\includegraphics[width=\columnwidth]{MC_integration_error.png}
+	\caption{\label{mc_err} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\end{figure} 
+\newpage 
 \begin{table}[H]
-	\caption{Compiler Flags and Time Costs}
+	\caption{\label{time_mc_tab} The time rate averages of N samples of the parallelized mc integration weighted in regards to the brute force and importance sampling procedures.}
+	\centering 
 	\begin{tabular}{|c|c|c|}
 		\hline 
-		\hspace{1mm} \textbf{Compiler Flag} \hspace{1mm} & \hspace{1mm}\textbf{Average time [s]} \hspace{1mm} & \textbf{Variance [s]} \\
+		\hspace{1mm}\textbf{N} \hspace{1mm}& \hspace{1mm} \textbf{MC/MC$_{par}$} \hspace{1mm} & \hspace{1mm}\textbf{MC$_{IS}$/MC$_{PAR}$} \hspace{1mm} \\ \hline 
+10$^3$ & 3.9730  & 3.9160  \\
+10$^4$ & 2.6282  & 2.4859  \\
+10$^5$ & 2.7132  & 2.6479  \\
+10$^6$ & 3.3489  & 2.9734  \\
+10$^5$ & 3.4015  & 3.0224  \\
+		\hline 
+	\end{tabular} \\ 
+\end{table}
+
+\begin{table}[H]
+	\caption{ \label{compilerflags} The time cost of using various compiler flags tested at $N = 10^7$.}
+	\centering 
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		\hspace{1mm} \textbf{Compiler Flag} \hspace{1mm} & \hspace{1mm}\textbf{Average time [s]} \hspace{1mm} & \textbf{Variance [s]} \\ \hline 
 		O1& 50.0450 &0.7286 \\
 		O2& 49.8718 &2.9312 \\ 
 		O3& 50.9497 & 1.7525\\
 		\hline 
-	\end{tabular} \\ 
-	[3pt]\label{compilerflags} \centering The time cost using various compiler flags.
+	\end{tabular} 
 \end{table}
 
 \twocolumngrid
 
 
 \section{Discussion} \noindent 
-In regards to the chosen $\pm \lambda$ integration limits, the results seems reasonable. A way to investigate the effect of this choice of $\lambda$ would of course be to evaluate the integral while varying $\lambda$, and then look at the effect the altercation would have on the estimate. This is although deemed excessive for the purpose of this paper, and is left for future work. \\ \indent 
-Looking at the results for the Gauss-Legendre and Gauss-Laguerre polynomials it is hard to say why the two procedures end up converging towards slightly offset values. It might be due to an error in the implementation, or it might be a methodical fault.  The background implementation functions provided for the above procedures are rather unclear, and could possibly contain errors in its hard coded values or similar. The evaluation of the source of this error is left for future work. \\ \indent 
-It is no surprise that an increase in N increases the time cost of the estimation, as it would imply an increase in the number of floating point operations necessary to complete the procedure. What is more surprising is that logarithm of the time of the procedures appears to increase at the same rate. The cause for this is probably hidden somewhere within the mathematical relation of the two expressions. Since the Laguerre procedure apparently has a higher constant term of some sort, it is evident that the time cost will increase faster as a function of N in relation to the Legendre procedure. Both procedures will although yield the same functional form along the temporal axis. \\ \indent 
-Looking next at the Monte Carlo integration, it was found that the importance sampling increased the accuracy as we expected it to do. Focusing only on the relevant values of abscissas would imply a a higher relevancy value for each N. In some sense, some of the less efficient data dragging up the time cost is discharged. This of course would have the larges effect on the lowest value of N, as the results would be sensitive to the choice of abscissas when the abscissas are few. The result thus seems reasonable. That the parallelized importance sampling estimate has a lower value than the importance sampling itself also makes sense for low N. For a low value of N, each processor rapidly gets very few abscissas to work with. This would not have the same effect for higher N, as at a certain threshold the solution would have properly converged anyhow for each individual processor. \\ \indent 
+In regards to the chosen $\pm \lambda$ integration limits, the choice and results appears reasonable. A way to investigate the effect of the choice of $\lambda$ would of course be to evaluate the integral while varying $\lambda$, and then look at the effect the altercation would have on the estimate. This is although deemed excessive for the purpose of this paper, and is left for future work. \\ \indent 
+Looking at the results for the Gauss-Legendre and Gauss-Laguerre polynomials it is hard to say why the two procedures end up converging towards slightly offset values. It might be due to an error in the implementation, or it might be a methodical fault.  Given that both the Gauss-Legendre and Gauss-Laguerre are very thoroughly understood fairly straight forward procedures it appears very unlikely that it is due to a methodical error. The background implementation functions provided for the above procedures are rather unclear. It could easily lead to a misunderstanding in further implementations or possibly contain errors. Perhaps in the some of the hard coded values found in the code that is hard to test. The evaluation of the source of this error is left for future work, but it should be noted that this error is particularly interesting as the estimate converges wrong in both cases of the quadrature. This might be an indication of an implementation fault. \\ \indent
+The other main result for the quadratures stated that time cost of both procedures were linear in log-space. This is an indication that both procedures are subjected to a power law, that likely could be found fitting a line to the curves. It is interesting to see that the slopes of the methods appears parallel, and only differentiates by a constant factor. The evaluation of the power laws are left for further work, and a clarification of why the slopes appears to be equal would probably involve a detour into the mathematical foundation of the polynomials. It is no surprise that an increase in N increases the time cost of the estimation in general, as it would imply an increase in the number of floating point operations necessary to complete the procedure.\\ \indent 
+Regarding the error estimates of the quadratures, it should be stated that it is probable that the real accuracy  of the estimates is a lot higher than what is indicated by looking at the relative error. This is supported by the fact that for sufficiently high N the actual difference between the estimate and the closed form solution are a significant factor lower than what the relative error indicates. Furthermore, for low values of N the error estimate does not even appear to make sense. For the highest values of N, the large relative error would also be partly caused by the fact that the estimate converges to the wrong value. It does indeed exist more suitable error analysis for numerical integrations over the Gauss Quadrature, like for instance the procedures outlined by R. Z. Iqbal and M.O. Ahmed \footnote{Error Estimation of Numerical Integration Methods, Department of Mathematics and statistics, University of Lahore, Pakistan, 2016}. or by F. G. Lether \footnote{Error estimates for Gaussian quadrature, AMC 1980}.
+In regards to the Monte Carlo integration methods, everything is more like one would expect. The importance sampling does indeed increase the accuracy for the particular choice of N in all regards. This makes sense, as focusing only on the relevant values of abscissas would imply a a higher relevancy value for each sample N. In some sense, some of the less efficient data dragging up the time cost is discharged. This of course would have the larges effect on the lowest value of N, as the results would be sensitive to the choice of abscissas when the abscissas are few. The result thus seems reasonable. That the parallelized importance sampling estimate has a lower value than the importance sampling itself also makes sense for low N. For a low value of N, each processor rapidly gets very few abscissas to work with as it only works on N/4 samples. This would not have the same effect for higher N, as at a certain threshold the solution would have properly converged anyhow for each individual processor. \\ \indent 
 Looking at the time cost estimates for the Monte Carlo procedures we see that up until a rather large value for N, the importance sampling procedure does not cost much more than the brute force Monte Carlo. It appears therefore to be a rather cheap improvement with a high value gain in accuracy. As expected, when the procedure is parallelized the time cost goes significantly down. It appears to be approximately 4 times cheaper than the unparalleled procedure. This is sensible as the procedure was run using 4 times the processors simultaneously.\\ \indent 
-In regards to the error estimates we see for all variations of procedures that N decreases as N increases. The accuracy becomes better the more abscissas one samples, which is sensible. If it was possible to find a more suitable error measurement than the relative error for the Gauss Quadrature, it would perhaps be easier to compare the two general methods. \\ \indent 
-Looking solely at the Monte Carlo integrations, we find that the variation estimates with the highest precision is the brute force Monte Carlo for low values of N. As N increases, the variation is sufficiently low for all cases. That the parallelized code yields a slightly higher variation than the one that is not parallelized is unsurprising for the same reason as states above. 
- \\ \indent 
-The all over interpretation provided by plot 6 is illustrative for the broader picture of the procedures. For a low value of N, the choice of procedure appears to have large implications on the quality of the estimate. As N increases, the importance of the procedure choice decreases in regards to the approximation to the closed form solution. Although, looking at the error estimates available for the procedure the Monte Carlo simulations does in fact offer a higher precision.
+In regards to the error estimates we see for all variations of procedures that $\sigma$ decreases as N increases. The accuracy becomes better the more abscissas one samples, which is sensible. If it was possible to find a more suitable error measurement than the relative error for the Gauss Quadrature, it would perhaps be easier to compare the two methods. \\ \indent 
+Looking solely at the Monte Carlo integrations, we find that the variation estimates with the highest precision is the brute force Monte Carlo. This is not completely reasonable, because the closed form solution is not within the range of the variance for any of brute force estimations. The evaluation of why this is is left for future work. That the parallelized code yields a slightly higher variation than the one that is not parallelized is unsurprising for the same reason as states above. 
 
 \section{Conclusion} \noindent 
-In this paper we have estimated the expectation value of the correlation energy between two electrons in an helium atom, using Gaussian Quadrature and Monte Carlo Integration. It was found that the Gauss-Legendre procedures best estimate for $N<39$ was $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The best estimate for the Gauss-Laguerre procedure yields $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$, testes for the same range of N. The error estimate was found slightly high in both cases, due to the method of error estimation. The best result from brute force Monte Carlo integration using a uniform distribution function was estimated for $N=10^7$ yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The importance sampling procedure improved this result and estimated $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $N=10^7$. The estimation was acknowledge as better in the case of the Monte Carlo integration, as the variation estimate yielded a much higher precision than the Gaussian Quadrature. The code was furthermore parallelized, yielding an estimate of approximately the same accuracy, resulting in $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$. The latter could although be stated as the best approach, as it had a factor of a quarter reduction in the time cost. In total the project is found successful in its evaluation of the procedures, but the evaluation could benefit a lot from a better understanding of the errors as well as an increased number of test to base the average on. This is an improvement left for future work. 
+In this paper we have estimated the expectation value of the correlation energy between two electrons in an helium atom, using Gaussian Quadrature and Monte Carlo Integration. It was found that the Gauss-Legendre procedures best estimate for $N<39$ was $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The best estimate for the Gauss-Laguerre procedure yields $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$, testes for the same range of N. The error estimate was found slightly high in both cases, due to the method of error estimation. The best result from brute force Monte Carlo integration using a uniform distribution function was estimated for $N=10^7$ yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The importance sampling procedure improved this result and estimated $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $N=10^7$. The estimation was acknowledged as better in the case of the Monte Carlo integration, as the variation estimate yielded a much higher precision than the Gaussian Quadrature. The code was furthermore parallelized, yielding an estimate of approximately the same accuracy, resulting in $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$. The latter could although be stated as the best approach, as it had a factor of a quarter reduction in the time cost. In total the project is found successful in its evaluation of the procedures, but the evaluation could benefit a lot from a better understanding of the errors as well as an increased number of test to base the average on. This is an improvement left for future work. 
 
 \newpage. \newpage
 \onecolumngrid
@@ -552,6 +557,14 @@ In this paper we have estimated the expectation value of the correlation energy 
 	\end{tabular} \\ [3pt]
 	\label{mc_values_par} \centering The integrated value of the system using Monte Carlo integration with importance sampling and parallelization The values are the averages of 10 independent runs of the procedure.
 \end{table}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale = 0.35]{Gauss_lagleg_err.png}
+	\caption{\label{laglegerr} The log value of the relative error of the Gaussian Quadrature procedures.}
+\end{figure} \newpage 
+
+
 
 \newpage. \newpage
 \subsection{Derivation of analytical value}\noindent 
