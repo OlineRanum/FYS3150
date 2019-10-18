@@ -25,7 +25,7 @@ aps,
 \onecolumngrid
 
 \begin{center}
-	\large\textbf{Methods of numerical integration\\ \small{The Gaussian Quadrature and Monte Carlo Procedures}}
+	\large\textbf{Methods of numerical integration\\ \small{The Gaussian Quadrature and Monte Carlo Integration}}
 \end{center}
 \vspace{5mm}
 
@@ -432,7 +432,11 @@ In this paper we have estimated the expectation value of the correlation energy 
 Throughout this paper we have thus explored some of the challenges and predictions of two well established methods for numerical integration. Based on a rather poor approach to evaluating the accuracy of the Gauss Quadrature, it was found hard to compare the two methods. If one although should state anything on the basis of these results, the parallelized importance sampling from the Monte Carlo integration would indeed be the best approach to the closed form solution. This is stated both due to the result having the highest accuracy, and because it were the least time costly. In total the project is found successful in its evaluation of the procedures, but a comparison of the methods could benefit a lot from a better understanding of the errors. Furthermore, as with any experiment the estimates could also benefit from an increased number of test to yield a more solid foundation for the results. 
 
 \newpage. \newpage
-\onecolumngrid
+\onecolumngrid \noindent 
+All associated code is available from\\
+https://github.com/OlineRanum/FYS3150/tree/master/Project\_3
+\vspace{5cm}
+
 \section{Referances}
 [1] Handbook of computational methods for integration, P. K. Kythe and M. R. Schaferkotter, Chapman \& Hall/CRC, Boca Raton Florida, 2005.\\
 
@@ -440,7 +444,9 @@ Throughout this paper we have thus explored some of the challenges and predictio
 
 [3] M. H. Jensen, Computational physics lecture notes, Department of Physics university of Oslo, 2015. \\
 
-[4] K. Rottman, Matematisk formelsamling, Spektrum forlag, 2017
+[4] K. Rottman, Matematisk formelsamling, Spektrum forlag, 2017 \\
+
+
 \newpage 
 \section{Appendix}
 \subsection{Tabulated values}
@@ -563,7 +569,7 @@ Throughout this paper we have thus explored some of the challenges and predictio
 To find the ground state expectation value for the correlation energy between two electrons in a Helium atom, i.e. $\alpha = 2$, one can start with equation \ref{ccintegration} and rewrite the expression to spherical coordinates. Applying equation \ref{r12} and \ref{r1r2}, and begin with the integral dependent on $\mathbf{r}_2$ \vspace{2mm}\\ 
 \begin{equation*}
 	I = \int \dfrac{e^{-2\alpha r_2}}{\abs{\mathbf{r_1}-\mathbf{r_2}}}d^3\mathbf{r}_2 = \int \dfrac{e^{-2\alpha r_2}}{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}r_2^2\sin\theta_2dr_2d\theta_2d\phi_2 
-\end{equation*}\vspace{4mm}\\ 
+\end{equation*}\vspace{2mm}\\ 
 The $\theta$-dependent integral yields\vspace{2mm}\\ 
 \begin{align*}
 	\int_{0}^{max}\dfrac{\sin\theta_2}{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}d\theta_2 = \dfrac{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}{r_1r_2} \bigg|_0^\pi \\ \\ 
