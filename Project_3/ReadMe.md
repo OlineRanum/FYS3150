@@ -22,8 +22,8 @@ The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ conta
 
 ### Example of _N.txt_ file:
 
- <div style="background-color:rgba(0.23532, 0, 0, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
- MOOP
+ <div style="background-color:rgba(0.5, 0.5, 0, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
+ <a href="/donate">DONATE</a>
  </div>
 
 
