@@ -8,7 +8,7 @@ using namespace std;
 class GaussLaguerre
 {
 public:
-    void Init_GaussLaguerre(vector<int> N, double* Gauss_Laguerre, int* N_values, double a, double b, double alpha);
+    void Init_GaussLaguerre(vector<int> N, double* Gauss_Laguerre, int* N_values, double a, double b, double alpha, double* time);
     void Calculation_GaussLaguerre(int n_lag, int n_leg, double  &integral, double alpha);
     void G_Leguerre_NodesWeights(double *x, double *w, int n, double alf);
     double gammln( double xx);

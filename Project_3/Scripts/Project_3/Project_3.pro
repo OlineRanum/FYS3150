@@ -12,9 +12,12 @@ QMAKE_CC = mpicc
 
 QMAKE_CFLAGS += $$system(mpicc --showme:compile)
 QMAKE_LFLAGS += $$system(mpicxx --showme:link)
-QMAKE_CXXFLAGS += $$system(mpicxx --showme:compile) -DMPICH_IGNORE_CXX_SEEK
+QMAKE_CXXFLAGS += $$system(mpicxx --showme:compile) -DMPICH_IGNORE_CXX_SEEK-O2
 QMAKE_CXXFLAGS_RELEASE += $$system(mpicxx --showme:compile) -DMPICH_IGNORE_CXX_SEEK
 
+QMAKE_CXXFLAGS -= -O2
+QMAKE_CXXFLAGS += -O3
+message($$QMAKE_CXXFLAGS)
 
 
 SOURCES += \

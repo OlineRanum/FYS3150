@@ -10,19 +10,27 @@
 
 using namespace std;
 
-void GaussLegendre::Init_GaussLegendre(vector<int> N, double* Gauss_Legendre, int* N_values, double a, double b)
+void GaussLegendre::Init_GaussLegendre(vector<int> N, double* Gauss_Legendre, int* N_values, double a, double b, double* time)
 {
     // Integration as a function of N
     int iteration_counter = 0;
     for (int N_: N){
+
        double integral_GLegendre = 0;
        int n = N_;
        N_values[iteration_counter] = N_;
 
+       clock_t st, fi;
+       st = clock();
         // Gauss-Legendre integration
         Calculation_GaussLegendre(n, a, b, integral_GLegendre);
+
+        fi = clock();
+        double tottime = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
+
         printf("Gauss-Legendre:     \t%.8f\t\n", integral_GLegendre);
 
+        time[iteration_counter] = tottime;
         Gauss_Legendre[iteration_counter] = integral_GLegendre;
         iteration_counter += 1;
 }}
@@ -69,11 +77,11 @@ void GaussLegendre::G_Legendre_NodesWeights(double a, double b, double* x, doubl
    double* w_low  = w;
    double* w_high = w + n - 1;
 
-   double z_guess, z_approx, poly_derivative;
+   double abscissas_guess, abscissas_approx, poly_derivative;
    // loops over desired roots
    for(int i = 1; i <= mid_point; i++) {
       // Initial guess
-      z_guess = cos(M_PI * (4*i - 1)/(4*n + 2));
+      abscissas_guess = cos(M_PI * (4*i - 1)/(4*n + 2));
 
       do {
          double poly_1 =1.0;
@@ -87,23 +95,23 @@ void GaussLegendre::G_Legendre_NodesWeights(double a, double b, double* x, doubl
          for(int j = 1; j <= n; j++) {
             double poly_3 = poly_2;
             poly_2 = poly_1;
-            poly_1 = ((2.0 * j - 1.0) * z_guess * poly_2 - (j - 1.0) * poly_3)/j;
+            poly_1 = ((2.0 * j - 1.0) * abscissas_guess * poly_2 - (j - 1.0) * poly_3)/j;
          }
 
 
          // Computing the derivative poly_derivative of the polynomial
-         poly_derivative = n * (z_guess * poly_1 - poly_2)/(z_guess * z_guess - 1.0);
-         z_approx = z_guess;
+         poly_derivative = n * (abscissas_guess * poly_1 - poly_2)/(abscissas_guess * abscissas_guess - 1.0);
+         abscissas_approx = abscissas_guess;
 
          // Apply newton's method to find zeropoint
-         z_guess  = z_approx - poly_1/poly_derivative ;
-      } while(fabs(z_guess - z_approx) > ZERO);
+         abscissas_guess  = abscissas_approx - poly_1/poly_derivative ;
+      } while(fabs(abscissas_guess - abscissas_approx) > ZERO);
 
 
       // Scaling roots and weights to interval of [-1,1], and put in symmetric counterparts
-      *(x_low++)  = xm - xl * z_guess;
-      *(x_high--) = xm + xl * z_guess;
-      *w_low      = 2.0 * xl/((1.0 - z_guess * z_guess) * poly_derivative * poly_derivative);
+      *(x_low++)  = xm - xl * abscissas_guess;
+      *(x_high--) = xm + xl * abscissas_guess;
+      *w_low      = 2.0 * xl/((1.0 - abscissas_guess * abscissas_guess) * poly_derivative * poly_derivative);
       *(w_high--) = *(w_low++);
    }}
 

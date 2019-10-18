@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <omp.h>
 #include <random>
+#include <mpi.h>
 
 using namespace std;
 minstd_rand0 generator;
@@ -20,41 +21,78 @@ minstd_rand0 generator;
 
 
 
-void MonteCarloIntegration::Init_MonteCarloIntegration(vector<int> N, double* mc, double* mc_std, int* N_values, double a, double b, int mode, int rank)
+void MonteCarloIntegration::Init_MonteCarloIntegration(vector<int> N, double* mc, double* mc_std, int* N_values, double a, double b, int mode, int rank, double* time)
 {
     // Integration as a function of N
     int iteration_counter = 0;
     for (int N_: N){
        double integral_mc = 0;
        double std = 0;
-       int n = N_;
+       int n = N_/4;
        N_values[iteration_counter] = N_;
 
        if (mode == 0){
         // Monte Carlo integration
+           clock_t st, fi;
+           st = clock();
             Estimate_MonteCarloIntegration(n, a, b, integral_mc, std);
-            printf("MC:     \t%.8f\t\n", integral_mc);
+            fi = clock();
+            double tottime = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
 
+            printf("MC:     \t%.8f\t\n", integral_mc);
+            time[iteration_counter] = tottime;
             mc[iteration_counter] = integral_mc;
             mc_std[iteration_counter] = std;
             iteration_counter += 1;
        }
        else if (mode == 1){
+           clock_t st, fi;
+           st = clock();
                 MonteCarlo_Importance_sampling(n, integral_mc, std);
                 printf("MC importance:     \t%.8f\t\n", integral_mc);
+                fi = clock();
+                double tottime = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
 
+                time[iteration_counter] = tottime;
                 mc[iteration_counter] = integral_mc;
                 mc_std[iteration_counter] = std;
                 iteration_counter += 1;
        }
 
        else if (mode == 2){
-                MonteCarlo_Importance_sampling_pp(n, integral_mc, std, rank);
-                printf("MC importance:     \t%.8f\t\n", integral_mc);
+           int numprocs; int my_rank;
+           MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
+           MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
+           double time_start = MPI_Wtime();
 
-                mc[iteration_counter] = integral_mc;
-                mc_std[iteration_counter] = std;
-                iteration_counter += 1;
+           MonteCarlo_Importance_sampling_pp(n, integral_mc, std, rank);
+           printf("MC importance:     \t%.8f\t\n", integral_mc);
+
+           double local_sum; double total_sum;
+           local_sum = integral_mc;
+
+           double local_std; double total_std;
+           local_std = std;
+
+           MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+           MPI_Reduce(&local_std, &total_std, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+           double time_end = MPI_Wtime();
+
+           double total_time = time_end-time_start;
+
+           if ( my_rank == 0) {
+                  cout << "Local sum 0 = " <<  local_sum << endl;
+                  cout << "Parallelalized sum = " <<  total_sum/numprocs << endl;
+                  cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
+                }
+
+
+           // run as mpirun -n 4 ./Project_3 in terminal from release folder
+           time[iteration_counter] = total_time;
+           mc[iteration_counter] = integral_mc;
+           mc_std[iteration_counter] = std;
+           iteration_counter += 1;
+           cout << "---------------------------" << endl;
        }
 }}
 
@@ -103,8 +141,6 @@ inline double MonteCarloIntegration::random_factor_clean(){
     mt19937_64 gen(rd());
     return generate_canonical < double, 128 >(gen);
 }
-
-
 
 void MonteCarloIntegration::MonteCarlo_Importance_sampling(int n, double &integral, double &std){
     double* x = new double [n];

@@ -10,7 +10,7 @@ using namespace std;
 #define   ZERO       1.0E-8
 
 
-void GaussLaguerre::Init_GaussLaguerre(vector<int> N, double* Gauss_Laguerre, int* N_values, double a, double b, double alpha)
+void GaussLaguerre::Init_GaussLaguerre(vector<int> N, double* Gauss_Laguerre, int* N_values, double a, double b, double alpha, double* time)
 {
     // Integration as a function of N
     int iteration_counter = 0;
@@ -18,13 +18,19 @@ void GaussLaguerre::Init_GaussLaguerre(vector<int> N, double* Gauss_Laguerre, in
        double integral_GLaguerre = 0;
        int n = N_;
        N_values[iteration_counter] = N_;
-
+       clock_t st, fi;
+       st = clock();
         // Gauss-Laguerre integration
         Calculation_GaussLaguerre(n, n, integral_GLaguerre, alpha);
+        fi = clock();
         printf("Gauss-Laguerre:     \t%.8f\t\n", integral_GLaguerre);
+
+        double tottime = ( ( fi - st ) / static_cast<double> CLOCKS_PER_SEC );
+        time[iteration_counter] = tottime;
 
         // Gauss-Laguerre integration
         Gauss_Laguerre[iteration_counter] = integral_GLaguerre;
+        cout << Gauss_Laguerre[iteration_counter] << endl;
         iteration_counter += 1;
 }}
 

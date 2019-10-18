@@ -35,7 +35,7 @@ int main()
     double  * c  = new double [3];
     mat I = mat(3, 3, fill::eye);
     lm->Lanczos(3, a, a, 1, b, c, A, I);
-    /*
+
     // Comment these out if you don't want 10 times the values in N.txt
     //N_Text_Timer * ntimes = new N_Text_Timer();
     //ntimes->Timer();
