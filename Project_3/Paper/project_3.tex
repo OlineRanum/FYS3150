@@ -347,17 +347,17 @@ The procedure is improved by applying importance sampling as described by equati
 Finally, the importance sampling is parallelized using the message passing interface (MPI). The workload of the N samples are distributed equally across 4 possessors. Each processor is seeded with a separate value represented by the processor rank to secure independent random number generating.
 \begin{figure}[!hb]
 	\includegraphics[width=\columnwidth]{Wavefunction.png}
-	\caption{\label{wavefigure} The wave function or two electrons as the product of two 1s states. The function appears to have converged to zero at r = $\pm$1 for all practical purposes.}
+	\caption{\label{wavefigure} The wave function of two electrons as the product of two 1s states. The function appears to have converged to zero at r = $\pm$1 for all practical purposes.}
 \end{figure}
  The CPU time is estimated using the $WPI\_Wtime$ function. When the computation is preformed at each individual processor the function $WPI\_Reduce$ is applied to reassemble the result of the integral and variance estimates. Both the temporal efficiency and the accuracy for all three cases are evaluated and compared. The results are graphically represented in the result section, and tabulated values are located in the appendix. \\ \indent 
  Finally, the program is tested for $N=10^7$ using various compiler flags. The experiment is preformed 10 times per compiler flag \textit{-O1, -O2} and \textit{O3}. The time per compiler flag is then given as the average of all 10 runs. 
  
 \section{Results}  \noindent
 The ground state wave function for a two-electron system is plotted in figure \ref{wavefigure}. It is evident that the function is evenly distributed around zero with an exponentially decaying form. From a graphical evaluation the wave function appears to have converged to zero for $r = \pm 1$, for all practical purposes. $\lambda = \pm 3$ thus seams appropriate in order to leave a certain error margin. \\ \indent 
-The main results of the Gauss-quadrature based integration are presented in figure figure \ref{integrated_time_l} and \ref{integrated_results}. The tabulated values corresponding to the figures are presented in the appendix. It can be seen in figure \ref{integrated_time_l} that the Gauss-Laguerre procedure is more time costly than the simpler Gauss-Legendre function for all selected N values.\\ \indent The figure indicates that the logarithmic development of the time cost as a function of N grows at approximately the same rate, but with a different constant factor. That is, the cost of producing the Laguerre polynomials will rapidly become more expensive than the production of the Gauss-Legendre polynomials. The estimates are given for both Gauss-Laguerre (represented by circles) and  Gauss-Legendre (represented by triangles).
+The main results of the Gauss-quadrature integration are presented in figure figure \ref{integrated_time_l} and \ref{integrated_results}. The tabulated values corresponding to the figures are presented in the appendix. It can be seen in figure \ref{integrated_time_l} that the Gauss-Laguerre procedure is more time costly than the simpler Gauss-Legendre method for all selected N values. The figure indicates that the logarithmic development of the time cost as a function of N grows at approximately the same rate, but with a different constant factor. That is, the cost of producing the Laguerre polynomials will rapidly become more expensive than the production of the Gauss-Legendre polynomials. The estimates are given for both Gauss-Legendre (represented by circles) and  Gauss-Laguerre (represented by triangles).
 \begin{figure}[!hb]
 	\includegraphics[width=\columnwidth]{Gauss_time.png}
-	\caption{\label{integrated_time_l} The temporal result of the Gauss-Legendre and -Laguerre estimations of the ground state correlation energy as a function of N in the log-log scale }
+	\caption{\label{integrated_time_l} The temporal result of the Gauss-Legendre and -Laguerre estimations of the correlation energy as a function of N in the log-space, based on 10 independent tests.}
 \end{figure} 
 
 \begin{figure*}[!ht]
@@ -365,25 +365,25 @@ The main results of the Gauss-quadrature based integration are presented in figu
 	\caption{\label{integrated_results} The result of the Gauss-Legendre and Gauss-Laguerre procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The exact result is $1.9277\times 10^{-1}$. \vspace{2cm}}
 \end{figure*}
 \noindent 
-Figure 3 illustrates how the the Gaussian quadrature procedures converges as a function of N. The tabulated value and a plot of the relative error are available in the appendix, and follows the same function form as in figure 3. The relative error evidently decreases as a function of N. From a graphical evaluation of figure \ref{integrated_results} it is evident that both procedures are converging towards the area of the closed form solution as N increases. The Legendre polynomials converges from above, while the Laguerre polynomials converge from below the closed form solution. What can also be seen is that the Legendre polynomials actually converges slightly below the closed form solution, while the Laguerre polynomials converges to value slightly above. The Laguerre polynomials appears to be the better approximation, and stabilizes earlier than the Legendre polynomials. That is, the former appears to have converged at N = 15 while the latter converges around N = 33. Thus, none of the polynomials ever fully reach the closed form solution with three leading digits for the selection of N values. The closest approximation is reached at N = 27 for the Gauss-Legendre polynomials with a value of $E[f] (1.9 \pm 0.2)\times 10^{-1}$, and $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ through the Gauss-Laguerre polynomials. \newpage  \noindent 
-The exception value of the correlation energy yielded by the Monte Carlo integration, as a function of the N random samples, are presented in figure \ref{mc}. The brute force Monte Carlo integration $I_{MC}$, the importance sampled variance $I_{MC,IS} $and the parallelized estimate $I_{MC, PAR}$ averaged experiments are represented, alongside the closed form solution value. Upon graphical evaluation of the plot it appears that the estimated energy converges towards the closed form solution as N increases by all three methods. The brute force Monte Carlo estimate is the one that appears to preform the poorest for lowest values of N, and appears to converge slower than the two improved methods. The unparalleled importance sampling appears to converge the fastest, at least for low values of N. Furthermore, for low values of N $I_{MC,IS}$ appears to yield the most accurate results. The best estimate is found for $N = 10^7$ with $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$ for $I_{MC}$,  $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $I_{MC,IS}$ and $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$ for $I_{MC,PAR}$. The parallelized importance sampling is thus found to be the most accurate solution for a sufficiently large N, while $I_{MC}$ is the most accurate for the lower values of N. 
+Figure 3 presents the correlation energy estimates as a function of N, and illustrates how the the Gaussian quadrature procedures converges. The tabulated values and a plot of the relative error are available in the appendix. From a graphical evaluation of figure \ref{integrated_results} it is evident that both procedures are converging towards approximately the closed form solution as N increases. The Legendre polynomials converges from above, while the Laguerre polynomials converge from below the closed form solution. What can also be seen is that the Legendre polynomials actually converges slightly below the closed form solution, while the Laguerre polynomials converges to value slightly above. The Laguerre polynomials appears to be the better approximation, and stabilizes earlier than the Legendre polynomials. That is, the former appears to have converged at N = 15 while the latter converges around N = 33. Thus, none of the polynomials ever fully reach the closed form solution with three leading digits for the selection of N values. The closest approximation is reached at N = 27 for the Gauss-Legendre polynomials with a value of $E[f] (1.9 \pm 0.2)\times 10^{-1}$, and $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ through the Gauss-Laguerre polynomials. \newpage   \indent 
+The expectation value of the correlation energy yielded by the Monte Carlo integration, as a function of N random samples, are presented in figure \ref{mc}. The brute force Monte Carlo integration $I_{MC}$, the importance sampled variance $I_{MC,IS}$ and the parallelized estimate $I_{MC, PAR}$ are represented, alongside the closed form solution value. Upon graphical evaluation of the plot it appears that the estimated energy converges towards the closed form solution as N increases by all three methods. The brute force Monte Carlo estimate is the one that appears to preform the poorest for lowest values of N, and appears to converge slower than the two improved methods. The unparalleled importance sampling appears to converge the fastest, at least for low values of N. Furthermore, for low values of N $I_{MC,IS}$ appears to yield the most accurate results. The best estimate is found for $N = 10^7$ with $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$ for $I_{MC}$,  $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $I_{MC,IS}$ and $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$ for $I_{MC,PAR}$. The parallelized importance sampling is thus found to be the most accurate solution for a sufficiently large N, while $I_{MC,IS}$ is the most accurate for the lower values of N. 
 \begin{figure}[H]
 	\includegraphics[width=\columnwidth]{MC_integration.png}
-	\caption{\label{mc} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+	\caption{\label{mc} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $E[f] = 1.9277\times 10^{-1}$. }
 \end{figure}
 \begin{figure}[H]
-	\vspace{35mm}
+	\vspace{34.3mm}
 \includegraphics[width=\columnwidth]{MC_time.png}
-\caption{\label{mc_time} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+\caption{\label{mc_time} The time cost of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The time cost of the brute force Monte Carlo are represented by the stars, the time cost of the importance sampling are represented by the circles and the parallelized time cost by the triangles.}
 \end{figure} \newpage \noindent 
 Figure \ref{mc_time} yields the time cost of each Monte Carlo procedure, while table \ref{time_mc_tab} shows the rates between the parallelized method with $I_{MC}$ and $I_{MC,IS}$. Looking at the plot it is evident that the time cost increases approximately linear in log-space. The time cost appears to be roughly the same for both $I_{MC}$ and $I_{MC,IS}$, but for the highest values of N one can see that $I_{MC,IS}$ becomes slightly more expensive than $I_{MC}$. The curve for $I_{MC,PAR}$ is shifted lower than $I_{MC}$ and $I_{MC,IS}$, and establishes that the parallelized version indeed reduces the time cost. Looking at the tabulated relative relations, it is apparent that this reduction is in the order of 2.5-4 times cheaper for $I_{MC,PAR}$. \\
-Figure \ref{mc_err} presents the variation of the model as a function of N. It is evident that $I_{MC}$ has consistently the lowest variation as N increases, in the order of four leading digits accuracy. For both $I_{MC,PAR}$ and $I_{MC,IS}$ the variance decreases and converges towards zero as N increases at roughly the same rate. The parallelized Monte Carlo initially have the highest error, but reaches approximately the same value as the unparalleled importance sampling for $M \leq 10^4$. At $N=10^7$ all procedures have reached an accuracy of four leading digits. \\ \indent
+Figure \ref{mc_err} presents the variation of the model as a function of N. It is evident that $I_{MC}$ has consistently the lowest variation as N increases, in the order of four leading digits accuracy. For both $I_{MC,PAR}$ and $I_{MC,IS}$ the variance decreases and converges towards zero as N increases at roughly the same rate. The parallelized Monte Carlo initially have the highest error, but reaches approximately the same value as the unparalleled importance sampling for $M \leq 10^4$. At $N=10^7$ all procedures have reached a predicted accuracy of four leading digits. \\ \indent
 The average values of the compiler flag test are presented in table \ref{compilerflags}, with estimated variance of the 10 sample runs. The estimates all appears to be within each others variance range. \\
 
 \begin{figure}[H]
-		\vspace{20mm}
+		\vspace{16mm}
 	\includegraphics[width=\columnwidth]{MC_integration_error.png}
-	\caption{\label{mc_err} The result of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The results from the brute force Monte Carlo are represented by the stars, the results from the importance sampling are represented by the circles and the parallelized results by the triangles. The exact result is $1.9277\times 10^{-1}$. }
+	\caption{\label{mc_err} The error of the Monte Carlo integration procedures to approximate the expectation value for the interaction energy, as a function of N and the chosen x-range of $\lambda \in[-3,3]$. The error for the brute force Monte Carlo are represented by the stars, the error of the importance sampling are represented by the circles and the parallelized errors by the triangles.}
 \end{figure} 
 \newpage 
 \begin{table}[H]
@@ -419,16 +419,17 @@ The average values of the compiler flag test are presented in table \ref{compile
 
 \section{Discussion} \noindent 
 In regards to the chosen $\pm \lambda$ integration limits, the choice and results appears reasonable. A way to investigate the effect of the choice of $\lambda$ would of course be to evaluate the integral while varying $\lambda$, and then look at the effect the altercation would have on the estimate. This is although deemed excessive for the purpose of this paper, and is left for future work. \\ \indent 
-Looking at the results for the Gauss-Legendre and Gauss-Laguerre polynomials it is hard to say why the two procedures end up converging towards slightly offset values. It might be due to an error in the implementation, or it might be a methodical fault.  Given that both the Gauss-Legendre and Gauss-Laguerre are very thoroughly understood fairly straight forward procedures it appears very unlikely that it is due to a methodical error. The background implementation functions provided for the above procedures are rather unclear. It could easily lead to a misunderstanding in further implementations or possibly contain errors. Perhaps in the some of the hard coded values found in the code that is hard to test. The evaluation of the source of this error is left for future work, but it should be noted that this error is particularly interesting as the estimate converges wrong in both cases of the quadrature. This might be an indication of an implementation fault. \\ \indent
-The other main result for the quadratures stated that time cost of both procedures were linear in log-space. This is an indication that both procedures are subjected to a power law, that likely could be found fitting a line to the curves. It is interesting to see that the slopes of the methods appears parallel, and only differentiates by a constant factor. The evaluation of the power laws are left for further work, and a clarification of why the slopes appears to be equal would probably involve a detour into the mathematical foundation of the polynomials. It is no surprise that an increase in N increases the time cost of the estimation in general, as it would imply an increase in the number of floating point operations necessary to complete the procedure.\\ \indent 
-Regarding the error estimates of the quadratures, it should be stated that it is probable that the real accuracy  of the estimates is a lot higher than what is indicated by looking at the relative error. This is supported by the fact that for sufficiently high N the actual difference between the estimate and the closed form solution are a significant factor lower than what the relative error indicates. Furthermore, for low values of N the error estimate does not even appear to make sense. For the highest values of N, the large relative error would also be partly caused by the fact that the estimate converges to the wrong value. It does indeed exist more suitable error analysis for numerical integrations over the Gauss Quadrature, like for instance the procedures outlined by R. Z. Iqbal and M.O. Ahmed \footnote{Error Estimation of Numerical Integration Methods, Department of Mathematics and statistics, University of Lahore, Pakistan, 2016}. or by F. G. Lether \footnote{Error estimates for Gaussian quadrature, AMC 1980}.
-In regards to the Monte Carlo integration methods, everything is more like one would expect. The importance sampling does indeed increase the accuracy for the particular choice of N in all regards. This makes sense, as focusing only on the relevant values of abscissas would imply a a higher relevancy value for each sample N. In some sense, some of the less efficient data dragging up the time cost is discharged. This of course would have the larges effect on the lowest value of N, as the results would be sensitive to the choice of abscissas when the abscissas are few. The result thus seems reasonable. That the parallelized importance sampling estimate has a lower value than the importance sampling itself also makes sense for low N. For a low value of N, each processor rapidly gets very few abscissas to work with as it only works on N/4 samples. This would not have the same effect for higher N, as at a certain threshold the solution would have properly converged anyhow for each individual processor. \\ \indent 
+Looking at the results for the Gauss-Legendre and Gauss-Laguerre polynomials it is hard to say why the two procedures end up converging towards slightly offset values. It might be due to an error in the implementation, or it might be a methodical fault.  Given that both the Gauss-Legendre and Gauss-Laguerre are very thoroughly understood and fairly straight forward procedures it appears very unlikely that it is due to a methodical error. The background implementation functions provided for the above procedures are rather unclear. It could easily lead to a misunderstanding in further implementations or possibly contain errors. Perhaps in the some of the hard coded values found in the code that is hard to test. The evaluation of the source of this error is left for future work, but it should be noted that this error is particularly interesting as the estimate converges wrong in both cases of the quadrature. This might be an indication of an implementation fault. \\ \indent
+The other main result for the quadratures stated that time cost of both procedures were linear in log-space. This is an indication that both procedures are subjected to a power law, that likely could be found fitting a line to the curves. It is interesting to see that the slopes of the methods appears parallel, and only differentiates by a constant factor. The evaluation of the power laws are left for further work, and a clarification of why the slopes appears to be equal would probably involve a detour into the mathematical foundation of the polynomials. It is no surprise that an increase in N increases the time cost of the estimation in general, as it would imply an increase in the number of floating point operations necessary to complete the procedure. The results appear reasonable in this aspect. \\ \indent 
+Regarding the error estimates of the quadratures, it should be stated that it is probable that the real accuracy  of the estimates is a lot higher than what is indicated by looking at the relative error. This is supported by the fact that for sufficiently high N the actual difference between the estimate and the closed form solution are a significant factor lower than what the relative error indicates. Furthermore, for low values of N the error estimate does not even appear to make sense. For the highest values of N, the large relative error would also be partly caused by the fact that the estimate converges to the wrong value. It does indeed exist more suitable error analysis for numerical integrations over the Gauss Quadrature, like for instance the procedures outlined by R. Z. Iqbal and M.O. Ahmed \footnote{Error Estimation of Numerical Integration Methods, Department of Mathematics and statistics, University of Lahore, Pakistan, 2016}. or by F. G. Lether \footnote{Error estimates for Gaussian quadrature, AMC 1980}. \\ \indent 
+In regards to the Monte Carlo integration methods, everything appears more in accordance to what one would expect. The importance sampling does indeed increase the accuracy for the particular choice of N in all regards. This makes sense, as focusing only on the relevant values of abscissas would imply a a higher relevancy value for each sample N. In some sense, some of the less efficient data dragging up the time cost is discharged. This of course would have the larges effect on the lowest value of N, as the results would be sensitive to the choice of abscissas when the abscissas are few. This is evident in the results, and the estimates appears reasonable. That the parallelized importance sampling estimate has a lower value than the importance sampling itself also makes sense for low N. For a low value of N, each processor rapidly gets very few abscissas to work with as it only works on N/4 samples. This would not have the same effect for higher N, as at a certain threshold the solution would have properly converged anyhow for each individual processor. \\ \indent 
 Looking at the time cost estimates for the Monte Carlo procedures we see that up until a rather large value for N, the importance sampling procedure does not cost much more than the brute force Monte Carlo. It appears therefore to be a rather cheap improvement with a high value gain in accuracy. As expected, when the procedure is parallelized the time cost goes significantly down. It appears to be approximately 4 times cheaper than the unparalleled procedure. This is sensible as the procedure was run using 4 times the processors simultaneously.\\ \indent 
 In regards to the error estimates we see for all variations of procedures that $\sigma$ decreases as N increases. The accuracy becomes better the more abscissas one samples, which is sensible. If it was possible to find a more suitable error measurement than the relative error for the Gauss Quadrature, it would perhaps be easier to compare the two methods. \\ \indent 
 Looking solely at the Monte Carlo integrations, we find that the variation estimates with the highest precision is the brute force Monte Carlo. This is not completely reasonable, because the closed form solution is not within the range of the variance for any of brute force estimations. The evaluation of why this is is left for future work. That the parallelized code yields a slightly higher variation than the one that is not parallelized is unsurprising for the same reason as states above. 
-
+\newpage 
 \section{Conclusion} \noindent 
-In this paper we have estimated the expectation value of the correlation energy between two electrons in an helium atom, using Gaussian Quadrature and Monte Carlo Integration.It was found that the Gauss-Legendre procedures best estimate for $N<39$ was $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The best estimate for the Gauss-Laguerre procedure yields $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$, testes for the same range of N. The error estimate was found slightly high in both cases, due to the method of error estimation. The best result from brute force Monte Carlo integration using a uniform distribution function was estimated for $N=10^7$ yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The importance sampling procedure improved this result and estimated $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $N=10^7$. The estimation was acknowledged as better in the case of the Monte Carlo integration, as the variation estimate yielded a much higher precision than the Gaussian Quadrature. The code was furthermore parallelized, yielding an estimate of approximately the same accuracy, resulting in $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$. The latter could although be stated as the best approach, as it had a factor of a quarter reduction in the time cost. In total the project is found successful in its evaluation of the procedures, but the evaluation could benefit a lot from a better understanding of the errors as well as an increased number of test to base the average on. This is an improvement left for future work. 
+In this paper we have estimated the expectation value of the correlation energy between two electrons in an helium atom, using Gaussian Quadrature and Monte Carlo Integration. In general, it was established that a higher accuracy in the result was achieved by increasing N, at the price of a time cost. \\ \indent For $N<39$, it was found that the best estimate produced by th Gauss-Legendre procedure was $E[f] \approx (1.9 \pm 0.2)\times 10^{-1}$ for $N=27$. The best estimate for the Gauss-Laguerre procedure was found to be $E[f]\approx (1.9 \pm 0.1)\times 10^{-1}$ for $N=15$, testes for the same range of N. The error estimate was found slightly high in both cases, due to the method of error estimation. The best result from brute force Monte Carlo integration using a uniform distribution function was estimated for $N=10^7$ yielding $E[f]\approx (1.8983 \pm 0.0003)\times 10^{-1}$. The importance sampling procedure improved this result and estimated $E[f]\approx (1.9292 \pm 0.0004)\times 10^{-1}$ for $N=10^7$. The estimation was acknowledged as better in the case of the Monte Carlo integration, as the variation estimate yielded a much higher precision than the Gaussian Quadrature. The code was furthermore parallelized, yielding an estimate of approximately the same accuracy, resulting in $E[f]\approx (1.9264 \pm 0.0004)\times 10^{-1}$.\\ \indent 
+Throughout this paper we have thus explored some of the challenges and predictions of two well established methods for numerical integration. Based on a rather poor approach to evaluating the accuracy of the Gauss Quadrature, it was found hard to compare the two methods. If one although should state anything on the basis of these results, the parallelized importance sampling from the Monte Carlo integration would indeed be the best approach to the closed form solution. This is stated both due to the result having the highest accuracy, and because it were the least time costly. In total the project is found successful in its evaluation of the procedures, but a comparison of the methods could benefit a lot from a better understanding of the errors. Furthermore, as with any experiment the estimates could also benefit from an increased number of test to yield a more solid foundation for the results. 
 
 \newpage. \newpage
 \onecolumngrid
@@ -445,7 +446,7 @@ In this paper we have estimated the expectation value of the correlation energy 
 \subsection{Tabulated values}
 
 \begin{table}[!h]
-	\caption {Gauss-Legendre Quadrature} 
+	\caption {Gauss-Legendre Quadrature. \label{legendre_values} \centering  Integrated expectation value estimate using Gauss-Legendre quadrature. The error estimate is given as the relative error.} 
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value $\times 10^{-1}$} & \hspace{3mm}\textbf{Relative error $\times 10^{-1}$} & \hspace{3mm}\textbf{Time  [s]} \hspace{5mm}\\
@@ -470,12 +471,11 @@ In this paper we have estimated the expectation value of the correlation energy 
 			39 & 1.896  & 0.2  & 95.8025 \\
 
 		\hline 
-	\end{tabular} \\ [5pt]
-	\label{legendre_values} \centering  Integrated expectation value estimate using Gauss-Legendre quadrature. The error estimate is given as the relative error.
+	\end{tabular} 
 \end{table}
 
 \begin{table}[!h]
-	\caption{Gauss-Laguerre Quadrature }
+	\caption{Gauss-Laguerre Quadrature. \label{laguerre_values} \centering Integrated expectation value estimate using Gauss-Laguerre quadrature. The error estimate is given as the relative error.}
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$ & \textbf{Relative Error} $\times 10^{-1}$ & \hspace{3mm}\textbf{Time  [s]} \hspace{5mm}\\
@@ -502,13 +502,12 @@ In this paper we have estimated the expectation value of the correlation energy 
 		
 		\hline 
 	\end{tabular}
-	\\ [3pt] \label{laguerre_values} \centering Integrated expectation value estimate using Gauss-Laguerre quadrature. The error estimate is given as the relative error.
 \end{table}
 
-
+\newpage 
 
 \begin{table}[!h]
-	\caption{Brute force Monte Carlo integration}
+	\caption{Brute force Monte Carlo integration. 	\label{mc_values} \centering The integrated value of the system using Monte Carlo integration. The values are the averages of 10 independent runs of the procedure. }
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$& \hspace{3mm} \textbf{Variance} $\times 10^{-1}$ & \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -519,13 +518,12 @@ In this paper we have estimated the expectation value of the correlation energy 
 			10$^6$  & 2.1790  & 0.0009  & 14.3547 \\
 			10$^7$  & 1.8983  & 0.0003  & 145.0928 \\
 		\hline 
-	\end{tabular} \\ [3pt]
-	\label{mc_values} \centering The integrated value of the system using Monte Carlo integration. The values are the averages of 10 independent runs of the procedure. 
+	\end{tabular}
 \end{table}
 
 
 \begin{table}[!h]
-	\caption{Monte Carlo Importance Sampling}
+	\caption{Monte Carlo Importance Sampling. \label{mc_values_is} \centering The integrated value of the system using Monte Carlo integration with importance sampling. The values are the averages of 10 independent runs of the procedure.}
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value} $\times 10^{-1}$& \hspace{3mm} \textbf{Variance}  $\times 10^{-1}$& \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -537,13 +535,12 @@ In this paper we have estimated the expectation value of the correlation energy 
 			10$^7$ & 1.9292  & 0.0004  & 163.2929 \\
 
 		\hline 
-	\end{tabular} \\ 
-	[3pt]\label{mc_values_is} \centering The integrated value of the system using Monte Carlo integration with importance sampling. The values are the averages of 10 independent runs of the procedure.
+	\end{tabular}
 \end{table}
 
 
 \begin{table}[!h]
-	\caption{Monte Carlo Parallelized Importance Sampling }
+	\caption{Monte Carlo Parallelized Importance Sampling. 	\label{mc_values_par} \centering The integrated value of the system using Monte Carlo integration with importance sampling and parallelization The values are the averages of 10 independent runs of the procedure. }
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
 		\hspace{5mm} \textbf{N} \hspace{5mm} & \textbf{Integrated value}$\times 10^{-1}$ & \hspace{3mm} \textbf{Variance} $\times 10^{-1}$ & \hspace{3mm} \textbf{Time  [s]} \hspace{5mm}\\
@@ -554,49 +551,44 @@ In this paper we have estimated the expectation value of the correlation energy 
 			10$^7$ & 1.9222  & 0.0014  & 4.8073 \\
 			10$^8$ & 1.9264  & 0.0004  & 49.3534 \\
 		\hline 
-	\end{tabular} \\ [3pt]
-	\label{mc_values_par} \centering The integrated value of the system using Monte Carlo integration with importance sampling and parallelization The values are the averages of 10 independent runs of the procedure.
+	\end{tabular}
 \end{table}
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale = 0.35]{Gauss_lagleg_err.png}
-	\caption{\label{laglegerr} The log value of the relative error of the Gaussian Quadrature procedures.}
+	\includegraphics[scale = 0.3]{Gauss_lagleg_err.png}
+	\caption{\label{laglegerr} The log-space of the relative error in the Gaussian Quadrature procedures.}
 \end{figure} \newpage 
 
-
-
-\newpage. \newpage
 \subsection{Derivation of analytical value}\noindent 
-To find the ground state expectation value for the correlation energy between two electrons in a Helium atom, i.e. $\alpha = 2$, one can start with equation \ref{ccintegration} and rewrite the expression to spherical coordinates. Applying equation \ref{r12} and \ref{r1r2}, and begin with the integral dependent on $\mathbf{r}_2$
+To find the ground state expectation value for the correlation energy between two electrons in a Helium atom, i.e. $\alpha = 2$, one can start with equation \ref{ccintegration} and rewrite the expression to spherical coordinates. Applying equation \ref{r12} and \ref{r1r2}, and begin with the integral dependent on $\mathbf{r}_2$ \vspace{2mm}\\ 
 \begin{equation*}
 	I = \int \dfrac{e^{-2\alpha r_2}}{\abs{\mathbf{r_1}-\mathbf{r_2}}}d^3\mathbf{r}_2 = \int \dfrac{e^{-2\alpha r_2}}{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}r_2^2\sin\theta_2dr_2d\theta_2d\phi_2 
-\end{equation*}
-The $\theta$-dependent integral yields
+\end{equation*}\vspace{4mm}\\ 
+The $\theta$-dependent integral yields\vspace{2mm}\\ 
 \begin{align*}
-	\int_{0}^{max}\dfrac{\sin\theta_2}{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}d\theta_2 = \dfrac{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}{r_1r_2} \bigg|_0^\pi \\
+	\int_{0}^{max}\dfrac{\sin\theta_2}{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}d\theta_2 = \dfrac{\sqrt{r_1^2+r_2^2-2r_1r_2\cos\theta_2}}{r_1r_2} \bigg|_0^\pi \\ \\ 
 	= \dfrac{1}{r_1r_2}\qty(\sqrt{r_1^2+r_2^2 + 2r_1r_2} - \sqrt{r_1^2+r_2^2 -2r_1r_2})
-	= \dfrac{1}{r_1r_2}\qty[(r_1+r_2)-\abs{r_1-r_2}]\\
+	= \dfrac{1}{r_1r_2}\qty[(r_1+r_2)-\abs{r_1-r_2}]\\ \\
 	= 	 \left\{
 	\begin{array}{ll}
 	2/r_1 & \textnormal{ if } r_2 < r_2\\
 	2/r_2 & \textnormal{ if } r_2 > r_2
 	\end{array} \right\} \\ 
-\end{align*}
-The $\phi$ integral will be trivial and
+\end{align*}\vspace{2mm}\\ 
+The $\phi$ integral will be trivial and\vspace{2mm}\\ 
 \begin{equation*}
 	\int_{0}^{2\pi}d\phi = 2\phi
-\end{equation*}
-So the entire integral becomes 
+\end{equation*}\vspace{2mm}\\ 
+So the entire integral becomes \vspace{2mm}\\ 
 \begin{align*}
-	I = 4\pi\qty(\dfrac{1}{r_1}\int_{0}^{r_1}e^{-2\alpha r_2}r_2^2dr_2 + \int_{r_1}^{\infty}e^{-2\alpha r_2}dr_2) \\ 
+	I = 4\pi\qty(\dfrac{1}{r_1}\int_{0}^{r_1}e^{-2\alpha r_2}r_2^2dr_2 + \int_{r_1}^{\infty}e^{-2\alpha r_2}dr_2) \\  \\
 	= \dfrac{\pi a^3}{8r_1}\qty[1-(1+\dfrac{2r_1}{a})e^{-2\alpha r_1}]
-\end{align*}
-By repeating the exact same procedure for the integral over $r_1$, one obtains
+\end{align*}\vspace{2mm}\\ 
+By repeating the exact same procedure for the integral over $r_1$, one obtains\vspace{2mm}\\ 
 \begin{align*}
 	(\dfrac{e^2}{4\pi\epsilon_0})\qty(\dfrac{8}{\pi a^3})\int\qty[1-(1+\dfrac{2r_1}{a})e^{-2\alpha r_1}]e^{-2\alpha r_1}r_1sin\theta_1dr_1d\theta_1d\phi_1
-\end{align*}
-Applying $a=\pi$
+\end{align*}\vspace{2mm}\\ 
+Applying $a=\pi$\vspace{2mm}\\ 
 \begin{equation*}
 	\int_{0}^{\infty}\qty[re^{-2\alpha r}-\qty(r+\dfrac{2r^2}{a})e^{-8r/2}]dr = \dfrac{5a^2}{16^2} = \dfrac{5\pi^2}{16^2}
 \end{equation*}
