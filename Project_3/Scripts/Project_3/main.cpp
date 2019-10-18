@@ -52,30 +52,26 @@ int main()
     double * time_mc_parallellized = new double [number_of_tests];
     double alpha = 0.0;
 
-    /*
+    // Running Gauss_Legendre and writes a result file
     GLEG-> Init_GaussLegendre(N, Gauss_Legendre, N_Values, a, b, time_legendre);
     wr -> WR_2A(exact_result, Gauss_Legendre, number_of_tests, N_Values, time_legendre);
 
+    // Running Gauss_Laguerre and writes a result file
     GLAG -> Init_GaussLaguerre(N, Gauss_Laguerre, N_Values, a, b, alpha, time_laguerre);
     wr -> WR_2B(exact_result, Gauss_Laguerre, number_of_tests, N_Values, time_laguerre);
 
+    // Running brute force Monte Carlo Integration and writes a result file
     MCI -> Init_MonteCarloIntegration(N, mc, mc_var, N_Values, a, b, 0, 0, time_mc);
     wr-> MC_0(exact_result, mc, mc_var, number_of_tests, N_Values, time_mc);
-    */
 
-
-
-    /*
+    // Running Monte Carlo Integration with importance sampling and writes a result file
     MCI -> Init_MonteCarloIntegration(N, mc, mc_var, N_Values, a, b, 1, 0, time_mc_importance);
     wr-> MC_1(exact_result, mc, mc_var, number_of_tests, N_Values, time_mc_importance);
-    */
 
-    /*
-    */
+   // Running parallellized Monte Carlo Integration with importance sampling and writes a result file
     MPI_Init(NULL, NULL);
     MCI -> Init_MonteCarloIntegration(N, mc, mc_var, N_Values, a, b, 2, 0, time_mc_parallellized);
     MPI_Finalize ();
-
     wr-> MC_2(exact_result, mc, mc_var, number_of_tests, N_Values, time_mc_parallellized);
 
 
