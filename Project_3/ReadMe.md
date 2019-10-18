@@ -26,7 +26,7 @@ The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ conta
 1000
 10000
 ```
-The write file class writes the results to two types of text files, one primer suitable for reading by humans and the former denoted with numpy is suitable for numpy translations. 
+The write file class writes the results to two types of text files, one primer suitable for reading by humans and a secondary file denoted with numpy suitable for numpy translations. 
 
 ## Setup & Running 
 
