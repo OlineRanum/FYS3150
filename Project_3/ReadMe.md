@@ -10,12 +10,19 @@ physics, FYS3150. The project considers two approaches to numerical integration 
 
 
 ## Structure
-The program is structured in the usual way with main script and class extensions indicated by name.  The Gauss-Legendre and Gauss-Laguerre instances, respectively _GLEG_ and _GLAG_, calls the initialization of both procedure. The Monte Carlo _mc_ instance must be initiated with a mode parameter following
+The program is structured in the usual way with main script and class extensions indicated by name.  The Gauss-Legendre and Gauss-Laguerre instances, respectively _GLEG_ and _GLAG_, calls the initialization of both procedure. The Monte Carlo _mc_ instance must be initiated with a mode parameter, i.e. the 7th argument of the function call, following
 
-|   |   |   |   |   |
-|---|---|---|---|---|
-|   |   |   |   |   |
+| __MODE__  | __INITIATOR__  |   
+|---|---|
+| Brute Force MC  |  0 |
+| Importance Sampling MC|  1 |
+| Parallellized Importance Sampling MC |  2 |
 
+The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ containing all the values 
+
+### Example of _N.txt_ file:
+
+<span style="background-color:pink">Mrs. Robinson</span>
 
 
 ## Setup & Running 
