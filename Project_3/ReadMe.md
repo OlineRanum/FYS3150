@@ -10,7 +10,7 @@ physics, FYS3150. The project considers two approaches to numerical integration 
 
 
 ## Structure
-The program is structured in the usual way with main script and class extensions indicated by name.  The Gauss-Legendre and Gauss-Laguerre instances, respectively _GLEG_ and _GLAG_, calls the initialization of both procedure. The Monte Carlo _mc_ instance must be initiated with a mode parameter, i.e. the 7th argument of the function call, following
+The program is structured in the usual way with main script and class extensions indicated by name.  The Gauss-Legendre and Gauss-Laguerre instances, respectively _GLEG_ and _GLAG_, calls the initialization of both procedure. The Monte Carlo _mc_ instance must be initiated with a mode parameter, I.e. the 7th argument of the function call, following
 
 | __MODE__  | __INITIATOR__  |   
 |---|---|
@@ -20,16 +20,20 @@ The program is structured in the usual way with main script and class extensions
 
 The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ containing all the values 
 
-### Example of _N.txt_ file:
+##### Example of _N.txt_ file:
 ```diff
 100
 1000
 10000
 ```
-
+The write file class writes the results to two types of text files, one primer suitable for reading by humans and the former denoted with numpy is suitable for numpy translations. 
 
 ## Setup & Running 
 
 The program is developed using [QT creator](https://www.qt.io/download) for project management and construction.
-
-After compiling the program 
+After compiling the program, all instances can be run directly in qt except mode 2 of the Monte Carlo estimations. 
+For running the parallelized Monte Carlo integration please compile program and run with
+```diff
+mpirun -n 4 ./Project_3
+```
+for running on 4 processors simultaneously. The number of processors is of course interchangeable. 
