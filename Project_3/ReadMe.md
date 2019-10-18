@@ -22,9 +22,9 @@ The classes for reading files _ReadFiles.cpp_, reads solely a file _N.txt_ conta
 
 ### Example of _N.txt_ file:
 ```diff
-- 100
-- 1000
-- 10000
+100
+1000
+10000
 ```
 
 
