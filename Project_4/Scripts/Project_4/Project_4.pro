@@ -8,10 +8,12 @@ SOURCES += \
         Metropolis.cpp \
         PrepareSystem.cpp \
         ReadFiles.cpp \
+        WriteResults.cpp \
         main.cpp
 
 HEADERS += \
     ExpectationValues.h \
     Metropolis.h \
     PrepareSystem.h \
-    ReadFiles.h
+    ReadFiles.h \
+    WriteResults.h

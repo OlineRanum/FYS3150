@@ -56,11 +56,13 @@ SOURCES       = ../Project_4/ExpectationValues.cpp \
 		../Project_4/Metropolis.cpp \
 		../Project_4/PrepareSystem.cpp \
 		../Project_4/ReadFiles.cpp \
+		../Project_4/WriteResults.cpp \
 		../Project_4/main.cpp 
 OBJECTS       = ExpectationValues.o \
 		Metropolis.o \
 		PrepareSystem.o \
 		ReadFiles.o \
+		WriteResults.o \
 		main.o
 DIST          = /home/oline/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/oline/Qt/5.13.0/gcc_64/mkspecs/common/unix.conf \
@@ -256,10 +258,12 @@ DIST          = /home/oline/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../Project_4/Project_4.pro ExpectationValues.h \
 		Metropolis.h \
 		PrepareSystem.h \
-		ReadFiles.h ../Project_4/ExpectationValues.cpp \
+		ReadFiles.h \
+		WriteResults.h ../Project_4/ExpectationValues.cpp \
 		../Project_4/Metropolis.cpp \
 		../Project_4/PrepareSystem.cpp \
 		../Project_4/ReadFiles.cpp \
+		../Project_4/WriteResults.cpp \
 		../Project_4/main.cpp
 QMAKE_TARGET  = Project_4
 DESTDIR       = 
@@ -719,9 +723,13 @@ PrepareSystem.o: ../Project_4/PrepareSystem.cpp ../Project_4/PrepareSystem.h
 ReadFiles.o: ../Project_4/ReadFiles.cpp ../Project_4/ReadFiles.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ReadFiles.o ../Project_4/ReadFiles.cpp
 
+WriteResults.o: ../Project_4/WriteResults.cpp ../Project_4/WriteResults.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o WriteResults.o ../Project_4/WriteResults.cpp
+
 main.o: ../Project_4/main.cpp ../Project_4/ReadFiles.h \
 		../Project_4/PrepareSystem.h \
-		../Project_4/Metropolis.h
+		../Project_4/Metropolis.h \
+		../Project_4/ExpectationValues.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Project_4/main.cpp
 
 ####### Install

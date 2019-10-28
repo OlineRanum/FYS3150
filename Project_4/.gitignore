@@ -17,6 +17,12 @@ bin-release/
 *.pdf
 *.bib
 *.gz
+*.o
+*.checkpoint.ipynb
+*.txt
+*.npy
+
+
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
