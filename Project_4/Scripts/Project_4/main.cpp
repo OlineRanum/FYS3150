@@ -16,43 +16,47 @@ using namespace arma;
 
 int main()
 {
-    // ISING MODEL
-    ReadFiles *rf = new ReadFiles();
-    WriteResults *wr = new WriteResults();
-    PrepareSystem *mtrx = new PrepareSystem();
-    Metropolis *met = new Metropolis();
+    // Initiate Class Instances
+    ReadFiles *rf             = new ReadFiles();
+    WriteResults *wr          = new WriteResults();
+    PrepareSystem *mtrx       = new PrepareSystem();
+    Metropolis *met           = new Metropolis();
     ExpectationValues *expval = new ExpectationValues();
+    
+    // Initiate Variables
     vector<int> L, T, N ;
+    int J = 1, k_b = 1;
 
-    int J = 1;
-    int k_b = 1;
-
-    // Read Variables from file
+    // Read Variables from .txt files
     L = rf->Read_L_from_file();
     T = rf->Read_T_from_file();
     N = rf->Read_N_from_file();
+    
+    // Find number of tests
+    int N_length = 0; for (int n: N){N_length += 1;}
 
-    int N_length = 0;
-    for (int n: N){N_length += 1;}
-
-    double* n_vals = new double [N_length];
-    double* ex_E = new double [N_length];
-    double* ex_E2 = new double [N_length];
-    double* ex_M = new double [N_length];
-    double* ex_M2 = new double [N_length];
+    // Initiate value pointers
+    double* n_vals   = new double [N_length];
+    double* ex_E     = new double [N_length];
+    double* ex_E2    = new double [N_length];
+    double* ex_M     = new double [N_length];
+    double* ex_M2    = new double [N_length];
     double* ex_abs_M = new double [N_length];
-    double* Chi = new double [N_length];
-    double* CV = new double [N_length];
+    double* Chi      = new double [N_length];
+    double* CV       = new double [N_length];
 
     int it_counter = 0;
     for (int n: N){
-        double * Energy_values = new double [n];
-        double * Magnetization = new double [n];
+        //  Initiate current storage 
+        double * Energy_values      = new double [n];
+        double * Magnetization      = new double [n];
         double * Expectation_Values = new double [7];
-
+        
         cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
 
-        mtrx-> PrepareSpinMatrix(L[0]);
+      //  mtrx-> PrepareSpinMatrix_Random(L[0]);
+        mtrx-> PrepareSpinMatrix_Ordered(L[0], 1);
+        
         met -> Metropolis_Method(mtrx->SpinSystem, L[0], T[0], n , Energy_values, Magnetization);
         expval -> Estimate_ExpectationValues(Energy_values, Magnetization, n, T[0], Expectation_Values);
 
@@ -74,6 +78,7 @@ int main()
         CV[it_counter] = Expectation_Values[6];
 
         it_counter +=1;
+        delete [] Energy_values; delete []  Magnetization; delete [] Expectation_Values; 
     }
 
   //  for (int i = 0; i < N[0]; i++) {

@@ -26,11 +26,11 @@ void ExpectationValues::Estimate_ExpectationValues(double* Energy, double* Magne
     }
 
     std::cout << expval_abs_M << std::endl;
-    values[0] = double(expval_E)/N_mc;
-    values[1] = double(expval_E2)/N_mc;
-    values[2] = double(expval_M)/N_mc;
-    values[3] = double(expval_M2)/N_mc;
-    values[4] = double(expval_abs_M)/N_mc;
+    values[0] = double(expval_E)/(N_mc-BurnIn);
+    values[1] = double(expval_E2)/(N_mc-BurnIn);
+    values[2] = double(expval_M)/(N_mc-BurnIn);
+    values[3] = double(expval_M2)/(N_mc-BurnIn);
+    values[4] = double(expval_abs_M)/(N_mc-BurnIn);
 
     double C_V = beta/T*(values[1] - values[0]*values[0]);
     double Chi = beta/T*(values[3] - values[2]*values[2]);

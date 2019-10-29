@@ -6,7 +6,7 @@
 using namespace std;
 using namespace arma;
 
-void PrepareSystem::PrepareSpinMatrix(int L) {
+void PrepareSystem::PrepareSpinMatrix_Random(int L) {
     SpinSystem = mat(L, L);
 
     for (int i = 0; i < L; i++) {
@@ -16,4 +16,10 @@ void PrepareSystem::PrepareSpinMatrix(int L) {
             if (r <= 0.5) {SpinSystem(i,j) = -1;}
             else {SpinSystem(i,j) = 1;}
         }}
+}
+
+
+void PrepareSystem::PrepareSpinMatrix_Ordered(int L, int mode) {
+    SpinSystem = mode*mat(L, L, fill::ones);
+    cout << SpinSystem;
 }

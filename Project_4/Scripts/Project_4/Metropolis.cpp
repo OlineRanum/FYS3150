@@ -6,8 +6,8 @@
 using namespace arma;
 using namespace std;
 
-inline int periodic(int i, int limit, int add) {
-    return (i+limit+add) % (limit);}
+inline int periodic(int i, int limit) {
+    return (i+limit) % (limit);}
 
 
 void Metropolis::Estimate_Energy(mat SpinMatrix, int L, double* ME_Values){
@@ -17,8 +17,8 @@ void Metropolis::Estimate_Energy(mat SpinMatrix, int L, double* ME_Values){
     for (int i = 0; i < L; i++){
         for (int j = 0; j < L; j++) {
             E += -J*SpinMatrix(i,j)*(
-                        SpinMatrix(periodic(i, L, 1), j) +
-                        SpinMatrix(i, periodic(j, L, 1))
+                        SpinMatrix(periodic(i+1, L), j) +
+                        SpinMatrix(i, periodic(j+1, L))
                         ) ;
             M += SpinMatrix(i,j);
         }}
@@ -52,36 +52,32 @@ void Metropolis::Metropolis_Method(mat SpinMatrix, int L, int T, int N_mc, doubl
 
     for (int i = 1; i < N_mc; i++) {
 
+        // Time Counter
         if (i % (N_mc/10) == 0) {
-        cout << i/(double) N_mc*100 << "%" << endl; }
+            cout << i/(double) N_mc*100 << "%" << endl; }
 
+        // Select random indices
         int i_s= distribution_int(generator_int);
         int j_s= distribution_int(generator_int);
 
+
+        // Estimate Implications of altering spin SpinMatrix(i_s, i_j)
+        double dE = double(2*J*SpinMatrix(i_s,j_s)*(
+                    SpinMatrix(periodic(i_s + 1, L), j_s) +
+                    SpinMatrix(periodic(i_s - 1, L), j_s) +
+                    SpinMatrix(i_s, periodic(j_s + 1, L)) +
+                    SpinMatrix(i_s, periodic(j_s - 1, L))));
+
         double dM = -double(2*SpinMatrix(i_s, j_s));
 
-
-        double dE = double(2*J*SpinMatrix(i_s,j_s)*(
-                    SpinMatrix(periodic(i_s, L, 1), j_s) +
-                    SpinMatrix(periodic(i_s, L, -1), j_s) +
-                    SpinMatrix(i_s, periodic(j_s, L, 1)) +
-                    SpinMatrix(i_s, periodic(j_s, L, -1))));
-
-     //   cout << i_s << j_s << endl;
-        double r = distribution(gen);
-        double P = exp(-beta*dE);
-        // cout << "dE " << dE <<" r: " << r << " P: " << P << endl;
-
-        if ((dE > 0 && r < P) || dE < 0) {
+        // If conditions are met, make transition
+        if (dE <= 0 || distribution(gen) < exp(-beta*dE)) {
                 SpinMatrix(i_s, j_s) *= -1;
                 Energy[i] = Energy[i-1] + dE;
-                Magnetization[i] = Magnetization[i-1] + dM;
+                Magnetization[i] = Magnetization[i-1] + dM;}
 
-        }
-
-            else {
-             //   cout << "Rejected" << endl;
-                Energy[i]            = Energy[i-1];
+        // If not, do not make transition
+        else {  Energy[i]            = Energy[i-1];
                 Magnetization[i]     = Magnetization[i-1];
             }
         /*
