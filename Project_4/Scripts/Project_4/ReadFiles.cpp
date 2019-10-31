@@ -29,7 +29,7 @@ vector<int> ReadFiles::Read_L_from_file()
       return L;
 }
 
-vector<int> ReadFiles::Read_T_from_file()
+vector<double> ReadFiles::Read_T_from_file()
 {
     string line;
       ifstream myfile ("T.txt");

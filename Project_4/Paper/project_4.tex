@@ -25,7 +25,7 @@ aps,
 \onecolumngrid
 
 \begin{center}
-	\large\textbf{The Icing Model\\ \small{Studies of phase transitions in magnetic systems}}
+	\large\textbf{The Ising Model\\ \small{Studies of phase transitions in magnetic systems}}
 \end{center}
 \vspace{5mm}
 
@@ -142,11 +142,49 @@ Then, according to equation \ref{chi} the susceptibility is \vspace{1mm}
 \section{Method} \noindent 
 Initially, it is assumed that there is only two spins in each dimension and that the boundaries are subjected to periodic conditions. Equation \ref{ef} is used to calculate the energy expectation value for all possible configurations and equation \ref{mf} is used to estimate the mean magnetization $\abs{M}$. The specific heat $C_V$ and susceptibility $\chi$ is estimated as functions of T with respectively equation \ref{cv} and \ref{sf}. The results of the calculation are used as benchmark calculations in the next step. 
 The results presented in table \ref{bc} is the analytical evaluation of selected parameters of a $2\times2$ lattice.
-
+\newpage 
 \section{Results} \noindent
+The results of estimating a $2\times 2$ Ising model Monte Carlo simulation with the Metropolis algorithm is presented in table \ref{2b}. It is evident that approximately $N=10^7$ was sufficient to make a good approximation to the analytical values. 
+\begin{table}[!h]
+	\caption{\label{2b}Results per spinz of a Metropolis Algorithm using the Ising model on a $2\times 2$ system with 16 various configurations as a function of N. The analytical expectation values are given at the bottom of the table as E. }
+	\begin{tabular}{|c|c|c|c|c|c|c|c|} \hline 
+		\textbf{N}  & \hspace{1mm}	$\expval{\mathbf{E}}$ \hspace{1mm} & \hspace{1mm}$\expval{\mathbf{E^2}}$ \hspace{1mm} & \hspace{1mm}	$\expval{\mathbf{M}}$\hspace{1mm}  &	\hspace{1mm} $\expval{\mathbf{M^2}}$ \hspace{1mm}  &	\hspace{1mm}$\expval{\abs{\mathbf{M}}} $\hspace{1mm} & \hspace{2mm}$\mathbf{\chi}$	\hspace{2mm} & \hspace{2mm}	\textbf{C}$_V$\hspace{2mm} \\ \hline 
+		&&&&&&&\\
+		10$^4$   &          -1.9952   & 15.9617  &  0.8206 &   15.9680 &   3.9936&   0.0381 &   1.6071\\
+		10$^5$   &          -1.9963   & 15.9701  &  -0.5715 &   15.9751 &   3.9950&   0.0298 &   3.5324\\  
+		10$^6$   &          -1.9959   & 15.9674  &  -0.1322 &   15.9729 &   3.9946&   0.0325 &   3.9499\\  
+		10$^7$   &          -1.9960   & 15.9680  &  0.0064 &   15.9733 &   3.9947&   0.0320 &   3.9908\\ 
+		10$^8$   &          -1.9960   & 15.9678  &  0.0201 &   15.9732 &   3.9946&   0.0321 &   3.9928\\
+		&&&&&&&\\ \hline 
+		E &-1.996 & 16.0926  &0.&     15.9732&  3.992 &  0.0321 & 3.9933 \\ \hline 
+	\end{tabular}
+\end{table}\\ 
 
+\onecolumngrid
+\begin{figure*} 
+	\includegraphics[width = \textwidth]{Figures/4C1.png} 
+	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+\end{figure*}
+\twocolumngrid
+
+The equilibration time $t_{eq}$, or the number of Monte Carlo cycles needed to reach this equilibrium position, is roughly $10^7$ cycles.  
+
+
+\begin{figure*} 
+	\includegraphics[width = \textwidth]{Figures/Plot2.png} 
+	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+\end{figure*}
+
+\begin{figure*} 
+	\includegraphics[width = \textwidth]{Figures/Plot3.png} 
+	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+\end{figure*}
+\newpage.
+\newpage.
+\newpage.
 \section{Discussion} \noindent 
 \section{Conclusion} \noindent 
+\newpage . \newpage
 \onecolumngrid 
 \section{References} \noindent
 \newpage

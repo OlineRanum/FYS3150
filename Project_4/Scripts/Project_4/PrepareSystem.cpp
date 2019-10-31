@@ -21,5 +21,4 @@ void PrepareSystem::PrepareSpinMatrix_Random(int L) {
 
 void PrepareSystem::PrepareSpinMatrix_Ordered(int L, int mode) {
     SpinSystem = mode*mat(L, L, fill::ones);
-    cout << SpinSystem;
 }

@@ -6,7 +6,7 @@
 
 
 
-void ExpectationValues::Estimate_ExpectationValues(double* Energy, double* Magnetization, int N_mc, double T, double* values){
+void ExpectationValues::Estimate_ExpectationValues(double* Energy, double* Magnetization, int N_mc, double T, double L, double* values){
     double k_b = 1;
     double beta = 1/(k_b*T);
     double expval_E = 0, expval_E2  = 0, expval_M = 0, expval_M2 = 0, expval_abs_M = 0;
@@ -34,7 +34,18 @@ void ExpectationValues::Estimate_ExpectationValues(double* Energy, double* Magne
 
     double C_V = beta/T*(values[1] - values[0]*values[0]);
     double Chi = beta/T*(values[3] - values[2]*values[2]);
+    double Chi_abs = beta/T*(values[3] - values[4]*values[4]);
 
     values[5] = C_V;
     values[6] = Chi;
+    values[7] = Chi_abs;
+
+    values[0] = values[0]/(L*L);
+    values[1] = values[1]/(L*L);
+    values[2] = values[2]/(L*L);
+    values[3] = values[3]/(L*L);
+    values[4] = values[4]/(L*L);
+    values[5] = values[5]/(L*L);
+    values[6] = values[6]/(L*L);
+    values[7] = values[7]/(L*L);
 }

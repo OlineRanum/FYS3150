@@ -28,7 +28,7 @@ void Metropolis::Estimate_Energy(mat SpinMatrix, int L, double* ME_Values){
 
 }
 
-void Metropolis::Metropolis_Method(mat SpinMatrix, int L, int T, int N_mc, double* Energy, double* Magnetization){
+void Metropolis::Metropolis_Method(mat SpinMatrix, int L, double T, int N_mc, double* Energy, double* Magnetization, double* AC){
     double k_b = 1;
     double beta = 1.0/(k_b*T);
     double J = 1;
@@ -53,8 +53,7 @@ void Metropolis::Metropolis_Method(mat SpinMatrix, int L, int T, int N_mc, doubl
     for (int i = 1; i < N_mc; i++) {
 
         // Time Counter
-        if (i % (N_mc/10) == 0) {
-            cout << i/(double) N_mc*100 << "%" << endl; }
+        if (i % (N_mc/10) == 0) {cout << i/(double) N_mc*100 << "%" << endl; }
 
         // Select random indices
         int i_s= distribution_int(generator_int);
@@ -74,10 +73,14 @@ void Metropolis::Metropolis_Method(mat SpinMatrix, int L, int T, int N_mc, doubl
         if (dE <= 0 || distribution(gen) < exp(-beta*dE)) {
                 SpinMatrix(i_s, j_s) *= -1;
                 Energy[i] = Energy[i-1] + dE;
-                Magnetization[i] = Magnetization[i-1] + dM;}
+                AC[i] = 1;
+                Magnetization[i] = Magnetization[i-1] + dM;
+        }
+
 
         // If not, do not make transition
         else {  Energy[i]            = Energy[i-1];
+                AC[i]                = 0;
                 Magnetization[i]     = Magnetization[i-1];
             }
         /*
@@ -87,4 +90,5 @@ void Metropolis::Metropolis_Method(mat SpinMatrix, int L, int T, int N_mc, doubl
         cout << "dM" <<i << ": " << dM<< endl;
         cout << SpinMatrix << endl;
         cout << "-----------------" << endl; */
-    }}
+
+    } }

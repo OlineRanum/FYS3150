@@ -12,11 +12,11 @@ using namespace std;
 class ReadFiles {
 public:
     vector<int>  Read_L_from_file();
-    vector<int>  Read_T_from_file();
+    vector<double>  Read_T_from_file();
     vector<int>  Read_N_from_file();
 
     vector<int> L;
-    vector<int> T;
+    vector<double> T;
     vector<int> N;
 
 };
