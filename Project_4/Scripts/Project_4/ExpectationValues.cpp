@@ -11,7 +11,7 @@ void ExpectationValues::Estimate_ExpectationValues(double* Energy, double* Magne
     double beta = 1/(k_b*T);
     double expval_E = 0, expval_E2  = 0, expval_M = 0, expval_M2 = 0, expval_abs_M = 0;
 
-    int BurnIn = N_mc/1000*5;
+    int BurnIn = 5000*L*L;
     std::cout << "Burn In time: " << BurnIn << std::endl;
     for (int i = BurnIn; i < N_mc; i++){
         expval_E += Energy[i];

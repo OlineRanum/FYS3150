@@ -29,7 +29,7 @@ void WriteResults::WR_2C(int Frac_length, double* E,double* Abs_M, double* N_cyc
 {
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("../../Py_Scripts/Results/4C/R_4C_R_24T_" + to_string(it_counter) +".txt", fstream::out);
+    myfile.open ("../../Py_Scripts/Results/4C/R_4C_O_24T_" + to_string(it_counter) +".txt", fstream::out);
     myfile << "N" << setw(15) << "E" << setw(15)  << "Abs_M"<< setw(15) << "Accepted Cycles" <<endl;
     myfile << "------------------------------------" << endl;
     for (int k = 0; k < Frac_length; k++){
@@ -42,7 +42,7 @@ void WriteResults::WR_2C(int Frac_length, double* E,double* Abs_M, double* N_cyc
 void WriteResults::WR_2D(double* E, int N_mc, int it_counter, int L) {
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("../../Py_Scripts/Results/4D/4D_O_24T_" + to_string(it_counter) +".txt", fstream::out);
+    myfile.open ("../../Py_Scripts/Results/4D/4D_R_1T_" + to_string(it_counter) +".txt", fstream::out);
     myfile << "N" << setw(15) << "E" <<endl;
     myfile << "------------------------------------" << endl;
     int BurnIn = 5000;
@@ -59,10 +59,11 @@ void WriteResults::WR_2E(int T_length, double* T, double* E, double* E2, double*
 {
     // Writing values to text file with latex friendly format
     fstream myfile;
-    myfile.open ("../../Py_Scripts/Results/4E/L_"+ to_string(L)+ "_"+to_string(it_counter) +".txt", fstream::out);
+    myfile.open ("../../Py_Scripts/Results/4E/WrittenFiles/L_"+ to_string(L)+ "_"+to_string(it_counter) +".txt", fstream::out);
     myfile << "T" << setw(15) << "E" << setw(15) << "E2"<< setw(15) << "M"<< setw(15) << "M2" << setw(15) << "Abs_M"<< setw(15) << "CV" << setw(15) << "Chi"<<endl;
     myfile << "------------------------------------" << endl;
     for (int k = 0; k < T_length; k++){
+        cout  << T[k] << setw(15) << E[k] << setw(15)<< E2[k] << setw(15) << M[k] << setw(15) << M2[k]<< setw(15) << Abs_M[k] << setw(15) << CV[k] << setw(15) << Chi[k]<< endl;
         myfile  << T[k] << setw(15) << E[k] << setw(15)<< E2[k] << setw(15) << M[k] << setw(15) << M2[k]<< setw(15) << Abs_M[k] << setw(15) << CV[k] << setw(15) << Chi[k]<< endl;
     }
     myfile.close();

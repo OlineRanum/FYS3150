@@ -28,7 +28,7 @@ void Metropolis::Estimate_Energy(mat SpinMatrix, int L, double* ME_Values){
 
 }
 
-void Metropolis::Metropolis_Method(mat SpinMatrix, int L, double T, int N_mc, double* Energy, double* Magnetization, double* AC){
+void Metropolis::Metropolis_Method(mat SpinMatrix, int L, double T, int N_mc, double* Energy, double* Magnetization, double* AC, int rank){
     double k_b = 1;
     double beta = 1.0/(k_b*T);
     double J = 1;
@@ -43,11 +43,11 @@ void Metropolis::Metropolis_Method(mat SpinMatrix, int L, double T, int N_mc, do
   //  cout << "---------------" << endl;
 
     random_device device;
-    mt19937_64 gen(device());
+    mt19937_64 gen(device() + rank);
     uniform_real_distribution<double> distribution(0.0,1.0);
 
     random_device device_int;
-    mt19937 generator_int(device_int());
+    mt19937 generator_int(device_int() + rank);
     uniform_int_distribution<int> distribution_int(0,L-1);
 
     for (int i = 1; i < N_mc; i++) {

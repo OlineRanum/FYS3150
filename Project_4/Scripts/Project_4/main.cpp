@@ -56,15 +56,16 @@ int main()
         double * Energy_values              = new double [n];
         double * Magnetization              = new double [n];
         double * Expectation_Values         = new double [8];
+        double * Expectation_Values_         = new double [8];
         
         cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
 
         // Prepatre Systems
 
-        mtrx-> PrepareSpinMatrix_Random(L[0]);
-    //  mtrx-> PrepareSpinMatrix_Ordered(L[0], 1);
+    //    mtrx-> PrepareSpinMatrix_Random(L[0]);
+         mtrx-> PrepareSpinMatrix_Ordered(L[0], 1);
         
-        // met -> Metropolis_Method(mtrx->SpinSystem, L[0], T[0], n , Energy_values, Magnetization, Acp_config);
+ //        met -> Metropolis_Method(mtrx->SpinSystem, L[0], T[0], n , Energy_values, Magnetization, Acp_config);
 
 
         //---- B ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,17 +103,17 @@ int main()
         */
 
         //---- D ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
-        // wr -> WR_2D(Energy_values, n, it_counter, L[0]);
-        */
+
+     //    wr -> WR_2D(Energy_values, n, it_counter, 1);
+
 
 
         //---- E ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         double dT = 0.01;
-        int T_r = int(0.4/dT);
+        int T_r = int(0.35/dT);
         double* T_range = new double [T_r];
 
-        for (int i = 0; i < T_r; i ++){T_range[i] = 2.0 + i*dT; cout << T_range[i] << endl;}
+        for (int i = 0; i < T_r; i ++){T_range[i] = 2.15 + i*dT; cout << T_range[i] << endl;}
 
         double* t_vals_   = new double [T_r];
         double* ex_E_     = new double [T_r];
@@ -126,58 +127,75 @@ int main()
 
         int it_counter_ = 0;
 
-        /*
+
         MPI_Init(NULL, NULL);
-        */
+        int numprocs; int my_rank;
+
+        double* local_sum = new double[8];
+        double* total_sum = new double[8];
 
         for (int i = 0; i < T_r; i++){
-          /*  int numprocs; int my_rank;
+           // cout << "T:" << T_range[i] << endl;
+
             MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
             MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
-            double time_start = MPI_Wtime();*/
+            double time_start = MPI_Wtime();
 
-            met -> Metropolis_Method(mtrx->SpinSystem, L[0], T_range[i], n , Energy_values, Magnetization, Acp_config);
-            cout << i << endl;
+            met -> Metropolis_Method(mtrx->SpinSystem, L[0], T_range[i], n , Energy_values, Magnetization, Acp_config, my_rank);
+
             expval -> Estimate_ExpectationValues(Energy_values, Magnetization, n, T_range[i], L[0],  Expectation_Values);
 
-            /*
-            double local_sum; double total_sum;
-            local_sum = integral_mc;
 
-            double local_std; double total_std;
-            local_std = std;
 
-            MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-            MPI_Reduce(&local_std, &total_std, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+            for (int o = 0; o < 8; o ++){local_sum[o] = 0; total_sum[o] = 0;}
+            for (int o = 0; o < 8; o ++){local_sum[o] = Expectation_Values[o]; total_sum[o] = 0;}
+
+
+
+
+            MPI_Reduce(local_sum, total_sum, 8, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
             double time_end = MPI_Wtime();
+
 
             double total_time = time_end-time_start;
 
             if ( my_rank == 0) {
-                   cout << "Local sum 0 = " <<  local_sum << endl;
-                   cout << "Parallelalized sum = " <<  total_sum/numprocs << endl;
-                   cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
+
+                   for (int j = 0; j <8; j++){
+                       Expectation_Values_[j] = total_sum[j]/4;
+                       cout << "Total sum: " << total_sum[j] << endl;
+                   }
+              //     cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
+
+                   t_vals_[it_counter_]   = T_range[i];
+                   ex_E_[it_counter_]     = Expectation_Values_[0];
+                   cout <<"T: "<< T_range[i] << " EXP E VAL: " << Expectation_Values_[0]<< endl;
+                   ex_E2_[it_counter_]    = Expectation_Values_[1];
+                   ex_M_[it_counter_]     = Expectation_Values_[2];
+                   ex_M2_[it_counter_]    = Expectation_Values_[3];
+                   ex_abs_M_[it_counter_] = Expectation_Values_[4];
+                   CV_[it_counter_]       = Expectation_Values_[5];
+                   Chi_[it_counter_]      = Expectation_Values_[7];
+                   it_counter_ += 1;
+                   cout << "-------------------------T INCREMENT -----------------------------------------------------------" << endl;
                  }
-            */
 
-            t_vals_[it_counter_] = T_range[i];
-            ex_E_[it_counter_]     = Expectation_Values[0];
-            ex_E2_[it_counter_]    = Expectation_Values[1];
-            ex_M_[it_counter_]     = Expectation_Values[2];
-            ex_M2_[it_counter_]    = Expectation_Values[3];
-            ex_abs_M_[it_counter_] = Expectation_Values[4];
-            CV_[it_counter_]       = Expectation_Values[5];
-            Chi_[it_counter_]      = Expectation_Values[7];
-            it_counter_ += 1;
-        }
 
-        /*
+           //  delete[] local_sum; delete[] total_sum;
+        ;}
+
+
 
         MPI_Finalize ();
-        */
 
 
-        wr -> WR_2E(T_r, t_vals_, ex_E_, ex_E2_, ex_M_, ex_M2_, ex_abs_M_, Chi_, CV_, L[0], it_counter);
+        if(my_rank == 0){
+
+
+            wr -> WR_2E(T_r, t_vals_, ex_E_, ex_E2_, ex_M_, ex_M2_, ex_abs_M_, Chi_, CV_, L[0], it_counter);
+        }
+
         delete[] t_vals_; delete [] ex_E_; delete [] ex_E2_; delete [] ex_M_; delete [] ex_M2_; delete [] ex_abs_M_; delete [] Chi_; delete [] CV_;
 
 
@@ -191,7 +209,7 @@ int main()
 
 
         it_counter +=1;
-        delete [] Energy_values; delete []  Magnetization; delete [] Expectation_Values;
+        delete [] Energy_values; delete []  Magnetization; delete [] Expectation_Values; delete [] Expectation_Values_;
         delete[] Acp_config_count; delete [] Acp_config;
     }
 

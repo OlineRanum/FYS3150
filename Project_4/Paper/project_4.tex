@@ -113,71 +113,106 @@ For a $2\times 2$ grid there exist $2^4 = 16$ different configurations. Various 
 	Z =  4\cosh(8J\beta) + 12 
 \end{equation} \vspace{1mm}
 The energy expectation values are \vspace{1mm}
-\begin{align}
+\begin{align}\label{E}
 	\expval{E} = -\dfrac{32J}{z}\sinh(8J\beta)
 \end{align}\vspace{1mm}
-\begin{align}
+\begin{align}\label{E2}
 	\expval{E^2} = \dfrac{258J^2}{Z}\cosh(8J\beta)
 \end{align}\vspace{1mm}
 It follows from equation \ref{cv} that \vspace{1mm}
-\begin{align}
+\begin{align} \label{CV}
 	C_V= \dfrac{\beta}{T}64J^2\qty[\dfrac{\cosh(8J\beta)}{\cosh(8J\beta) + 3}  -\qty(\dfrac{\sinh(8J\beta)}{\cosh(8J\beta) + 3 })^2]\nonumber  \\&\nonumber \\
 \end{align}\vspace{1mm}
 The magnetization expectation values becomes \vspace{1mm}
-\begin{align*}
+\begin{align} \label{exM}
 	\expval{M} =  0
-\end{align*}\vspace{1mm}
-\begin{align*}
+\end{align}\vspace{1mm}
+\begin{align} \label{absM}
 \expval{\abs{M}} =  \dfrac{2e^{8J\beta}}{\cosh(8J\beta) + 3 }
-\end{align*}\vspace{1mm}
-\begin{align*}
+\end{align}\vspace{1mm}
+\begin{align}\label{M2}
 \expval{M^2} = \dfrac{8e^{8J\beta} + 8}{\cosh(8J\beta) + 3}
-\end{align*}\vspace{1mm}
+\end{align}\vspace{1mm}
 Then, according to equation \ref{chi} the susceptibility is \vspace{1mm}
-\begin{align}
+\begin{align}\label{CHI}
 	\chi = \dfrac{\beta}{T}\dfrac{8e^{8J\beta} + 8}{\cosh(8J\beta) + 3}
 \end{align}
-\subsection{The metropolis algorithm}
+----------------------------------\\
+Probability transition rate:
+\begin{equation}
+	P_i = e^{-\beta\Delta E}
+\end{equation}
 
+\subsection{The metropolis algorithm}
+\newpage
 \section{Method} \noindent 
-Initially, it is assumed that there is only two spins in each dimension and that the boundaries are subjected to periodic conditions. Equation \ref{ef} is used to calculate the energy expectation value for all possible configurations and equation \ref{mf} is used to estimate the mean magnetization $\abs{M}$. The specific heat $C_V$ and susceptibility $\chi$ is estimated as functions of T with respectively equation \ref{cv} and \ref{sf}. The results of the calculation are used as benchmark calculations in the next step. 
-The results presented in table \ref{bc} is the analytical evaluation of selected parameters of a $2\times2$ lattice.
+\subsection{A} \noindent 
+Initially, a grid consisting of $2\times 2$ spins are considered with periodic boundary conditions. The systems analytical expectation values and properties are calculated using equation \ref{E}-\ref{CHI}. These calculations are used as benchmark calculations for the following numerical estimates, and are presented in table \ref{bc}.
+
+\subsection*{B. Initial evaluation of the Ising Model and MC Cycles}
+The Ising model with $J=1$ is employed in order to evaluate an $L\times L$ lattice of up- and down spins, and subjected to a Monte Carlo Metropolis procedure. The procedure is implemented as following:\\
+The number of grid points $L^2$, the number of Monte Carlo Cycles $N$ and the set temperature $T$ is read from text files. Two system configurations are initiated, one contains spins of random orientations and the other spins in a configuration corresponding to the ground state. That is, all spins align, pointing either upwards or downwards. The former is employed in the current evaluation. \\
+The energy and magnetization of the initial spin configuration is calculated, and an iteration process over the $N$ Monte Carlo iterations are initiated. For each Monte Carlo Cycle, two random indices are drawn from a Mersenne Twister 19937 generator. Then, the change in energy from doing the spin flip of the random spin is evaluated. If the change of spin yields a lower energy, the transition to the new configuration is preformed. If transitions yields a higher energy, a random number is drawn from a normal distribution of numbers $i\in[0,1]$ by the Mersenne Twister. If the random number is lower than the probability rate of equation \ref{probrate}, the transition is also made. When a transition is preformed, the energy and magnetization of the system is reevaluated. In all other cases, the transition is not preformed and the configuration with it's properties are conserved. \\ \indent 
+From the energy and magnetization values the expectation values of $E$, $E^2$, $M$, $M^2$ and $\abs{M}$ are calculated by summing over all simulated values of $E$ and $M$ weighted by the number of Monte Carlo Cycles, after an initial burn-in time. The burn-in time is set to $t_{burn} = 0.005*N$. Then $C_V$ and $\chi$ is estimated using equation  \ref{cv} and \ref{chi}, for T = 1.0K and $k_b=1$. The expectation values and properties are weighted with the number of spins in the system, to yield the property values per spin. This procedure is initially preformed for a $2\times 2$ lattice through a set  of 10 independent runs per $N=10^i$ where $i = 4, 5, 6, 7, 8$. The results are compared to the benchmark values, and presented in table \ref{bc}.
+\subsection*{Evaluation of most likely state} \noindent 
+After the initial analysis the number of Monte Carlo iterations iterations to reach the most likely state are considered. Using the number of Monte Carlo iterations as an evolution axis, the expectation values are estimated as a function of $N$. The evaluation is preformed for both $\expval{E}$ and $\expval{\abs{M}}$ for both $T = 1.0$K and $T = 2.4$K. The number of accepted iterations as a function of $N$ is also plotted for both temperatures. The evaluations are preformed through 10 independent runs, and provided with the variance as error bars. Furthermore, the evaluation is preformed for all cases with the initial configuration being random and ordered with all spins up. An estimate for the equilibration time is provided based on an graphical evaluation. 
+
+\subsection*{Analysis of the probability distribution} \noindent
+The probability distribution $P(E)$ is estimated by counting up the numbers of times a given energy appears in the computations, for both temperatures. The burn-in time is now set to $t_{burn} = 5000L^2$. The results are presented using the \textit{seaborn kde-based distplot} histograms. The results are compared with the computed variance in energy $\sigma_E^2$.
+
+\subsection{Numerical studies of phase transitions}
+In order to study the behavior of the Ising model in two dimensions close to the critical temperature as a function of the lattice size $L\times L$, $\expval{E}$, $\expval{\abs{M}}$, $C_V$ and $\chi$ as functions of temperature. The properties are calculated for $T\in[2.15,2.5]$K with step interval $dT = 0.01$K for $L\in[40, 60, 80, 100]$. The result are compared to the analytical value of the critical temperature, $T_c$. The code is parallelized using MPI on four processors. An analysis of the time is preformed using various optimization flags. \\ 
+In the end, an estimate of the critical temperature is extracted based on the previous results, using equation \ref{label}, and compared to the exact result of Lars Onsager. 
+ 
 \newpage 
-\section{Results} \noindent
-The results of estimating a $2\times 2$ Ising model Monte Carlo simulation with the Metropolis algorithm is presented in table \ref{2b}. It is evident that approximately $N=10^7$ was sufficient to make a good approximation to the analytical values. 
+\onecolumngrid
+\section{Results} 
+\twocolumngrid
+\vspace{4mm}
+
+\subsection*{2$\times$2 Ising Model} \noindent 
+The results of estimating a $2\times 2$ Ising model Monte Carlo simulation with the Metropolis algorithm is presented in table \ref{2b}. It is evident that some of the properties converge to the analytical values to a various degree as a function of $N$. It appears that approximately $N=10^7$ is sufficient to make a decent approximation to the analytical values. \\ \indent 
+The results of the Monte Carlo Metropolis approach to estimating the expectation values are plotted in figure \ref{4C11}. It is evident that for both temperatures, in the case where the system was initiated in the ground state, the expectation values are much more consistent with the analytical values than the system initiated with a random configuration. The system appears to be converging faster for $T = 2.4$K, than for $T = 1.0$K. The expectation value for the energy appears to converge towards $\expval{E} = -2$ and the magnetization to $\expval{\abs{M}} = 1.0$.\\ \noindent 
+It is furthermore clear that the evaluation fluctuates more for the system initiated with the random configurations, but that in both cases for sufficiently large $N$-values the variance goes to zero. 
+\vspace{2mm}
 \begin{table}[!h]
-	\caption{\label{2b}Results per spinz of a Metropolis Algorithm using the Ising model on a $2\times 2$ system with 16 various configurations as a function of N. The analytical expectation values are given at the bottom of the table as E. }
+	\caption{\label{2b}Results per spin of a Metropolis Algorithm using the Ising model on a $2\times 2$ spin system, as a function of N. The analytical expectation values are given at the bottom of the table as A. }
 	\begin{tabular}{|c|c|c|c|c|c|c|c|} \hline 
 		\textbf{N}  & \hspace{1mm}	$\expval{\mathbf{E}}$ \hspace{1mm} & \hspace{1mm}$\expval{\mathbf{E^2}}$ \hspace{1mm} & \hspace{1mm}	$\expval{\mathbf{M}}$\hspace{1mm}  &	\hspace{1mm} $\expval{\mathbf{M^2}}$ \hspace{1mm}  &	\hspace{1mm}$\expval{\abs{\mathbf{M}}} $\hspace{1mm} & \hspace{2mm}$\mathbf{\chi}$	\hspace{2mm} & \hspace{2mm}	\textbf{C}$_V$\hspace{2mm} \\ \hline 
 		&&&&&&&\\
-		10$^4$   &          -1.9952   & 15.9617  &  0.8206 &   15.9680 &   3.9936&   0.0381 &   1.6071\\
-		10$^5$   &          -1.9963   & 15.9701  &  -0.5715 &   15.9751 &   3.9950&   0.0298 &   3.5324\\  
-		10$^6$   &          -1.9959   & 15.9674  &  -0.1322 &   15.9729 &   3.9946&   0.0325 &   3.9499\\  
-		10$^7$   &          -1.9960   & 15.9680  &  0.0064 &   15.9733 &   3.9947&   0.0320 &   3.9908\\ 
-		10$^8$   &          -1.9960   & 15.9678  &  0.0201 &   15.9732 &   3.9946&   0.0321 &   3.9928\\
+		10$^4$   &  -1.9974   & 15.9793  &  0.6353 &   3.9958 &   0.9992&   0.0207 &   1.7822\\
+		10$^5$    &          -1.9967   & 15.9739  &  -0.0309 &   3.9946 &   0.9989&   0.0260 &   3.7958\\ 
+		
+		10$^6$  &          -1.9958   & 15.9667  &  -0.0351 &   3.9931 &   0.9986&   0.0332 &   3.9452\\ 
+		
+		10$^7$  &          -1.9960   & 15.9680  &  -0.0037 &   3.9933 &   0.9987&   0.0320 &   3.9897\\ 
+		10$^8$   &          -1.9960   & 15.9678  &  -0.0015 &   3.9933 &   0.9987&   0.0321 &   3.9931\\ 
 		&&&&&&&\\ \hline 
-		E &-1.996 & 16.0926  &0.&     15.9732&  3.992 &  0.0321 & 3.9933 \\ \hline 
+		A &-1.9960 & 16.0926  &0.    &  3.9933 & 0.9980  & 0.0321&  3.9933 \\ \hline 
 	\end{tabular}
-\end{table}\\ 
+\end{table} 
 
+\newpage
+
+\subsection{4C}
 \onecolumngrid
 \begin{figure*} 
 	\includegraphics[width = \textwidth]{Figures/4C1.png} 
-	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+	\caption{\centering \label{4C11}Average energy and magnetization per spin as function of Monte Carlo iterations. The error bars represents the standard deviation of 10 independent test runs. \vspace{13mm}}
 \end{figure*}
 \twocolumngrid
-
-The equilibration time $t_{eq}$, or the number of Monte Carlo cycles needed to reach this equilibrium position, is roughly $10^7$ cycles.  
+\newpage
+The equilibration time $t_{eq}$, or the number of Monte Carlo iterations needed to reach this equilibrium position, is roughly $10^7$ iterations.  
 
 
 \begin{figure*} 
 	\includegraphics[width = \textwidth]{Figures/Plot2.png} 
-	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo iterations. The errorbar represents the standard deviation of 10 independent test runs.}
 \end{figure*}
 
 \begin{figure*} 
 	\includegraphics[width = \textwidth]{Figures/Plot3.png} 
-	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo cycles. The errorbar represents the standard deviation of 10 independent test runs.}
+	\caption{\centering \label{4C1}Average energy and magnetization per spin as function of Monte Carlo iterations. The errorbar represents the standard deviation of 10 independent test runs.}
 \end{figure*}
 \newpage.
 \newpage.
