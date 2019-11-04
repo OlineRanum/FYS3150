@@ -12,11 +12,11 @@ EQ            = =
 
 ####### Compiler, tools and options
 
-CC            = gcc
-CXX           = g++
+CC            = mpicc
+CXX           = mpicxx
 DEFINES       = 
-CFLAGS        = -pipe -O2 -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -W -fPIC $(DEFINES)
+CFLAGS        = -pipe -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -O2 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -DMPICH_IGNORE_CXX_SEEK-O2 -O2 -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -DMPICH_IGNORE_CXX_SEEK -std=gnu++11 -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../Project_4 -I. -I/home/oline/Qt/5.13.0/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/oline/Qt/5.13.0/gcc_64/bin/qmake
 DEL_FILE      = rm -f
@@ -38,8 +38,8 @@ TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Project_41.0.0
 DISTDIR = /home/oline/Documents/UiO/FYS3150/FYS3150/Project_4/Scripts/build/.tmp/Project_41.0.0
-LINK          = g++
-LFLAGS        = -Wl,-O1
+LINK          = mpicxx
+LFLAGS        = -pthread -L/usr//lib -L/usr/lib/x86_64-linux-gnu/openmpi/lib -lmpi_cxx -lmpi -Wl,-O1
 LIBS          = $(SUBLIBS)    
 AR            = ar cqs
 RANLIB        = 
@@ -52,13 +52,15 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Project_4/ExpectationValues.cpp \
+SOURCES       = ../Project_4/EvaluateSystem.cpp \
+		../Project_4/ExpectationValues.cpp \
 		../Project_4/Metropolis.cpp \
 		../Project_4/PrepareSystem.cpp \
 		../Project_4/ReadFiles.cpp \
 		../Project_4/WriteResults.cpp \
 		../Project_4/main.cpp 
-OBJECTS       = ExpectationValues.o \
+OBJECTS       = EvaluateSystem.o \
+		ExpectationValues.o \
 		Metropolis.o \
 		PrepareSystem.o \
 		ReadFiles.o \
@@ -255,11 +257,13 @@ DIST          = /home/oline/Qt/5.13.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/oline/Qt/5.13.0/gcc_64/mkspecs/features/exceptions.prf \
 		/home/oline/Qt/5.13.0/gcc_64/mkspecs/features/yacc.prf \
 		/home/oline/Qt/5.13.0/gcc_64/mkspecs/features/lex.prf \
-		../Project_4/Project_4.pro ExpectationValues.h \
+		../Project_4/Project_4.pro EvaluateSystem.h \
+		ExpectationValues.h \
 		Metropolis.h \
 		PrepareSystem.h \
 		ReadFiles.h \
-		WriteResults.h ../Project_4/ExpectationValues.cpp \
+		WriteResults.h ../Project_4/EvaluateSystem.cpp \
+		../Project_4/ExpectationValues.cpp \
 		../Project_4/Metropolis.cpp \
 		../Project_4/PrepareSystem.cpp \
 		../Project_4/ReadFiles.cpp \
@@ -711,6 +715,9 @@ compiler_clean:
 
 ####### Compile
 
+EvaluateSystem.o: ../Project_4/EvaluateSystem.cpp ../Project_4/EvaluateSystem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EvaluateSystem.o ../Project_4/EvaluateSystem.cpp
+
 ExpectationValues.o: ../Project_4/ExpectationValues.cpp ../Project_4/ExpectationValues.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ExpectationValues.o ../Project_4/ExpectationValues.cpp
 
@@ -729,7 +736,9 @@ WriteResults.o: ../Project_4/WriteResults.cpp ../Project_4/WriteResults.h
 main.o: ../Project_4/main.cpp ../Project_4/ReadFiles.h \
 		../Project_4/PrepareSystem.h \
 		../Project_4/Metropolis.h \
-		../Project_4/ExpectationValues.h
+		../Project_4/ExpectationValues.h \
+		../Project_4/WriteResults.h \
+		../Project_4/EvaluateSystem.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Project_4/main.cpp
 
 ####### Install
