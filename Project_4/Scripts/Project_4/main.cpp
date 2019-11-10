@@ -18,6 +18,7 @@ using namespace arma;
 
 int main()
 {
+    cout << "COMPILEDONE" << endl;
     // Initiate Class Instances
     ReadFiles *rf             = new ReadFiles();
     WriteResults *wr          = new WriteResults();
@@ -58,7 +59,7 @@ int main()
         double * Expectation_Values         = new double [8];
         double * Expectation_Values_         = new double [8];
         
-        cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
+//        cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
 
         // Prepatre Systems
 
@@ -109,11 +110,11 @@ int main()
 
 
         //---- E ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        double dT = 0.001;
+        double dT = 0.01;
         int T_r = int(0.35/dT);
         double* T_range = new double [T_r];
 
-        for (int i = 0; i < T_r; i ++){T_range[i] = 2.15 + i*dT; cout << T_range[i] << endl;}
+        for (int i = 0; i < T_r; i ++){T_range[i] = 2.15 + i*dT;}
 
         double* t_vals_   = new double [T_r];
         double* ex_E_     = new double [T_r];
@@ -164,13 +165,13 @@ int main()
 
                    for (int j = 0; j <8; j++){
                        Expectation_Values_[j] = total_sum[j]/4;
-                       cout << "Total sum: " << total_sum[j] << endl;
+                    //   cout << "Total sum: " << total_sum[j] << endl;
                    }
-              //     cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
-
+                  // cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
+                   cout << total_time << " , " << endl;
                    t_vals_[it_counter_]   = T_range[i];
                    ex_E_[it_counter_]     = Expectation_Values_[0];
-                   cout <<"T: "<< T_range[i] << " EXP E VAL: " << Expectation_Values_[0]<< endl;
+                 //  cout <<"T: "<< T_range[i] << " EXP E VAL: " << Expectation_Values_[0]<< endl;
                    ex_E2_[it_counter_]    = Expectation_Values_[1];
                    ex_M_[it_counter_]     = Expectation_Values_[2];
                    ex_M2_[it_counter_]    = Expectation_Values_[3];
@@ -178,7 +179,7 @@ int main()
                    CV_[it_counter_]       = Expectation_Values_[5];
                    Chi_[it_counter_]      = Expectation_Values_[7];
                    it_counter_ += 1;
-                   cout << "-------------------------T INCREMENT -----------------------------------------------------------" << endl;
+            //       cout << "-------------------------T INCREMENT -----------------------------------------------------------" << endl;
                  }
 
 
