@@ -1,6 +1,8 @@
 # Project 4, Studies of Phase Transitions in Magnetic Systems
 [Project assignment file](https://github.com/CompPhysics/ComputationalPhysics/blob/master/doc/Projects/2019/Project4/pdf/Project4.pdf)
 
+![](Paper/Figures/Plot4.png)
+
 
 ## Description
 
