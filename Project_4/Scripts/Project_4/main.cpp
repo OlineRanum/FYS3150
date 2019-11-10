@@ -18,7 +18,6 @@ using namespace arma;
 
 int main()
 {
-    cout << "COMPILEDONE" << endl;
     // Initiate Class Instances
     ReadFiles *rf             = new ReadFiles();
     WriteResults *wr          = new WriteResults();
@@ -59,18 +58,18 @@ int main()
         double * Expectation_Values         = new double [8];
         double * Expectation_Values_         = new double [8];
         
-//        cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
+        cout << "L: " << L[0] << endl << "T: " << T[0] << endl << "N: " << n << endl;
 
         // Prepatre Systems
 
-    //    mtrx-> PrepareSpinMatrix_Random(L[0]);
+        mtrx-> PrepareSpinMatrix_Random(L[0]);
          mtrx-> PrepareSpinMatrix_Ordered(L[0], 1);
         
- //        met -> Metropolis_Method(mtrx->SpinSystem, L[0], T[0], n , Energy_values, Magnetization, Acp_config);
+         met -> Metropolis_Method(mtrx->SpinSystem, L[0], T[0], n , Energy_values, Magnetization, Acp_config, 0);
 
 
         //---- B ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
+
         expval -> Estimate_ExpectationValues(Energy_values, Magnetization, n, T[0],L[0],  Expectation_Values);
 
         cout << "<E>      = " << Expectation_Values[0] << endl;
@@ -89,23 +88,25 @@ int main()
         ex_abs_M[it_counter] = Expectation_Values[4];
         CV[it_counter]      = Expectation_Values[5];
         Chi[it_counter]      = Expectation_Values[6];
-        */
+
 
         //---- C ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        /*
+
         int n_Fractions = 2*n/10000-1;
         cout << "FRAC: "<< n_Fractions << endl;
         double * Mean_Energy_evolution = new double [n_Fractions];
         double * Mean_Magnetization_evolution = new double [n_Fractions];
         double * N_cycle = new double [n_Fractions];
-        //es-> Evaluate_N_4C(n_Fractions, Energy_values, Magnetization, Mean_Energy_evolution, Mean_Magnetization_evolution, N_cycle, n, L[0], Acp_config, Acp_config_count);
-        //wr -> WR_2C(n_Fractions, Mean_Energy_evolution, Mean_Magnetization_evolution, N_cycle, it_counter, Acp_config_count);
+
+        es-> Evaluate_N_4C(n_Fractions, Energy_values, Magnetization, Mean_Energy_evolution, Mean_Magnetization_evolution, N_cycle, n, L[0], Acp_config, Acp_config_count);
+        wr -> WR_2C(n_Fractions, Mean_Energy_evolution, Mean_Magnetization_evolution, N_cycle, it_counter, Acp_config_count);
+
         delete [] Mean_Energy_evolution; delete [] Mean_Magnetization_evolution; delete[] N_cycle;
-        */
+
 
         //---- D ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-     //    wr -> WR_2D(Energy_values, n, it_counter, 1);
+         wr -> WR_2D(Energy_values, n, it_counter, 1);
 
 
 
@@ -136,8 +137,6 @@ int main()
         double* total_sum = new double[8];
 
         for (int i = 0; i < T_r; i++){
-           // cout << "T:" << T_range[i] << endl;
-
             MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
             MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
             double time_start = MPI_Wtime();
@@ -165,13 +164,13 @@ int main()
 
                    for (int j = 0; j <8; j++){
                        Expectation_Values_[j] = total_sum[j]/4;
-                    //   cout << "Total sum: " << total_sum[j] << endl;
+                       cout << "Total sum: " << total_sum[j] << endl;
                    }
-                  // cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
+                   cout << "Time = " <<  total_time  << " on number of processors: "  << numprocs  << endl;
                    cout << total_time << " , " << endl;
                    t_vals_[it_counter_]   = T_range[i];
                    ex_E_[it_counter_]     = Expectation_Values_[0];
-                 //  cout <<"T: "<< T_range[i] << " EXP E VAL: " << Expectation_Values_[0]<< endl;
+                   cout <<"T: "<< T_range[i] << " EXP E VAL: " << Expectation_Values_[0]<< endl;
                    ex_E2_[it_counter_]    = Expectation_Values_[1];
                    ex_M_[it_counter_]     = Expectation_Values_[2];
                    ex_M2_[it_counter_]    = Expectation_Values_[3];
@@ -179,11 +178,7 @@ int main()
                    CV_[it_counter_]       = Expectation_Values_[5];
                    Chi_[it_counter_]      = Expectation_Values_[7];
                    it_counter_ += 1;
-            //       cout << "-------------------------T INCREMENT -----------------------------------------------------------" << endl;
                  }
-
-
-           //  delete[] local_sum; delete[] total_sum;
         ;}
 
 
@@ -199,16 +194,6 @@ int main()
 
         delete[] t_vals_; delete [] ex_E_; delete [] ex_E2_; delete [] ex_M_; delete [] ex_M2_; delete [] ex_abs_M_; delete [] Chi_; delete [] CV_;
 
-
-        //---- F ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-        //---- END -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
         it_counter +=1;
         delete [] Energy_values; delete []  Magnetization; delete [] Expectation_Values; delete [] Expectation_Values_;
         delete[] Acp_config_count; delete [] Acp_config;
@@ -216,7 +201,7 @@ int main()
 
 
     //---- B 2 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //   wr -> WR_2B(N_length, n_vals, ex_E, ex_E2, ex_M, ex_M2, ex_abs_M, Chi, CV);
+       wr -> WR_2B(N_length, n_vals, ex_E, ex_E2, ex_M, ex_M2, ex_abs_M, Chi, CV);
 
 
     delete[] n_vals; delete [] ex_E; delete [] ex_E2; delete [] ex_M; delete [] ex_M2; delete [] ex_abs_M; delete [] Chi; delete [] CV;
