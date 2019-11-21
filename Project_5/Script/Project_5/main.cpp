@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    int N = 10000000;
+    int N = 100000000;
     double t0 = 0; double tf = 10;
     double h = (tf-t0)/N;
     double * t = new double [N];
@@ -41,7 +41,7 @@ int main()
     ODESolver *ODES        = new ODESolver();
     WriteResults *WR          = new WriteResults();
     SolarSystem *SS = new SolarSystem();
-    int N_planets = 2;
+    int N_planets = 3;
 
 
 
@@ -51,7 +51,7 @@ int main()
     //  WR -> WR_5A(x, y, z, vx, vy, vz, N);
 
 
-    //  SS -> CreateSolarSystem(PlanetNames, PlanetMass, initialConditions);
+     SS -> CreateSolarSystem(PlanetNames, PlanetMass, initialConditions, N, h);
 
 
 
