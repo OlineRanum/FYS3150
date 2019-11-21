@@ -5,7 +5,7 @@
 class WriteResults
 {
 public:
-    void WR_5A(double* x, double* y, double* z, int N);
+    void WR_5A(double* x, double* y, double* z, double* vx, double* vy, double* vz, int N);
 
 };
 

@@ -1,6 +1,9 @@
 #include <iostream>
 #include <ODESolver.h>
+#include <SolarSystem.h>
 #include <WriteResults.h>
+#include <list>
+#include <ReadFiles.h>
 
 using namespace std;
 
@@ -12,6 +15,21 @@ int main()
     double * t = new double [N];
     for (int i=0; i <N; i ++){t[i] = t0 + i*h;}
 
+
+    // Initiate Class Instances
+    ReadFiles *rf             = new ReadFiles();
+
+    // Initiate Variables
+    vector<double> PlanetMass;
+    vector<vector<double>> initialConditions ;
+    vector<string> PlanetNames;
+
+    // Read Variables from .txt files
+    PlanetNames = rf->Read_Names_from_file();
+    PlanetMass = rf->Read_Mass_from_file();
+
+    initialConditions = rf->Read_InitialConditions_from_file();
+
     double * x = new double [N];
     double * y = new double [N];
     double * z = new double [N];
@@ -22,11 +40,21 @@ int main()
 
     ODESolver *ODES        = new ODESolver();
     WriteResults *WR          = new WriteResults();
+    SolarSystem *SS = new SolarSystem();
+    int N_planets = 2;
 
-    //ODES-> ForwardEuler(x,y,z, vx,vy,vz, N,h);
-    ODES-> Verlet(x, y, z, vx , vy, vz, N, h, a);
 
-    WR -> WR_5A(x, y, z, N);
+
+    // SINGLE PLANET SYSTEM
+    //ODES -> ForwardEuler(x,y,z, vx,vy,vz, N,h);
+    //ODES -> Verlet(x, y, z, vx , vy, vz, N, h, a);
+    //  WR -> WR_5A(x, y, z, vx, vy, vz, N);
+
+
+    //  SS -> CreateSolarSystem(PlanetNames, PlanetMass, initialConditions);
+
+
+
     cout << "Done" << endl;
 
 }
