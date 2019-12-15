@@ -37,7 +37,7 @@ vector<double> ReadFiles::Read_Mass_from_file()
         while ( getline (myfile,line) )
         {
 
-            mass.push_back(atoi(line.c_str()));
+            mass.push_back(atof(line.c_str()));
         }
         myfile.close();
       }

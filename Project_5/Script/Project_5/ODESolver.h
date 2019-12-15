@@ -7,8 +7,8 @@ class ODESolver
 {
 public:
     void ForwardEuler(double* x, double* y, double* z, double*vx , double* vy, double* vz, int N, double h);
-    void Verlet(double* x, double* y, double* z, double*vx , double* vy, double* vz, int N, double h, double* a);
-    void VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, double h, int N_planets);
+    void Verlet(double* x, double* y, double* z, double*vx , double* vy, double* vz, int N, double h, double* a, double beta);
+    void VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, double h, int N_planets, string mode);
 };
 
 #endif // FORWARDEULER_H

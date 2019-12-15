@@ -74,7 +74,7 @@ aps,
 \section{Theory} \noindent 
 \subsection{Newton's law of gravitation}
 Newton's law of gravitation is given by a force $F_G$
-\begin{equation}
+\begin{equation}\label{nwt}
 	F_G = \frac{GM_{\odot}M_{\mathrm{Earth}}}{r^2} = \frac{M_{\mathrm{Earth}}v^2}{r}
 \end{equation}
 where $M_{\odot}$ is the mass of the Sun and $M_{\mathrm{Earth}}$ is the mass of the Earth. $G$ is the gravitational constant, $r$ is the distance between the Sun and the Earth and $v$ is the velocity of Earth. This implies that
@@ -113,6 +113,29 @@ where $F_{G,x}$ and $F_{G,y}$ are the $x$ and $y$ components of the gravitationa
 	\end{tabular}
 \end{table}
 
+\subsection{Initial velocity}
+A circular motion is produced when the initial velocity is approximately given by 
+\begin{equation}\label{v0}
+	v_0 = \sqrt{\dfrac{GM_\odot}{r}}
+\end{equation}
+
+
+\subsection{Energy conservation}
+For an isolated system the mechanical energy is conserved. In the case of the orbiting celestial objects one considers the kinetic and potential energy given as respectively 
+\begin{align}
+	E_k = \dfrac{1}{2}mv^2 \\ 
+	E_p = -G\dfrac{M_1M_2}{r} \\
+\end{align}
+where $m=m_i$ is the mass of object $i$ and v is the speed, G is the gravitational constant and $r$ os the distance. Yielding a total mechanical energy 
+\begin{equation}
+	E_{tot} = E_k + E_p =  \sum_{i = 0}^{N} \dfrac{1}{2}m_iv_i^2 - G \sum_{i<j}\sum_{j}^{N} \dfrac{M_iM_j}{r_{ij}}
+\end{equation}
+where $N$ is the number of planets. In addition, the angular momentum of an isolated system is conserved 
+\begin{equation}
+	\vec{l} = \sum_{i}^{N}\vec{r}_i\cross \vec{v}_i
+\end{equation}
+The quantities are conserved due to the absence of any external forces or torque. 
+
 \section{Numerical algorithms}
 Euler's forward algorithm states that
 \begin{equation}
@@ -121,7 +144,19 @@ Euler's forward algorithm states that
 
 \section{Method} \noindent 
 It is assumed that the Sun has a mass which is much larger than the mass of the Earth, so that the motion of the Sun is neglected. In order to discretize equation \ref{motion1} a discrete time axis $t\in[t_0, t_{f}]$ of N points is defined, where $t_i = t_0 + ih$ for $i\in[0,N]$. This implies that $h = (t_f-t_0)/N$. The discretized positions and velocities are then functions of the discretized time $x_i = x(t_i)$ and $v_i = v(t_i)$, and equivalently for $y$. The acceleration is then $a_{xi} = a_x(x_i,y_i)$. \\
-The differential equation \ref{motion1} is then solved by Euler's forward algorithm and the velocity Verlet method. 
+The differential equation \ref{motion1} is then solved by Euler's forward algorithm and the velocity Verlet method. The following method is implemented for the Forward Euler method:
+\begin{align}
+	\vec{v}_i & = \vec{v}_{i-1} + h\vec{a}_i \\ 
+		\vec{x}_i & = \vec{x}_{i-1} + h\vec{v}_i \\ 
+\end{align}
+for $i \in {1, 2, ..., N}$ in three dimensions. The acceleration is given by equation \ref{nwt} in a vectorized manner. The following method is implemented for the velocity Verlet procedure:
+\begin{align}
+	\vec{v}_i = \dfrac{h}{2}\vec{v}_{i-1}(\vec{a}_i + \vec{a}_{i-1})\\ 
+	\vec{x}_i = \vec{x}_{i-1} + h\vec{v}_{i-1} + \dfrac{h^2}{2}\vec{a}_{i-1}
+\end{align}
+The systems are initiated with a velocity according to equation \ref{v0}, to gain a circular orbit, in three dimensions. The values $G = 1$ and $M_\odot = 1$ is set for simplicity, and $r_0 = [1, 0, 0] AU$ is the selected initial condition. The velocity $v_0$ is derived from this initial condition and distributed equally along the $y$ and $z$ dimension. Both the Forward Euler and the velocity Verlet algorithm is employed to propagate the system, and the two methods are compared.
+An object oriented class for planet production is constructed. \\
+The orbit of earth around the sun with the sun held fixed in the origin is calculated for $dt = 10^{-3}$ and $dt = 10^{-7}$ for a period of 10 years. The angular momentum and kinetic, potential and total energy is calculated as a function of time.
 
 
  
@@ -129,6 +164,44 @@ The differential equation \ref{motion1} is then solved by Euler's forward algori
 \subsubsection{Initial conditions} \noindent 
 The NASA jet propulsion laboratory's HORIZONS Web-Interface is used to generate a cartesian state vector table of any object with respect to any major body, to extract initial conditions for each planet. 
 \section{Results} \noindent 
+Figure \ref{earthsun} shows the propagated tracks of the earth sun system while using both the Forward-Euler algorithm and the velocity Verlet algorithm for the time steps $dt = 10^{-3}$ and $dt = 10^{-5}$. The Forward Euler algorithm is clearly more unstable for lower time steps than the velocity Verlet algorithm. \\ \indent 
+The kinetic, potential and total energy of the earth-syn system using the velocity Verlet algorithm is plotted in figure \ref{energy}. The energies appears to be as one would expect for a system moving in an elliptical orbit. It is evident that the amplitude of the potential and kinetic energies are sufficiently small for the orbit to be approximately circular. The total energy is found to be constant, within a small distribution fluctuating in the order of $10^{-6}$.   
+\onecolumngrid
+
+\begin{figure}
+		\includegraphics[scale = 0.25]{Figures/A103.png} \hspace{15mm}
+	\includegraphics[scale = 0.25]{Figures/A106.png}
+	\caption{Earth orbit around the sun (yellow, middle) propagated using the Forward-Euler (blue) and the velocity Verlet algorithms for N = $10^4$ time steps and $N = 10^8$ time step for 10 years,  with the time step $dT$ being respectively $dt = 10^{-3}$ and $dt = 10^{-7}$. The Verlet algorithm preforms stable in each case, the Euler algorithm are much more unstable and quickly propagates away from the its intended orbit. The initial condition is set as $x_0 = 1, y_0 = 0, z_0 = 0; v_x = 0, v_y = v_0/\sqrt{(2)}, v_z = v_0/\sqrt{2}$, where $v_0$ is set as defined in equation \ref{v0}, $G = 1$ and $M_\odot = 1$ for scale. \label{earthsun}}
+\end{figure}
+
+\twocolumngrid
+
+\begin{figure}[H]
+	\includegraphics[scale = 0.18]{Figures/EC.png}
+	\caption{\label{energy} Energy conversation of circular orbit propagated using the velocity Verlot algorithm over 10 years, with initial conditions  $x_0 = 1, y_0 = 0, z_0 = 0; v_x = 0, v_y = v_0/\sqrt{(2)}, v_z = v_0/\sqrt{2}$, where $v_0$ is set as defined in equation \ref{v0}, $G = 1$ and $M_\odot = 1$ for scale.}
+\end{figure}
+
+\begin{equation*}
+	t_{eEuler} = 0.299 \pm 0.006 \textnormal{ s}
+\end{equation*}
+
+\begin{equation*}
+t_{Verlet} =0.314 \pm 0.009 \textnormal{ s}
+\end{equation*}
+
+\begin{equation*}
+	FLOPS_{Euler} = 25N
+\end{equation*}
+\begin{equation*}
+FLOPS_{Verlet} = 46N
+\end{equation*}
+
+\begin{figure}[H]
+	\includegraphics[scale = 0.3]{Figures/Escape.png}
+	\caption{\label{escape} }
+\end{figure}
+
+
 \section{Discussion} \noindent
 \section{Conclusion} \noindent  
 
