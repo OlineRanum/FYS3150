@@ -9,14 +9,12 @@
 
 using namespace std;
 
-void SolarSystem::CreateSolarSystem(vector<string> Names, vector<double> Mass, vector<vector<double>> initialConditions, int N, double h, string mode, int N_planets){
+void SolarSystem::CreateSolarSystem(vector<string> Names, vector<double> Mass, vector<vector<double>> initialConditions, int N, double h, string mode, int N_planets, double * time){
 
     vector<Planets*> SolarSystem_planets;
     ODESolver *ODES        = new ODESolver();
     WriteResults *WR          = new WriteResults();
-
     for (int i = 0; i < N_planets; i++){
-
         Planets* p = new Planets(Names[i], Mass[i], initialConditions[i], N);
         SolarSystem_planets.push_back(p);
         cout << p->m_name << endl;
@@ -34,6 +32,21 @@ void SolarSystem::CreateSolarSystem(vector<string> Names, vector<double> Mass, v
             SolarSystem_planets[0]->ay[i]  = 0;
             SolarSystem_planets[0]->az[i]  = 0; }
     }
+
+    if (mode == "FIXMERC"){
+        for (int i = 0; i < N; i++){
+            SolarSystem_planets[0]->x[i]  = 0;
+            SolarSystem_planets[0]->y[i]  = 0;
+            SolarSystem_planets[0]->z[i]  = 0;
+            SolarSystem_planets[0]->vx[i] = 0;
+            SolarSystem_planets[0]->vy[i] = 0;
+            SolarSystem_planets[0]->vz[i] = 0;
+            SolarSystem_planets[0]->ax[i]  = 0;
+            SolarSystem_planets[0]->ay[i]  = 0;
+            SolarSystem_planets[0]->az[i]  = 0; }
+    }
+
+
     if (mode == "COM"){
 
         // Setting initial velocity of sun and the center of mass system
@@ -58,9 +71,6 @@ void SolarSystem::CreateSolarSystem(vector<string> Names, vector<double> Mass, v
             SolarSystem_planets[i]->vy[0] -= (mv[1]/M);
             SolarSystem_planets[i]->vz[0] -= (mv[2]/M); }
 
-        cout <<"HEI"<<R[0] <<endl;
-        cout <<R[1] <<endl;
-        cout <<R[2] <<endl;
 
 
         for (int i = 0; i < N_planets; i++){
@@ -72,9 +82,10 @@ void SolarSystem::CreateSolarSystem(vector<string> Names, vector<double> Mass, v
 
     ODES -> VerletMultiBody(SolarSystem_planets, N, h, N_planets, mode);
 
+
     for (int i = 0; i < N_planets; i++){
         cout << i << endl;
-         WR -> WR_5E(SolarSystem_planets[i]->x, SolarSystem_planets[i]->y, SolarSystem_planets[i]->z, SolarSystem_planets[i]->vx, SolarSystem_planets[i]->vy, SolarSystem_planets[i]->vz, N, "Planet_" + SolarSystem_planets[i]->m_name);
+         WR -> WR_5E(time, SolarSystem_planets[i]->x, SolarSystem_planets[i]->y, SolarSystem_planets[i]->z, SolarSystem_planets[i]->vx, SolarSystem_planets[i]->vy, SolarSystem_planets[i]->vz, N, "Planet_" + SolarSystem_planets[i]->m_name);
     }
 
 }

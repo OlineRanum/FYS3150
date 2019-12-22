@@ -66,12 +66,14 @@ void ODESolver::Verlet(double* x, double* y, double* z,  double*vx , double* vy,
 
 
 void ODESolver::VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, double h, int N_planets, string mode){
-    double G = 1;
+    double G = 4*M_PI*M_PI;
+    double c = 63197.8;
 
     int init_idx;
 
     if (mode == "Fix"){init_idx = 1;}
     else if (mode == "COM"){init_idx = 0;}
+    else if (mode == "FIXMERC"){init_idx = 1;}
 
     // Setting initial acceleration
     for (int j = init_idx; j < N_planets; j++){                                                                                              // For all planets
@@ -80,10 +82,23 @@ void ODESolver::VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, dou
                 double r = sqrt(abs((SolarSystem_planets[j]->x[0]-SolarSystem_planets[i]->x[0])*(SolarSystem_planets[j]->x[0]-SolarSystem_planets[i]->x[0])
                                     +(SolarSystem_planets[j]->y[0]-SolarSystem_planets[i]->y[0])*(SolarSystem_planets[j]->y[0]-SolarSystem_planets[i]->y[0])
                                     +(SolarSystem_planets[j]->z[0]-SolarSystem_planets[i]->z[0])*(SolarSystem_planets[j]->z[0]-SolarSystem_planets[i]->z[0]) ));
-                 //SolarSystem_planets[j]->a[0] += -G*SolarSystem_planets[i]->m_mass/(r*r*r);
-                SolarSystem_planets[j]->ax[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->x[0] - SolarSystem_planets[i]->x[0])/(r*r*r);
-                SolarSystem_planets[j]->ay[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->y[0] - SolarSystem_planets[i]->y[0])/(r*r*r);
-                SolarSystem_planets[j]->az[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->z[0] - SolarSystem_planets[i]->z[0])/(r*r*r);
+
+                 double relativistic_Factor = 1;
+
+                 if (mode == "FIXMERC"){
+                     double l = sqrt(
+                                 (SolarSystem_planets[j]->y[0]*SolarSystem_planets[j]->vz[0] - SolarSystem_planets[j]->z[0]*SolarSystem_planets[j]->vy[0])*(
+                                 SolarSystem_planets[j]->y[0]*SolarSystem_planets[j]->vz[0] - SolarSystem_planets[j]->z[0]*SolarSystem_planets[j]->vy[0]) +
+                             (SolarSystem_planets[j]->x[0]*SolarSystem_planets[j]->vz[0] - SolarSystem_planets[j]->z[0]*SolarSystem_planets[j]->vx[0])*
+                             (SolarSystem_planets[j]->x[0]*SolarSystem_planets[j]->vz[0] - SolarSystem_planets[j]->z[0]*SolarSystem_planets[j]->vx[0]) +
+                                 (SolarSystem_planets[j]->x[0]*SolarSystem_planets[j]->vy[0] - SolarSystem_planets[j]->y[0]*SolarSystem_planets[j]->vx[0]) *
+                                 (SolarSystem_planets[j]->x[0]*SolarSystem_planets[j]->vy[0] - SolarSystem_planets[j]->y[0]*SolarSystem_planets[j]->vx[0])
+                             );
+                     relativistic_Factor = 1 + 3*l*l/(r*r*c*c); }
+
+                SolarSystem_planets[j]->ax[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->x[0] - SolarSystem_planets[i]->x[0])/(r*r*r)*relativistic_Factor;
+                SolarSystem_planets[j]->ay[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->y[0] - SolarSystem_planets[i]->y[0])/(r*r*r)*relativistic_Factor;
+                SolarSystem_planets[j]->az[0] += -G*SolarSystem_planets[i]->m_mass*(SolarSystem_planets[j]->z[0] - SolarSystem_planets[i]->z[0])/(r*r*r)*relativistic_Factor;
     }}}
 
 
@@ -102,9 +117,24 @@ void ODESolver::VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, dou
                                         +(SolarSystem_planets[j]->y[i]-SolarSystem_planets[o]->y[i])*(SolarSystem_planets[j]->y[i]-SolarSystem_planets[o]->y[i])
                                         +(SolarSystem_planets[j]->z[i]-SolarSystem_planets[o]->z[i])*(SolarSystem_planets[j]->z[i]-SolarSystem_planets[o]->z[i]) ));
                     //SolarSystem_planets[j]->x[i] += -G*SolarSystem_planets[o]->m_mass/(r*r*r);
-                    SolarSystem_planets[j]->ax[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->x[i] - SolarSystem_planets[o]->x[i])/(r*r*r);
-                    SolarSystem_planets[j]->ay[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->y[i] - SolarSystem_planets[o]->y[i])/(r*r*r);
-                    SolarSystem_planets[j]->az[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->z[i] - SolarSystem_planets[o]->z[i])/(r*r*r);
+                    double relativistic_Factor = 1;
+                    if (mode == "FIXMERC"){
+                        double l = sqrt(
+                                    (SolarSystem_planets[j]->y[i-1]*SolarSystem_planets[j]->vz[i-1] - SolarSystem_planets[j]->z[i-1]*SolarSystem_planets[j]->vy[i-1])*(
+                                    SolarSystem_planets[j]->y[i-1]*SolarSystem_planets[j]->vz[i-1] - SolarSystem_planets[j]->z[i-1]*SolarSystem_planets[j]->vy[i-1]) +
+                                (SolarSystem_planets[j]->x[i-1]*SolarSystem_planets[j]->vz[i-1] - SolarSystem_planets[j]->z[i-1]*SolarSystem_planets[j]->vx[i-1])*
+                                (SolarSystem_planets[j]->x[i-1]*SolarSystem_planets[j]->vz[i-1] - SolarSystem_planets[j]->z[i-1]*SolarSystem_planets[j]->vx[i-1]) +
+                                    (SolarSystem_planets[j]->x[i-1]*SolarSystem_planets[j]->vy[i-1] - SolarSystem_planets[j]->y[i-1]*SolarSystem_planets[j]->vx[i-1]) *
+                                    (SolarSystem_planets[j]->x[i-1]*SolarSystem_planets[j]->vy[i-1] - SolarSystem_planets[j]->y[i-1]*SolarSystem_planets[j]->vx[i-1]));
+
+                        relativistic_Factor = 1+3*l*l/(r*r*c*c);}
+
+                    SolarSystem_planets[j]->ax[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->x[i] - SolarSystem_planets[o]->x[i])/(r*r*r)*relativistic_Factor;
+                    SolarSystem_planets[j]->ay[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->y[i] - SolarSystem_planets[o]->y[i])/(r*r*r)*relativistic_Factor;
+                    SolarSystem_planets[j]->az[i] += -G*SolarSystem_planets[o]->m_mass*(SolarSystem_planets[j]->z[i] - SolarSystem_planets[o]->z[i])/(r*r*r)*relativistic_Factor;
+
+
+
                     if ((i < 200) & (j == 0)){cout << SolarSystem_planets[j]->x[i] << " " << SolarSystem_planets[o]->x[i] << endl;}
                 }}
 
@@ -112,4 +142,6 @@ void ODESolver::VerletMultiBody(vector<Planets*> SolarSystem_planets, int N, dou
             SolarSystem_planets[j]->vy[i] = SolarSystem_planets[j]->vy[i-1] + h/2*(SolarSystem_planets[j]->ay[i] + SolarSystem_planets[j]->ay[i-1]);
             SolarSystem_planets[j]->vz[i] = SolarSystem_planets[j]->vz[i-1] + h/2*(SolarSystem_planets[j]->az[i] + SolarSystem_planets[j]->az[i-1]);
 
-        }}}
+        }}
+
+}

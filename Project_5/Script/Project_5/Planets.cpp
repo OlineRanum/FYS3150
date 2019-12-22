@@ -22,9 +22,9 @@ Planets::Planets(string name, double mass, vector<double> initialConditions, int
     x0  = initialConditions[0];
     y0  = initialConditions[1];
     z0  = initialConditions[2];
-    vx0 = initialConditions[3];//*365;
-    vy0 = initialConditions[4];//*365;
-    vz0 = initialConditions[5];//*365;
+    vx0 = initialConditions[3]*365;
+    vy0 = initialConditions[4]*365;
+    vz0 = initialConditions[5]*365;
     x[0]  = x0;
     y[0]  = y0;
     z[0]  = z0;

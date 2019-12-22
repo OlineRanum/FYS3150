@@ -11,7 +11,7 @@ class WriteResults
 public:
     void WR_5A(double* t,double* x, double* y, double* z, double* vx, double* vy, double* vz, int N, string filename);
     void WR_5D(double* t, double* x, double* y, double* z, double* vx, double* vy, double* vz, int N, string filename);
-    void WR_5E(double* x, double* y, double* z, double* vx, double* vy, double* vz, int N, string filename);
+    void WR_5E(double* t, double* x, double* y, double* z, double* vx, double* vy, double* vz, int N, string filename);
 
 
 };
