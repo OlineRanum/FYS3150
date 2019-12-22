@@ -1,4 +1,4 @@
-# Project 4, Studies of Phase Transitions in Magnetic Systems
+# Project 5, Modeling the Solar System using ordinary differential equations
 [Project assignment file](https://github.com/CompPhysics/ComputationalPhysics/blob/master/doc/Projects/2019/Project5/SolarSystem/pdf/SolarSystem.pdf)
 
 ![Image](https://github.com/OlineRanum/FYS3150/blob/master/Project_5/Paper/Figures/betta2.png)
